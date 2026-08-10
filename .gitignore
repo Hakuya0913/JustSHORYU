@@ -399,3 +399,30 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# C/C++ ビルド成果物
+*.d
+*.o
+*.obj
+*.lo
+*.slo
+*.gch
+*.pch
+*.so
+*.dylib
+*.dll
+*.lib
+*.a
+*.lai
+*.la
+*.exe
+*.out
+*.app
+
+# vcpkg に含まれるもの
+vcpkg_installed/
+packages/
+buildtrees/
+
+# CMake / 手動ビルド用
+build/
