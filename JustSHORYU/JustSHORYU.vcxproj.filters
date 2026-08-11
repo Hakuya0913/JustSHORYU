@@ -1,17 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="リソース ファイル">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Program">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ShaderProgram">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Program\App">
+      <UniqueIdentifier>{5233e60c-f181-4d8d-bae4-951e1e332dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Core">
+      <UniqueIdentifier>{ffe5a0ec-b048-4ac1-865f-4502ac75d02d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Core\Window">
+      <UniqueIdentifier>{d4da940a-de9d-4e4c-abb3-fb830228f4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Core\GraphicsDevice">
+      <UniqueIdentifier>{dc4a9f37-5f99-4adc-850a-a34c077b7a9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Utility">
+      <UniqueIdentifier>{555d2553-3ffb-48ba-9f48-c07eff84f70e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\ConstantBuffer">
+      <UniqueIdentifier>{7c5f84ef-16d8-4c40-8412-98c146dacb56}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Resource\Program\main.cpp">
+      <Filter>Program</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\App\App.cpp">
+      <Filter>Program\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Core\Window.cpp">
+      <Filter>Program\Core\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp">
+      <Filter>Program\Core\GraphicsDevice</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource\Program\App\App.h">
+      <Filter>Program\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Core\Window.h">
+      <Filter>Program\Core\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Core\GraphicsDevice.h">
+      <Filter>Program\Core\GraphicsDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Utility\ComPtr.h">
+      <Filter>Program\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\ConstantValue\ConstantValue.h">
+      <Filter>Program\ConstantBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

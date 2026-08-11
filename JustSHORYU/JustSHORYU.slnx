@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="JustSHORYU.vcxproj" />
+  <Project Path="JustSHORYU.vcxproj" Id="41939f78-c192-41dc-bd92-a92161801c11" />
 </Solution>
