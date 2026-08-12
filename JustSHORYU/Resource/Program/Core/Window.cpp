@@ -1,5 +1,5 @@
 #include"Window.h"
-#include"../ConstantValue/ConstantValue.h"
+#include"ConstantCore.h"
 
 LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp) {
 

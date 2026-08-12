@@ -142,13 +142,19 @@
     <ClCompile Include="Resource\Program\App\App.cpp" />
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
+    <ClCompile Include="Resource\Program\Input\InputManager.cpp" />
+    <ClCompile Include="Resource\Program\Input\RawInput.cpp" />
     <ClCompile Include="Resource\Program\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h" />
-    <ClInclude Include="Resource\Program\ConstantValue\ConstantValue.h" />
+    <ClInclude Include="Resource\Program\Core\ConstantCore.h" />
     <ClInclude Include="Resource\Program\Core\GraphicsDevice.h" />
     <ClInclude Include="Resource\Program\Core\Window.h" />
+    <ClInclude Include="Resource\Program\Input\ConstantInput.h" />
+    <ClInclude Include="Resource\Program\Input\InputManager.h" />
+    <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
+    <ClInclude Include="Resource\Program\Input\RawInput.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

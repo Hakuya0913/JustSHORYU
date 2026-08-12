@@ -28,8 +28,17 @@
     <Filter Include="Program\Utility">
       <UniqueIdentifier>{555d2553-3ffb-48ba-9f48-c07eff84f70e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Program\ConstantValue">
-      <UniqueIdentifier>{7c5f84ef-16d8-4c40-8412-98c146dacb56}</UniqueIdentifier>
+    <Filter Include="Program\Input">
+      <UniqueIdentifier>{95473cf0-ccbc-4e5a-8eb6-fdae9a9381a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\Interface">
+      <UniqueIdentifier>{02a289c2-39c5-4c8d-a54d-32442c65a8cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\RawInput">
+      <UniqueIdentifier>{89c9598e-efc2-4f5b-992c-5e586aaf205b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\Manager">
+      <UniqueIdentifier>{d3127797-53a9-4594-a7b0-18e2f83c95a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +54,12 @@
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp">
       <Filter>Program\Core\GraphicsDevice</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Program\Input\RawInput.cpp">
+      <Filter>Program\Input\RawInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\InputManager.cpp">
+      <Filter>Program\Input\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h">
@@ -59,8 +74,20 @@
     <ClInclude Include="Resource\Program\Utility\ComPtr.h">
       <Filter>Program\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\ConstantValue\ConstantValue.h">
-      <Filter>Program\ConstantValue</Filter>
+    <ClInclude Include="Resource\Program\Input\InterfaceInput.h">
+      <Filter>Program\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\ConstantInput.h">
+      <Filter>Program\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Core\ConstantCore.h">
+      <Filter>Program\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\RawInput.h">
+      <Filter>Program\Input\RawInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\InputManager.h">
+      <Filter>Program\Input\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

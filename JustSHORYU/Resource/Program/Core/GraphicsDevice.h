@@ -14,7 +14,7 @@ GPU制御クラスのヘッダー
 #include<dxgi1_4.h>
 
 #include"../Utility/ComPtr.h"
-#include"../ConstantValue/ConstantValue.h"
+#include"ConstantCore.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
