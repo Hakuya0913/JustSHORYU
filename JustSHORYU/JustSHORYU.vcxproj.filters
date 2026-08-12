@@ -28,7 +28,7 @@
     <Filter Include="Program\Utility">
       <UniqueIdentifier>{555d2553-3ffb-48ba-9f48-c07eff84f70e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Program\ConstantBuffer">
+    <Filter Include="Program\ConstantValue">
       <UniqueIdentifier>{7c5f84ef-16d8-4c40-8412-98c146dacb56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -60,7 +60,7 @@
       <Filter>Program\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Program\ConstantValue\ConstantValue.h">
-      <Filter>Program\ConstantBuffer</Filter>
+      <Filter>Program\ConstantValue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,18 +1,17 @@
 #include"App.h"
-#include"GraphicsDevice.h"
+#include"../Core/GraphicsDevice.h"
 
 void App::Init() {
 
 	window.Init();
 	GraphicsDevice::GetInstance().Init(window.GetHWND());
 
-	scene.Init();
-
 }
 
 void App::Update() {
 
 	MSG message{};
+	auto gfxDevice = GraphicsDevice::GetInstance();
 
 	while (message.message != WM_QUIT) {
 
@@ -26,10 +25,6 @@ void App::Update() {
 
 			//各オブジェクトの更新処理など
 			GraphicsDevice::GetInstance().BeginFrame();
-
-			scene.Update();
-
-			scene.Draw();
 
 			GraphicsDevice::GetInstance().EndFrame();
 

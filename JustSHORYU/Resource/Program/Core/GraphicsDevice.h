@@ -13,8 +13,8 @@ GPU制御クラスのヘッダー
 #include<dxgi.h>
 #include<dxgi1_4.h>
 
-#include"ComPtr.h"
-#include"ConstVal.h"
+#include"../Utility/ComPtr.h"
+#include"../ConstantValue/ConstantValue.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")

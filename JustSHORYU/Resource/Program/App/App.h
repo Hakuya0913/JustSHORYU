@@ -7,8 +7,7 @@ D3Dクラスやゲームシーン管理クラスの
 
 */
 
-#include"Window.h"
-#include"Scene.h"
+#include"../Core/Window.h"
 
 class App {
 public:
@@ -20,6 +19,5 @@ public:
 private:
 
 	Window window;
-	Scene scene;
 
 };
