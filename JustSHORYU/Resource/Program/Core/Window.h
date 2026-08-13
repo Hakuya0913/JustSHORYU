@@ -1,4 +1,12 @@
 #pragma once
+
+/*
+
+Window生成とウィンドウプロシージャの定義
+ウィンドウハンドル等の提供を行う
+
+*/
+
 #include<Windows.h>
 
 class Window {

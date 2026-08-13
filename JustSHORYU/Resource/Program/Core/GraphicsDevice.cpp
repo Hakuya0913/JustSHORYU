@@ -1,12 +1,5 @@
 #include"GraphicsDevice.h"
 
-GraphicsDevice& GraphicsDevice::GetInstance() {
-
-	static GraphicsDevice instance;
-	return instance;
-
-}
-
 bool GraphicsDevice::Init(HWND hwnd, UINT resolutionW, UINT resolutionH) {
 
 	this->hwnd = hwnd;

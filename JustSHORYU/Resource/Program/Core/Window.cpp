@@ -1,7 +1,9 @@
 #include"Window.h"
+#include<vector>
 #include"ConstantCore.h"
+#include"../Input/InputManager.h"
 
-LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp) {
+LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
 	switch (message) {
 	case WM_DESTROY:
@@ -10,11 +12,67 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp) 
 		return 0;
 
 		break;
+	case WM_INPUT:
+
+		//キーマウ入力処理
+
+		UINT dwSize = 0;
+		GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
+		
+		std::vector<BYTE> buffer(dwSize);
+		if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.data(), &dwSize, sizeof(RAWINPUTHEADER)) != dwSize) {
+
+			break;
+
+		}
+
+		RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(buffer.data());
+
+		auto rawInput = InputManager::GetInstance().GetRawInput();
+
+		if (raw->header.dwType == RIM_TYPEKEYBOARD) {
+
+			USHORT vk = raw->data.keyboard.VKey;
+			bool isPress = !(raw->data.keyboard.Flags & RI_KEY_BREAK);
+			rawInput.SetKeyboard(vk, isPress);
+
+		}
+		else if (raw->header.dwType == RIM_TYPEMOUSE) {
+
+			RAWMOUSE& mouse = raw->data.mouse;
+
+			if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN) {
+
+				rawInput.SetMouseButton(0, true);
+
+			}
+			if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP) {
+
+				rawInput.SetMouseButton(0, false);
+
+			}
+
+			if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN) {
+
+				rawInput.SetMouseButton(1, true);
+
+			}
+			if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP) {
+
+				rawInput.SetMouseButton(1, false);
+
+			}
+
+			rawInput.SetMouseMove(static_cast<float>(mouse.lLastX), static_cast<float>(mouse.lLastY));
+
+		}
+
+		break;
 	default:
 		break;
 	}
 
-	return DefWindowProc(hwnd, message, wp, lp);
+	return DefWindowProc(hwnd, message, wParam, lParam);
 
 }
 

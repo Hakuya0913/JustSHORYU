@@ -22,7 +22,10 @@ GPU制御クラスのヘッダー
 class GraphicsDevice {
 public:
 
-	static GraphicsDevice& GetInstance();
+	inline static GraphicsDevice& GetInstance() {
+		static GraphicsDevice instance;
+		return instance;
+	}
 
 	bool Init(HWND hwnd, UINT resolutionW = ConstVal::D3D::ResolutionW, UINT resolutionH = ConstVal::D3D::ResolutionH);
 

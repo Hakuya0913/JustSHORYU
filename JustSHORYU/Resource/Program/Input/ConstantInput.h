@@ -7,7 +7,7 @@ namespace KeyMouseConst{
 
 }
 
-static constexpr enum class PhysicalKey {
+constexpr enum class PhysicalKey {
 
 	W, A, S, D,
 	Space,
@@ -26,7 +26,7 @@ static constexpr enum class PhysicalKey {
 
 };
 
-static constexpr enum class PhysicalAxis {
+constexpr enum class PhysicalAxis {
 
 	MouseX,
 	MouseY,
