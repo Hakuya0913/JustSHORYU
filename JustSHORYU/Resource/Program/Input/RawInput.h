@@ -18,7 +18,7 @@ public:
 
 	void Update() override;
 
-	bool IsTrigger(PhysicalKey keyCode) const override;
+	bool IsPress(PhysicalKey keyCode) const override;
 	float GetAxis(PhysicalAxis keyCode) const override;
 
 	//キーマウ入力受け取り関数

@@ -7,7 +7,13 @@ namespace KeyMouseConst{
 
 }
 
-constexpr enum class PhysicalKey {
+namespace PadConst {
+
+	constexpr float StickMax = 32767.0f;
+
+}
+
+enum class PhysicalKey {
 
 	W, A, S, D,
 	Space,
@@ -26,7 +32,7 @@ constexpr enum class PhysicalKey {
 
 };
 
-constexpr enum class PhysicalAxis {
+enum class PhysicalAxis {
 
 	MouseX,
 	MouseY,

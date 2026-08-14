@@ -14,7 +14,7 @@ void RawInput::Update() {
 
 }
 
-bool RawInput::IsTrigger(PhysicalKey keyCode) const {
+bool RawInput::IsPress(PhysicalKey keyCode) const {
 
 	switch (keyCode) {
 

@@ -16,9 +16,11 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 		//キーマウ入力処理
 
+	{
+
 		UINT dwSize = 0;
 		GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
-		
+
 		std::vector<BYTE> buffer(dwSize);
 		if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.data(), &dwSize, sizeof(RAWINPUTHEADER)) != dwSize) {
 
@@ -66,6 +68,8 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 			rawInput.SetMouseMove(static_cast<float>(mouse.lLastX), static_cast<float>(mouse.lLastY));
 
 		}
+
+	}
 
 		break;
 	default:

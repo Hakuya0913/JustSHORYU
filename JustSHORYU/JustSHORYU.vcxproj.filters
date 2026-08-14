@@ -40,6 +40,9 @@
     <Filter Include="Program\Input\Manager">
       <UniqueIdentifier>{d3127797-53a9-4594-a7b0-18e2f83c95a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Input\XInput">
+      <UniqueIdentifier>{c7954d9e-d35e-4dca-ae0f-54548cf7965b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\InputManager.cpp">
       <Filter>Program\Input\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\XInput.cpp">
+      <Filter>Program\Input\XInput</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="Resource\Program\Input\InputManager.h">
       <Filter>Program\Input\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\XInput.h">
+      <Filter>Program\Input\XInput</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

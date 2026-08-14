@@ -144,6 +144,7 @@
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
     <ClCompile Include="Resource\Program\Input\InputManager.cpp" />
     <ClCompile Include="Resource\Program\Input\RawInput.cpp" />
+    <ClCompile Include="Resource\Program\Input\XInput.cpp" />
     <ClCompile Include="Resource\Program\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="Resource\Program\Input\InputManager.h" />
     <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
     <ClInclude Include="Resource\Program\Input\RawInput.h" />
+    <ClInclude Include="Resource\Program\Input\XInput.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

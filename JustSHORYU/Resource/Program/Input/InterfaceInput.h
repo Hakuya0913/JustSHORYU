@@ -17,7 +17,7 @@ public:
 	~InterfaceInput() = default;
 
 	virtual void Update() = 0;
-	virtual bool IsTrigger(PhysicalKey keyCode) const = 0;
+	virtual bool IsPress(PhysicalKey keyCode) const = 0;
 	virtual float GetAxis(PhysicalAxis keyCode) const = 0;
 
 private:
