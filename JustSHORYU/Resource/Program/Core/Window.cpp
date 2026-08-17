@@ -5,71 +5,13 @@
 
 LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
+	InputManager::GetInstance().GetRawInput().SetMessage(message, wParam, lParam);
+
 	switch (message) {
 	case WM_DESTROY:
 
 		PostQuitMessage(0);
 		return 0;
-
-		break;
-	case WM_INPUT:
-
-		//ã‚­ãƒ¼ãƒã‚¦å…¥åŠ›å‡¦ç†
-
-	{
-
-		UINT dwSize = 0;
-		GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
-
-		std::vector<BYTE> buffer(dwSize);
-		if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.data(), &dwSize, sizeof(RAWINPUTHEADER)) != dwSize) {
-
-			break;
-
-		}
-
-		RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(buffer.data());
-
-		auto rawInput = InputManager::GetInstance().GetRawInput();
-
-		if (raw->header.dwType == RIM_TYPEKEYBOARD) {
-
-			USHORT vk = raw->data.keyboard.VKey;
-			bool isPress = !(raw->data.keyboard.Flags & RI_KEY_BREAK);
-			rawInput.SetKeyboard(vk, isPress);
-
-		}
-		else if (raw->header.dwType == RIM_TYPEMOUSE) {
-
-			RAWMOUSE& mouse = raw->data.mouse;
-
-			if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN) {
-
-				rawInput.SetMouseButton(0, true);
-
-			}
-			if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP) {
-
-				rawInput.SetMouseButton(0, false);
-
-			}
-
-			if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN) {
-
-				rawInput.SetMouseButton(1, true);
-
-			}
-			if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP) {
-
-				rawInput.SetMouseButton(1, false);
-
-			}
-
-			rawInput.SetMouseMove(static_cast<float>(mouse.lLastX), static_cast<float>(mouse.lLastY));
-
-		}
-
-	}
 
 		break;
 	default:
@@ -90,7 +32,7 @@ void Window::Init() {
 
 	}
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¨­å®š
+	//ƒEƒBƒ“ƒhƒEİ’è
 	WNDCLASSEX wc{};
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -102,19 +44,19 @@ void Window::Init() {
 	wc.lpszClassName = ConstVal::Window::ClassName;
 	wc.hIconSm = LoadIcon(hInstance, IDI_APPLICATION);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ç™»éŒ²
+	//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX“o˜^
 	RegisterClassEx(&wc);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºè¨­å®š
+	//ƒEƒBƒ“ƒhƒEƒTƒCƒYİ’è
 	RECT rect{};
 	rect.right = static_cast<LONG>(ConstVal::Window::ScreenW);
 	rect.bottom = static_cast<LONG>(ConstVal::Window::ScreenH);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‚’èª¿æ•´
+	//ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ğ’²®
 	auto style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
 	AdjustWindowRect(&rect, style, FALSE);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ç”Ÿæˆ
+	//ƒEƒBƒ“ƒhƒE‚ğ¶¬
 	hwnd = CreateWindowEx(
 		0,
 		ConstVal::Window::ClassName,
@@ -130,10 +72,10 @@ void Window::Init() {
 		nullptr
 	);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤º
+	//ƒEƒBƒ“ƒhƒE‚ğ•\¦
 	ShowWindow(hwnd, SW_SHOWNORMAL);
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹
+	//ƒEƒBƒ“ƒhƒE‚ÉƒtƒH[ƒJƒX
 	SetFocus(hwnd);
 
 }

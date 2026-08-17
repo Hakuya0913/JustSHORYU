@@ -2,14 +2,18 @@
 
 /*
 
-RawInput(ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã€ãƒžã‚¦ã‚¹)å…¥åŠ›ã‚’ç®¡ç†
-InterfaceInputã‚’ç¶™æ‰¿ã—ãŸ
-RawInputã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼ã‚¯ãƒ©ã‚¹
+RawInput(ƒL[ƒ{[ƒhAƒ}ƒEƒX)“ü—Í‚ðŠÇ—
+InterfaceInput‚ðŒp³‚µ‚½
+RawInputƒAƒ_ƒvƒ^[ƒNƒ‰ƒX
 
 */
 
 #include<Windows.h>
+#include<DirectXMath.h>
+#include<SimpleMath.h>
+#include<vector>
 #include"InterfaceInput.h"
+#include"ConstantInput.h"
 
 class RawInput : public InterfaceInput {
 public:
@@ -18,18 +22,42 @@ public:
 
 	void Update() override;
 
+	//ƒQƒbƒ^[
+	InputState GetKeyState(USHORT vk);
+	InputState GetMouseMoveState();
+	InputState GetMouseButtonState(UINT number);
+	InputState GetMouseWheelState();
+
+	DirectX::SimpleMath::Vector2 GetMousePos() const { return mousePos; }
+	DirectX::SimpleMath::Vector2 GetMouseDelta() const { return mouseDelta; }
+	int GetWheelDelta() const { return wheelDelta; }
 
 
-	//ã‚­ãƒ¼ãƒžã‚¦å…¥åŠ›å—ã‘å–ã‚Šé–¢æ•°
-	void SetKeyboard(USHORT vk, bool isPress);
-	void SetMouseButton(int button, bool isPress);
-	void SetMouseMove(float dx, float dy);
+	//ƒL[ƒ}ƒE“ü—ÍŽó‚¯Žæ‚èŠÖ”
+	void SetMessage(UINT message, WPARAM wPram, LPARAM lParam);
 
 private:
 
-	bool keyState[KeyMouseConst::KeyMax]{};
-	bool mouseButton[KeyMouseConst::MouseButtonMax]{};
-	float mouseX = 0.0f;
-	float mouseY = 0.0f;
+	//ƒL[ƒ{[ƒh“ü—Í
+	std::vector<InputState> keyState;
+	std::vector<InputState> keyStatePrev;
+
+	//ƒ}ƒEƒX‚Ìƒ{ƒ^ƒ““ü—Í
+	std::vector<InputState> mouseButtonState;
+	std::vector<InputState> mouseButtonStatePrev;
+
+	//ƒ}ƒEƒX‚ÌˆÚ“®
+	DirectX::SimpleMath::Vector2 mousePos;
+	DirectX::SimpleMath::Vector2 mousePosPrev;
+	DirectX::SimpleMath::Vector2 mouseDelta;
+	DirectX::SimpleMath::Vector2 mouseDeltaPrev;
+
+	//ƒ}ƒEƒXƒzƒC[ƒ‹
+	int wheelDelta		= 0;
+	int wheelDeltaPrev	= 0;
+
+	void SetKeyboard(USHORT	vk, bool isPress);
+	void SetMouseButton(int		button, bool isPress);
+	void SetMouseMove(float	dx, float dy);
 
 };

@@ -99,4 +99,7 @@
       <Filter>Program\Input\XInput</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

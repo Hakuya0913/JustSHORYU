@@ -2,52 +2,118 @@
 
 RawInput::RawInput() {
 
-	ZeroMemory(keyState, sizeof(keyState));
-	ZeroMemory(mouseButton, sizeof(mouseButton));
+	keyState.resize(KeyMouseConst::KeyMax, InputState::None);
+	mouseButtonState.resize(KeyMouseConst::MouseButtonMax, InputState::None);
 
 }
 
 void RawInput::Update() {
 
-	//WndProcで値の更新
-	//マウスの値を舞フレーム０にする設計もある
+	//WndProc�Œl�̍X�V
+
+	keyStatePrev = keyState;
+	mouseButtonStatePrev = mouseButtonState;
 
 }
 
-bool RawInput::IsPress(PhysicalKey keyCode) const {
+void RawInput::SetMessage(UINT message, WPARAM wParam, LPARAM lParam) {
 
-	switch (keyCode) {
+	switch (message)
+	{
+	case WM_KEYDOWN:
 
-		case PhysicalKey::W :			return keyState['W'];
-		case PhysicalKey::A :			return keyState['A'];
-		case PhysicalKey::S :			return keyState['S'];
-		case PhysicalKey::D :			return keyState['D'];
-		case PhysicalKey::Space :		return keyState[VK_SPACE];
-		case PhysicalKey::LeftMouse :	return keyState[0];
-		case PhysicalKey::RightMouse :	return keyState[1];
-		default :						return false;
+		SetKeyboard(static_cast<USHORT>(wParam), true);
 
-	}
+		break;
+	case WM_KEYUP:
 
-}
+		SetKeyboard(static_cast<USHORT>(wParam), true);
 
-float RawInput::GetAxis(PhysicalAxis keyCode) const {
+		break;
+	case WM_LBUTTONDOWN:
 
-	switch (keyCode){
+		SetMouseButton(KeyMouseConst::MouseButtonL, true);
 
-		case PhysicalAxis::MouseX:	return mouseX;
-		case PhysicalAxis::MouseY:	return mouseY;
-		default:					return	0.0f;
+		break;
+	case WM_LBUTTONUP:
 
+		SetMouseButton(KeyMouseConst::MouseButtonL, false);
+
+		break;
+	case WM_RBUTTONDOWN:
+
+		SetMouseButton(KeyMouseConst::MouseButtonR, false);
+
+		break;
+	case WM_RBUTTONUP:
+
+		SetMouseButton(KeyMouseConst::MouseButtonR, false);
+
+		break;
+	case WM_MBUTTONDOWN:
+
+		SetMouseButton(KeyMouseConst::MouseButtonM, false);
+
+		break;
+	case WM_MBUTTONUP:
+
+		SetMouseButton(KeyMouseConst::MouseButtonM, false);
+
+		break;
+	case WM_XBUTTONDOWN:
+
+		
+
+		break;
+	case WM_XBUTTONUP:
+
+
+
+		break;
+	default:
+		break;
 	}
 
 }
 
 void RawInput::SetKeyboard(USHORT vk, bool isPress) {
 
-	if (vk < KeyMouseConst::KeyMax) {
+	if (vk > KeyMouseConst::KeyMax) return;
 
-		keyState[vk] = isPress;
+	if (isPress) {
+
+		if (keyState[vk] == InputState::None ||
+			keyState[vk] == InputState::DeActive) {
+
+			keyState[vk] = InputState::Active;
+			return;
+
+		}
+
+		if (keyState[vk] == InputState::Active) {
+
+			keyState[vk] = InputState::Hold;
+			return;
+
+		}
+
+	}
+	else {
+
+		if (keyState[vk] == InputState::Active ||
+			keyState[vk] == InputState::Hold) {
+
+			keyState[vk] = InputState::DeActive;
+			return;
+
+		}
+
+		if (keyState[vk] == InputState::DeActive) {
+
+			keyState[vk] = InputState::None;
+			return;
+
+		}
 
 	}
 
@@ -55,9 +121,8 @@ void RawInput::SetKeyboard(USHORT vk, bool isPress) {
 
 void RawInput::SetMouseButton(int button, bool isPress) {
 
-	if (button >= 0 && button < KeyMouseConst::MouseButtonMax) {
-
-		mouseButton[button] = isPress;
+	if (button >= )
+	{
 
 	}
 
@@ -65,7 +130,6 @@ void RawInput::SetMouseButton(int button, bool isPress) {
 
 void RawInput::SetMouseMove(float dx, float dy) {
 
-	mouseX = dx;
-	mouseY = dy;
+	mouseDelta = { dx,dy };
 
 }
