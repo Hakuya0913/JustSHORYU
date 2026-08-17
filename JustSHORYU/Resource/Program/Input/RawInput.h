@@ -56,8 +56,9 @@ private:
 	int wheelDelta		= 0;
 	int wheelDeltaPrev	= 0;
 
-	void SetKeyboard(USHORT	vk, bool isPress);
+	void SetKeyboard(	USHORT	vk,		bool isPress);
 	void SetMouseButton(int		button, bool isPress);
-	void SetMouseMove(float	dx, float dy);
+	void SetMouseMove(	float	dx,		float dy);
+	void SetMouseWheel(	int		delta);
 
 };
