@@ -13,35 +13,37 @@ namespace PadConst {
 
 }
 
-enum class PhysicalKey {
+enum class InputStateDegital {
 
-	W, A, S, D,
-	Space,
-
-	LeftMouse,
-	RightMouse,
-
-	PadUp,
-	PadDown,
-	PadLeft,
-	PadRight,
-	PadA,
-	PadB,
-	PadX,
-	PadY
+	Press,
+	Hold,
+	Release,
+	None
 
 };
 
-enum class PhysicalAxis {
+enum class InputStateAnalog {
 
-	MouseX,
-	MouseY,
+	
 
-	PadLX,
-	PadLY,
-	PadRX,
-	PadRY,
-	PadLT,
-	PadRT
+};
+
+enum class GameLogic {
+
+	MoveForward,
+	MoveBack,
+	MoveLeft,
+	MoveRight,
+	Dash,
+	Jump,
+	Atack,
+	
+	MenuUp,
+	MenuDown,
+	MenuLeft,
+	MenuRight,
+
+	Confirm,
+	Cancel
 
 };

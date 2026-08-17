@@ -17,8 +17,7 @@ public:
 
 	void Update() override;
 
-	bool IsPress(PhysicalKey keyCode) const override;
-	float GetAxis(PhysicalAxis keyCode) const override;
+	
 
 private:
 
