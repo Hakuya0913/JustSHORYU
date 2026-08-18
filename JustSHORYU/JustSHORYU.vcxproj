@@ -156,6 +156,7 @@
     <ClInclude Include="Resource\Program\Input\InputManager.h" />
     <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
     <ClInclude Include="Resource\Program\Input\RawInput.h" />
+    <ClInclude Include="Resource\Program\Input\StructureInput.h" />
     <ClInclude Include="Resource\Program\Input\XInput.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>

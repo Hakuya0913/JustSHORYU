@@ -98,6 +98,9 @@
     <ClInclude Include="Resource\Program\Input\XInput.h">
       <Filter>Program\Input\XInput</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Program\Input\StructureInput.h">
+      <Filter>Program\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

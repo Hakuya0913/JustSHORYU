@@ -3,13 +3,15 @@
 namespace KeyMouseConst{
 
 	constexpr int KeyMax		 = 256;
+
+	constexpr UINT RowInputDeviceCount = 2;
 	
-	constexpr int MouseButtonMax = 5;
-	constexpr UINT MouseButtonL	 = 0;
-	constexpr UINT MouseButtonR  = 1;
-	constexpr UINT MouseButtonM  = 2;
-	constexpr UINT MouseButtonX1 = 3;
-	constexpr UINT MouseButtonX2 = 4;
+	constexpr UINT MouseButtonMax = 5;
+	constexpr UINT MouseButtonL	  = 0;
+	constexpr UINT MouseButtonR   = 1;
+	constexpr UINT MouseButtonM   = 2;
+	constexpr UINT MouseButtonX1  = 3;
+	constexpr UINT MouseButtonX2  = 4;
 
 }
 
@@ -56,6 +58,8 @@ enum class GameLogic {
 	MenuRight,
 
 	Confirm,
-	Cancel
+	Cancel,
+
+	None
 
 };

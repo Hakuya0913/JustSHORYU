@@ -31,15 +31,14 @@ public:
 	int GetWheelDelta() const { return wheelDelta; }
 
 
-	//キーマウ入力受け取り関数
-	void SetMessage(UINT message, WPARAM wPram, LPARAM lParam);
+	//キーマウ入力受け取り系
+	void RegisterRID(HWND hwnd);
+	void SetLParam(LPARAM lParam);
 
 private:
 
 	//生入力保存
-	UINT message;
-	WPARAM wParam;
-	LPARAM lParam;
+	RAWINPUTDEVICE rawInputDevice[KeyMouseConst::RowInputDeviceCount];
 
 	//キーボード入力
 	std::vector<InputState> keyState;
