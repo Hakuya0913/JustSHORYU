@@ -22,20 +22,20 @@ namespace PadConst {
 //入力の有無(変化時と継続)
 enum class InputState {
 
-	Active,
-	Hold,
-	DeActive,
-	None
+	Active,		//押下の瞬間
+	Hold,		//押下継続
+	DeActive,	//離上の瞬間
+	None		//入力なし
 
 };
 
 //アナログ入力の強さ定義(4種)
 enum class AnalogStrength {
 
-	Zero,
-	Low,
-	Middle,
-	High
+	Zero,		//入力なし
+	Low,		//弱
+	Middle,		//中
+	High		//強
 
 };
 

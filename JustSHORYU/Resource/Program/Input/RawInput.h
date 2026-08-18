@@ -36,6 +36,11 @@ public:
 
 private:
 
+	//生入力保存
+	UINT message;
+	WPARAM wParam;
+	LPARAM lParam;
+
 	//キーボード入力
 	std::vector<InputState> keyState;
 	std::vector<InputState> keyStatePrev;
@@ -54,9 +59,11 @@ private:
 	int wheelDelta		= 0;
 	int wheelDeltaPrev	= 0;
 
-	void SetKeyboard(	USHORT	vk,		bool isPress);
-	void SetMouseButton(int		button, bool isPress);
-	void SetMouseMove(	float	dx,		float dy);
-	void SetMouseWheel(	int		delta);
+	//入力更新
+	void SetInput();
+	void SetKeyboard(USHORT vk, bool isPress);
+	void SetMouseButton(int number, bool isPress);
+	void SetMouseMove(float dx, float dy);
+	void SetMouseWheel(int delta);
 
 };

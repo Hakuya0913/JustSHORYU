@@ -10,14 +10,27 @@ RawInput::RawInput() {
 
 void RawInput::Update() {
 
-	//WndProc‚Å’l‚ÌXV
-
 	keyStatePrev = keyState;
 	mouseButtonStatePrev = mouseButtonState;
+	mousePosPrev = mousePos;
+	wheelDeltaPrev = wheelDelta;
+
+	SetInput();
+
+	//RAWINPUTŽÀŒ±
+	RAWINPUT rawinput;
 
 }
 
 void RawInput::SetMessage(UINT message, WPARAM wParam, LPARAM lParam) {
+
+	this->message = message;
+	this->wParam  = wParam;
+	this->lParam  = lParam;
+
+}
+
+void RawInput::SetInput() {
 
 	switch (message)
 	{
@@ -91,7 +104,7 @@ void RawInput::SetMessage(UINT message, WPARAM wParam, LPARAM lParam) {
 		break;
 	case WM_MOUSEMOVE:
 
-		SetMouseMove(static_cast<float>(GET_X_LPARAM(lParam)),static_cast<float>(GET_Y_LPARAM(lParam)));
+		SetMouseMove(static_cast<float>(GET_X_LPARAM(lParam)), static_cast<float>(GET_Y_LPARAM(lParam)));
 
 		break;
 	case WM_MOUSEWHEEL:
@@ -111,15 +124,15 @@ void RawInput::SetKeyboard(USHORT vk, bool isPress) {
 
 	if (isPress) {
 
-		if (keyState[vk] == InputState::None ||
-			keyState[vk] == InputState::DeActive) {
+		if (keyStatePrev[vk] == InputState::None ||
+			keyStatePrev[vk] == InputState::DeActive) {
 
-			keyState[vk] = InputState::Active;
+			keyStatePrev[vk] = InputState::Active;
 			return;
 
 		}
 
-		if (keyState[vk] == InputState::Active) {
+		if (keyStatePrev[vk] == InputState::Active) {
 
 			keyState[vk] = InputState::Hold;
 			return;
@@ -129,15 +142,15 @@ void RawInput::SetKeyboard(USHORT vk, bool isPress) {
 	}
 	else {
 
-		if (keyState[vk] == InputState::Active ||
-			keyState[vk] == InputState::Hold) {
+		if (keyStatePrev[vk] == InputState::Active ||
+			keyStatePrev[vk] == InputState::Hold) {
 
 			keyState[vk] = InputState::DeActive;
 			return;
 
 		}
 
-		if (keyState[vk] == InputState::DeActive) {
+		if (keyStatePrev[vk] == InputState::DeActive) {
 
 			keyState[vk] = InputState::None;
 			return;
@@ -156,15 +169,15 @@ void RawInput::SetMouseButton(int number, bool isPress) {
 
 		if (isPress) {
 
-			if (mouseButtonState[number] == InputState::None ||
-				mouseButtonState[number] == InputState::DeActive) {
+			if (mouseButtonStatePrev[number] == InputState::None ||
+				mouseButtonStatePrev[number] == InputState::DeActive) {
 
 				mouseButtonState[number] = InputState::Active;
 				return;
 
 			}
 
-			if (mouseButtonState[number] == InputState::Active) {
+			if (mouseButtonStatePrev[number] == InputState::Active) {
 
 				mouseButtonState[number] = InputState::Hold;
 				return;
@@ -174,15 +187,15 @@ void RawInput::SetMouseButton(int number, bool isPress) {
 		}
 		else {
 
-			if (mouseButtonState[number] == InputState::Active ||
-				mouseButtonState[number] == InputState::Hold) {
+			if (mouseButtonStatePrev[number] == InputState::Active ||
+				mouseButtonStatePrev[number] == InputState::Hold) {
 				
 				mouseButtonState[number] = InputState::DeActive;
 				return;
 
 			}
 
-			if (mouseButtonState[number] == InputState::DeActive) {
+			if (mouseButtonStatePrev[number] == InputState::DeActive) {
 				
 				mouseButtonState[number] = InputState::None;
 				return;
