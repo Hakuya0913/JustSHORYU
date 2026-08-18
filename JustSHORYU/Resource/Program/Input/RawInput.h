@@ -23,10 +23,8 @@ public:
 	void Update() override;
 
 	//ÉQÉbÉ^Å[
-	InputState GetKeyState(USHORT vk);
-	InputState GetMouseMoveState();
-	InputState GetMouseButtonState(UINT number);
-	InputState GetMouseWheelState();
+	InputState GetKeyState(USHORT vk) const { return keyState[vk]; }
+	InputState GetMouseButtonState(UINT number) const { return mouseButtonState[number]; }
 
 	DirectX::SimpleMath::Vector2 GetMousePos() const { return mousePos; }
 	DirectX::SimpleMath::Vector2 GetMouseDelta() const { return mouseDelta; }

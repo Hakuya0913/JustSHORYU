@@ -148,10 +148,48 @@ void RawInput::SetKeyboard(USHORT vk, bool isPress) {
 
 }
 
-void RawInput::SetMouseButton(int button, bool isPress) {
+void RawInput::SetMouseButton(int number, bool isPress) {
 
-	if (button >= )
+	if (number >= KeyMouseConst::MouseButtonL && 
+		number < KeyMouseConst::MouseButtonMax)
 	{
+
+		if (isPress) {
+
+			if (mouseButtonState[number] == InputState::None ||
+				mouseButtonState[number] == InputState::DeActive) {
+
+				mouseButtonState[number] = InputState::Active;
+				return;
+
+			}
+
+			if (mouseButtonState[number] == InputState::Active) {
+
+				mouseButtonState[number] = InputState::Hold;
+				return;
+
+			}
+
+		}
+		else {
+
+			if (mouseButtonState[number] == InputState::Active ||
+				mouseButtonState[number] == InputState::Hold) {
+				
+				mouseButtonState[number] = InputState::DeActive;
+				return;
+
+			}
+
+			if (mouseButtonState[number] == InputState::DeActive) {
+				
+				mouseButtonState[number] = InputState::None;
+				return;
+
+			}
+
+		}
 
 	}
 
