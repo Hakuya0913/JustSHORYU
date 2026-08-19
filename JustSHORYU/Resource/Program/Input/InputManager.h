@@ -6,7 +6,7 @@
 
 */
 
-#include"RawInput.h"
+#include"KeyMouseInput.h"
 
 class InputManager {
 public:
@@ -18,10 +18,10 @@ public:
 
 	void Update();
 
-	RawInput& GetRawInput() { return rawInput; }
+	KeyMouseInput& GetKeyMouseInput() { return keyMouseInput; }
 
 private:
 
-	RawInput rawInput;
+	KeyMouseInput keyMouseInput;
 
 };

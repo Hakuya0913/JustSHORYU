@@ -2,7 +2,7 @@
 
 /*
 
-RawInput(キーボード、マウス)入力を管理
+キーボード・マウスの入力を管理
 InterfaceInputを継承した
 RawInputアダプタークラス
 
@@ -15,10 +15,10 @@ RawInputアダプタークラス
 #include"InterfaceInput.h"
 #include"ConstantInput.h"
 
-class RawInput : public InterfaceInput {
+class KeyMouseInput : public InterfaceInput {
 public:
 
-	RawInput();
+	KeyMouseInput();
 
 	void Update() override;
 
@@ -37,9 +37,6 @@ public:
 
 private:
 
-	//生入力保存
-	RAWINPUTDEVICE rawInputDevice[KeyMouseConst::RowInputDeviceCount];
-
 	//キーボード入力
 	std::vector<InputState> keyState;
 	std::vector<InputState> keyStatePrev;
@@ -49,17 +46,16 @@ private:
 	std::vector<InputState> mouseButtonStatePrev;
 
 	//マウスの移動
-	DirectX::SimpleMath::Vector2 mousePos;
-	DirectX::SimpleMath::Vector2 mousePosPrev;
-	DirectX::SimpleMath::Vector2 mouseDelta;
-	DirectX::SimpleMath::Vector2 mouseDeltaPrev;
+	DirectX::SimpleMath::Vector2 mousePos		= DirectX::SimpleMath::Vector2::Zero;
+	DirectX::SimpleMath::Vector2 mousePosPrev	= DirectX::SimpleMath::Vector2::Zero;
+	DirectX::SimpleMath::Vector2 mouseDelta		= DirectX::SimpleMath::Vector2::Zero;
+	DirectX::SimpleMath::Vector2 mouseDeltaPrev = DirectX::SimpleMath::Vector2::Zero;
 
 	//マウスホイール
 	int wheelDelta		= 0;
 	int wheelDeltaPrev	= 0;
 
 	//入力更新
-	void SetInput();
 	void SetKeyboard(USHORT vk, bool isPress);
 	void SetMouseButton(int number, bool isPress);
 	void SetMouseMove(float dx, float dy);

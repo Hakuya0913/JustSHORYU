@@ -57,7 +57,7 @@
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp">
       <Filter>Program\Core\GraphicsDevice</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\RawInput.cpp">
+    <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp">
       <Filter>Program\Input\RawInput</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\InputManager.cpp">
@@ -89,7 +89,7 @@
     <ClInclude Include="Resource\Program\Core\ConstantCore.h">
       <Filter>Program\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\RawInput.h">
+    <ClInclude Include="Resource\Program\Input\KeyMouseInput.h">
       <Filter>Program\Input\RawInput</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Program\Input\InputManager.h">

@@ -143,7 +143,7 @@
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
     <ClCompile Include="Resource\Program\Input\InputManager.cpp" />
-    <ClCompile Include="Resource\Program\Input\RawInput.cpp" />
+    <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp" />
     <ClCompile Include="Resource\Program\Input\XInput.cpp" />
     <ClCompile Include="Resource\Program\main.cpp" />
   </ItemGroup>
@@ -155,7 +155,7 @@
     <ClInclude Include="Resource\Program\Input\ConstantInput.h" />
     <ClInclude Include="Resource\Program\Input\InputManager.h" />
     <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
-    <ClInclude Include="Resource\Program\Input\RawInput.h" />
+    <ClInclude Include="Resource\Program\Input\KeyMouseInput.h" />
     <ClInclude Include="Resource\Program\Input\StructureInput.h" />
     <ClInclude Include="Resource\Program\Input\XInput.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />

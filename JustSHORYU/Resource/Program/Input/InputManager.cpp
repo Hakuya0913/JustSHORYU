@@ -2,6 +2,6 @@
 
 void InputManager::Update() {
 
-	rawInput.Update();
+	keyMouseInput.Update();
 
 }
