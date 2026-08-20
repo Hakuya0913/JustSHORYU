@@ -34,14 +34,17 @@
     <Filter Include="Program\Input\Interface">
       <UniqueIdentifier>{02a289c2-39c5-4c8d-a54d-32442c65a8cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Program\Input\RawInput">
-      <UniqueIdentifier>{89c9598e-efc2-4f5b-992c-5e586aaf205b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Program\Input\Manager">
       <UniqueIdentifier>{d3127797-53a9-4594-a7b0-18e2f83c95a0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Program\Input\XInput">
       <UniqueIdentifier>{c7954d9e-d35e-4dca-ae0f-54548cf7965b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\KeyMouseInput">
+      <UniqueIdentifier>{89c9598e-efc2-4f5b-992c-5e586aaf205b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Math">
+      <UniqueIdentifier>{70702a57-3588-41d9-8499-f6b578927f1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,7 +61,7 @@
       <Filter>Program\Core\GraphicsDevice</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp">
-      <Filter>Program\Input\RawInput</Filter>
+      <Filter>Program\Input\KeyMouseInput</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\InputManager.cpp">
       <Filter>Program\Input\Manager</Filter>
@@ -90,7 +93,7 @@
       <Filter>Program\Core</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Program\Input\KeyMouseInput.h">
-      <Filter>Program\Input\RawInput</Filter>
+      <Filter>Program\Input\KeyMouseInput</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Program\Input\InputManager.h">
       <Filter>Program\Input\Manager</Filter>
@@ -98,8 +101,8 @@
     <ClInclude Include="Resource\Program\Input\XInput.h">
       <Filter>Program\Input\XInput</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\StructureInput.h">
-      <Filter>Program\Input</Filter>
+    <ClInclude Include="Resource\Program\Math\StructureMath.h">
+      <Filter>Program\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

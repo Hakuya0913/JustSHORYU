@@ -5,7 +5,7 @@
 KeyMouseInput::KeyMouseInput() {
 
 	keyState.resize(KeyMouseConst::KeyMax, InputState::None);
-	mouseButtonState.resize(KeyMouseConst::MouseButtonMax, InputState::None);
+	mouseButtonState.resize(KeyMouseConst::MouseButtonNum, InputState::None);
 
 }
 
@@ -51,151 +51,87 @@ void KeyMouseInput::SetLParam(LPARAM lParam) {
 
 	if (raw->header.dwType == RIM_TYPEKEYBOARD) {
 
-		const RAWKEYBOARD& kb = raw->data.keyboard;
+		const RAWKEYBOARD& keyboard = raw->data.keyboard;
 
-		USHORT vk = kb.VKey;
-		bool isPress = !(kb.Flags & RI_KEY_BREAK);
+		USHORT vk = keyboard.VKey;
+		bool isPress = !(keyboard.Flags & RI_KEY_BREAK);
 
 		SetKeyboard(vk, isPress);
 	}
 	else if (raw->header.dwType == RIM_TYPEMOUSE) {
 
-		const RAWMOUSE& ms = raw->data.mouse;
+		const RAWMOUSE& mouse = raw->data.mouse;
 
 		// マウス移動
-		if (ms.usFlags == MOUSE_MOVE_RELATIVE) {
-			SetMouseMove((float)ms.lLastX, (float)ms.lLastY);
+		if (mouse.usFlags == MOUSE_MOVE_RELATIVE) {
+			SetMouseMove((float)mouse.lLastX, (float)mouse.lLastY);
 		}
 
-		// ボタン
-		if (ms.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN)  SetMouseButton(0, true);
-		if (ms.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP)    SetMouseButton(0, false);
+		// マウスボタン
+		//左クリック
+		if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN)	SetMouseButton(KeyMouseConst::MouseButtonL, true);
+		if (mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP)		SetMouseButton(KeyMouseConst::MouseButtonL, false);
+		//右クリック
+		if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN)	SetMouseButton(KeyMouseConst::MouseButtonR, true);
+		if (mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP)		SetMouseButton(KeyMouseConst::MouseButtonR, false);
+		//ホイールクリック
+		if (mouse.usButtonFlags & RI_MOUSE_MIDDLE_BUTTON_DOWN)	SetMouseButton(KeyMouseConst::MouseButtonM, true);
+		if (mouse.usButtonFlags & RI_MOUSE_MIDDLE_BUTTON_UP)	SetMouseButton(KeyMouseConst::MouseButtonM, false);
+		//X1クリック(戻るボタン)
+		if (mouse.usButtonFlags & RI_MOUSE_BUTTON_4_DOWN)		SetMouseButton(KeyMouseConst::MouseButtonX1, true);
+		if (mouse.usButtonFlags & RI_MOUSE_BUTTON_4_UP)			SetMouseButton(KeyMouseConst::MouseButtonX1, false);
+		//X2クリック(進むボタン)
+		if (mouse.usButtonFlags & RI_MOUSE_BUTTON_5_DOWN)		SetMouseButton(KeyMouseConst::MouseButtonX2, true);
+		if (mouse.usButtonFlags & RI_MOUSE_BUTTON_5_UP)			SetMouseButton(KeyMouseConst::MouseButtonX2, false);
 
-		if (ms.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN) SetMouseButton(1, true);
-		if (ms.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP)   SetMouseButton(1, false);
-
-		if (ms.usButtonFlags & RI_MOUSE_MIDDLE_BUTTON_DOWN) SetMouseButton(2, true);
-		if (ms.usButtonFlags & RI_MOUSE_MIDDLE_BUTTON_UP)   SetMouseButton(2, false);
-
-		// ホイール
-		if (ms.usButtonFlags & RI_MOUSE_WHEEL) {
-			SHORT delta = (SHORT)ms.usButtonData;
+		// ホイール移動
+		if (mouse.usButtonFlags & RI_MOUSE_WHEEL) {
+			SHORT delta = (SHORT)mouse.usButtonData;
 			SetMouseWheel((int)delta);
 		}
+
 	}
 }
 
+//各入力状況の更新
 void KeyMouseInput::Update() {
 
+	//キーボード
 	keyStatePrev = keyState;
+	UpdateKeyboard();
+
+	//マウス
 	mouseButtonStatePrev = mouseButtonState;
 	mousePosPrev = mousePos;
+	mouseDeltaPrev = mouseDelta;
 	wheelDeltaPrev = wheelDelta;
-
-
-	// キー
-	for (int i = 0; i < 256; i++) {
-		InputState prev = keyStatePrev[i];
-		InputState now = keyState[i];
-
-		if (now == InputState::Press && prev == InputState::Free)
-			keyState[i] = InputState::Trigger;
-		else if (now == InputState::Free && prev == InputState::Press)
-			keyState[i] = InputState::Release;
-
-		keyStatePrev[i] = keyState[i];
-	}
-
-	// マウスボタン
-	for (int i = 0; i < mouseButtonState.size(); i++) {
-		InputState prev = mouseButtonStatePrev[i];
-		InputState now = mouseButtonState[i];
-
-		if (now == InputState::Press && prev == InputState::Free)
-			mouseButtonState[i] = InputState::Trigger;
-		else if (now == InputState::Free && prev == InputState::Press)
-			mouseButtonState[i] = InputState::Release;
-
-		mouseButtonStatePrev[i] = mouseButtonState[i];
-	}
+	UpdateMouseButton();
 
 	// マウス移動
 	mouseDeltaPrev = mouseDelta;
 	mouseDelta = mousePos - mousePosPrev;
 	mousePosPrev = mousePos;
 
-	// ホイール
-	wheelDeltaPrev = wheelDelta;
 
 }
 
-void KeyMouseInput::SetKeyboard(USHORT vk, bool isPress) {
+void KeyMouseInput::UpdateKeyboard() {
 
-	if (vk > KeyMouseConst::KeyMax) return;
+	for (UINT i = 0; i < isKeyPress.size(); ++i) {
 
-	if (isPress) {
+		if (isKeyPress[i]) {
 
-		if (keyStatePrev[vk] == InputState::None ||
-			keyStatePrev[vk] == InputState::DeActive) {
+			if (keyStatePrev[i] == InputState::None ||
+				keyStatePrev[i] == InputState::DeActive) {
 
-			keyStatePrev[vk] = InputState::Active;
-			return;
-
-		}
-
-		if (keyStatePrev[vk] == InputState::Active) {
-
-			keyState[vk] = InputState::Hold;
-			return;
-
-		}
-
-	}
-	else {
-
-		if (keyStatePrev[vk] == InputState::Active ||
-			keyStatePrev[vk] == InputState::Hold) {
-
-			keyState[vk] = InputState::DeActive;
-			return;
-
-		}
-
-		if (keyStatePrev[vk] == InputState::DeActive) {
-
-			keyState[vk] = InputState::None;
-			return;
-
-		}
-
-	}
-
-	//AIコピペ分
-	if (vk >= 256) return;
-
-	keyState[vk] = isPress ? InputState::Press : InputState::Free;
-
-}
-
-void KeyMouseInput::SetMouseButton(int number, bool isPress) {
-
-	if (number >= KeyMouseConst::MouseButtonL && 
-		number < KeyMouseConst::MouseButtonMax)
-	{
-
-		if (isPress) {
-
-			if (mouseButtonStatePrev[number] == InputState::None ||
-				mouseButtonStatePrev[number] == InputState::DeActive) {
-
-				mouseButtonState[number] = InputState::Active;
+				keyStatePrev[i] = InputState::Active;
 				return;
 
 			}
 
-			if (mouseButtonStatePrev[number] == InputState::Active) {
+			if (keyStatePrev[i] == InputState::Active) {
 
-				mouseButtonState[number] = InputState::Hold;
+				keyState[i] = InputState::Hold;
 				return;
 
 			}
@@ -203,17 +139,17 @@ void KeyMouseInput::SetMouseButton(int number, bool isPress) {
 		}
 		else {
 
-			if (mouseButtonStatePrev[number] == InputState::Active ||
-				mouseButtonStatePrev[number] == InputState::Hold) {
-				
-				mouseButtonState[number] = InputState::DeActive;
+			if (keyStatePrev[i] == InputState::Active ||
+				keyStatePrev[i] == InputState::Hold) {
+
+				keyState[i] = InputState::DeActive;
 				return;
 
 			}
 
-			if (mouseButtonStatePrev[number] == InputState::DeActive) {
-				
-				mouseButtonState[number] = InputState::None;
+			if (keyStatePrev[i] == InputState::DeActive) {
+
+				keyState[i] = InputState::None;
 				return;
 
 			}
@@ -222,14 +158,75 @@ void KeyMouseInput::SetMouseButton(int number, bool isPress) {
 
 	}
 
-	//AIコピペ分
-	if (number >= mouseButtonState.size()) return;
+}
 
-	mouseButtonState[number] = isPress ? InputState::Press : InputState::Free;
+void KeyMouseInput::UpdateMouseButton() {
+
+	for (UINT mouseNum = 0; mouseNum < KeyMouseConst::MouseButtonNum; ++mouseNum) {
+
+		if (isMouseButtonPress[mouseNum]) {
+
+			if (mouseButtonStatePrev[mouseNum] == InputState::None ||
+				mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
+
+				mouseButtonState[mouseNum] = InputState::Active;
+				return;
+
+			}
+
+			if (mouseButtonStatePrev[mouseNum] == InputState::Active) {
+
+				mouseButtonState[mouseNum] = InputState::Hold;
+				return;
+
+			}
+
+		}
+		else {
+
+			if (mouseButtonStatePrev[mouseNum] == InputState::Active ||
+				mouseButtonStatePrev[mouseNum] == InputState::Hold) {
+
+				mouseButtonState[mouseNum] = InputState::DeActive;
+				return;
+
+			}
+
+			if (mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
+
+				mouseButtonState[mouseNum] = InputState::None;
+				return;
+
+			}
+
+		}
+
+	}
 
 }
 
-void KeyMouseInput::SetMouseMove(float dx, float dy) {
+void KeyMouseInput::SetKeyboard(USHORT vk, bool isPress) {
+
+	if (vk >= KeyMouseConst::KeyMax) return;
+
+	isKeyPress[vk] = isPress;
+
+}
+
+void KeyMouseInput::SetMouseButton(USHORT number, bool isPress) {
+
+	if (number > KeyMouseConst::MouseButtonNum)
+	{
+
+		return;
+
+	}
+
+	isMouseButtonPress[number] = isPress;
+
+}
+
+void KeyMouseInput::SetMouseMove(LONG dx, LONG dy) {
 
 	mousePos.x += dx;
 	mousePos.y += dy;

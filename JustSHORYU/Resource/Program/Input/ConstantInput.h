@@ -6,7 +6,7 @@ namespace KeyMouseConst{
 
 	constexpr UINT RowInputDeviceCount = 2;
 	
-	constexpr UINT MouseButtonMax = 5;
+	constexpr UINT MouseButtonNum = 5;
 	constexpr UINT MouseButtonL	  = 0;
 	constexpr UINT MouseButtonR   = 1;
 	constexpr UINT MouseButtonM   = 2;

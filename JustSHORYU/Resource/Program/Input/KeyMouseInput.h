@@ -14,6 +14,7 @@ RawInputアダプタークラス
 #include<vector>
 #include"InterfaceInput.h"
 #include"ConstantInput.h"
+#include"../Math/StructureMath.h"
 
 class KeyMouseInput : public InterfaceInput {
 public:
@@ -23,11 +24,11 @@ public:
 	void Update() override;
 
 	//ゲッター
-	InputState GetKeyState(USHORT vk) const { return keyState[vk]; }
+	InputState GetKeyState(USHORT vk)			const { return keyState[vk]; }
 	InputState GetMouseButtonState(UINT number) const { return mouseButtonState[number]; }
 
-	DirectX::SimpleMath::Vector2 GetMousePos() const { return mousePos; }
-	DirectX::SimpleMath::Vector2 GetMouseDelta() const { return mouseDelta; }
+	DirectX::SimpleMath::Vector2 GetMousePos()	 const { return mousePos; }
+	Vector2_LONG GetMouseDelta() const { return mouseDelta; }
 	int GetWheelDelta() const { return wheelDelta; }
 
 
@@ -38,27 +39,35 @@ public:
 private:
 
 	//キーボード入力
+	std::vector<bool>		isKeyPress;	//生値で押されているか
 	std::vector<InputState> keyState;
 	std::vector<InputState> keyStatePrev;
 
 	//マウスのボタン入力
+	std::vector<bool>		isMouseButtonPress;	//生値で押されているか
 	std::vector<InputState> mouseButtonState;
 	std::vector<InputState> mouseButtonStatePrev;
 
-	//マウスの移動
+	//マウス移動
+	Vector2_LONG mouseDelta;
+	Vector2_LONG mouseDeltaPrev;
+
+	//マウス位置
 	DirectX::SimpleMath::Vector2 mousePos		= DirectX::SimpleMath::Vector2::Zero;
 	DirectX::SimpleMath::Vector2 mousePosPrev	= DirectX::SimpleMath::Vector2::Zero;
-	DirectX::SimpleMath::Vector2 mouseDelta		= DirectX::SimpleMath::Vector2::Zero;
-	DirectX::SimpleMath::Vector2 mouseDeltaPrev = DirectX::SimpleMath::Vector2::Zero;
-
+	
 	//マウスホイール
-	int wheelDelta		= 0;
-	int wheelDeltaPrev	= 0;
+	SHORT wheelDelta		= 0;
+	SHORT wheelDeltaPrev	= 0;
 
-	//入力更新
+	//生入力の状態更新
 	void SetKeyboard(USHORT vk, bool isPress);
-	void SetMouseButton(int number, bool isPress);
-	void SetMouseMove(float dx, float dy);
+	void SetMouseButton(USHORT number, bool isPress);
+	void SetMouseMove(LONG dx, LONG dy);
 	void SetMouseWheel(int delta);
+
+	//InputState更新
+	void UpdateKeyboard();
+	void UpdateMouseButton();
 
 };
