@@ -57,8 +57,8 @@ private:
 	DirectX::SimpleMath::Vector2 mousePosPrev	= DirectX::SimpleMath::Vector2::Zero;
 	
 	//マウスホイール
-	SHORT wheelDelta		= 0;
-	SHORT wheelDeltaPrev	= 0;
+	Vector2_SHORT wheelDelta		= 0;
+	Vector2_SHORT wheelDeltaPrev	= 0;
 
 	//生入力の状態更新
 	void SetKeyboard(USHORT vk, bool isPress);

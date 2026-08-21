@@ -46,6 +46,9 @@
     <Filter Include="Program\Math">
       <UniqueIdentifier>{70702a57-3588-41d9-8499-f6b578927f1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Math\Vector">
+      <UniqueIdentifier>{005ff3a8-6511-40ac-af69-de001f4803a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\XInput.cpp">
       <Filter>Program\Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Math\Vector.cpp">
+      <Filter>Program\Math\Vector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Resource\Program\Math\StructureMath.h">
       <Filter>Program\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Math\Vector.h">
+      <Filter>Program\Math\Vector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
