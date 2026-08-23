@@ -29,7 +29,7 @@ public:
 
 	DirectX::SimpleMath::Vector2 GetMousePos()	 const { return mousePos; }
 	Vector2_LONG GetMouseDelta() const { return mouseDelta; }
-	int GetWheelDelta() const { return wheelDelta; }
+	Vector2_SHORT GetWheelDelta() const { return wheelDelta; }
 
 
 	//キーマウ入力受け取り系
@@ -53,18 +53,18 @@ private:
 	Vector2_LONG mouseDeltaPrev;
 
 	//マウス位置
-	DirectX::SimpleMath::Vector2 mousePos		= DirectX::SimpleMath::Vector2::Zero;
-	DirectX::SimpleMath::Vector2 mousePosPrev	= DirectX::SimpleMath::Vector2::Zero;
+	DirectX::SimpleMath::Vector2 mousePos;
+	DirectX::SimpleMath::Vector2 mousePosPrev;
 	
 	//マウスホイール
-	Vector2_SHORT wheelDelta		= 0;
-	Vector2_SHORT wheelDeltaPrev	= 0;
+	Vector2_SHORT wheelDelta;
+	Vector2_SHORT wheelDeltaPrev;
 
 	//生入力の状態更新
 	void SetKeyboard(USHORT vk, bool isPress);
 	void SetMouseButton(USHORT number, bool isPress);
 	void SetMouseMove(LONG dx, LONG dy);
-	void SetMouseWheel(int delta);
+	void SetMouseWheel(bool isVertical, SHORT delta);
 
 	//InputState更新
 	void UpdateKeyboard();
