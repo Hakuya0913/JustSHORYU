@@ -5,7 +5,8 @@
 
 LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
-	InputManager::GetInstance().GetRawInput().SetMessage(message, wParam, lParam);
+	InputManager::GetInstance().GetKeyMouseInput().RegisterRID(hwnd);
+	InputManager::GetInstance().GetKeyMouseInput().SetLParam(lParam);
 
 	switch (message) {
 	case WM_DESTROY:
