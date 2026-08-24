@@ -1,9 +1,9 @@
-ï»¿#pragma once
+#pragma once
 
 /*
 
-Windowsæ¨™æº–ã®XInputã‚’ä½¿ç”¨ã—ãŸ
-XInputå…¥åŠ›çŠ¶æ…‹ç®¡ç†ã‚¯ãƒ©ã‚¹
+Windows•W€‚ÌXInput‚ğg—p‚µ‚½
+XInput“ü—Íó‘ÔŠÇ—ƒNƒ‰ƒX
 
 */
 
@@ -15,12 +15,22 @@ XInputå…¥åŠ›çŠ¶æ…‹ç®¡ç†ã‚¯ãƒ©ã‚¹
 class XInput : public InterfaceInput {
 public:
 
+	XInput(DWORD index);
+
 	void Update() override;
 
-	
+	bool IsConnect() const { return isConnect; }
+
+	InputState GetDegitalState(PadInput inputType) const;
+	AnalogStrength GetAnalogStrength(PadInput inputType) const;
+	float GetAnalogValue(PadInput inputType) const;
 
 private:
 
-	XINPUT_STATE state{};
+	DWORD padIndex;
+	bool isConnect;
+
+	XINPUT_STATE stateCurrent;
+	XINPUT_STATE statePrev;
 
 };

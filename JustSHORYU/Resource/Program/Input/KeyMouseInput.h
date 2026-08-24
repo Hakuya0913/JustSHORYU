@@ -24,12 +24,12 @@ public:
 	void Update() override;
 
 	//ゲッター
-	InputState GetKeyState(USHORT vk)			const { return keyState[vk]; }
-	InputState GetMouseButtonState(UINT number) const { return mouseButtonState[number]; }
+	InputState GetKeyState(USHORT vk)			const { return keyStateCurrent[vk]; }
+	InputState GetMouseButtonState(UINT number) const { return mouseButtonStateCurrent[number]; }
 
-	DirectX::SimpleMath::Vector2 GetMousePos()	 const { return mousePos; }
-	Vector2_LONG GetMouseDelta() const { return mouseDelta; }
-	Vector2_SHORT GetWheelDelta() const { return wheelDelta; }
+	DirectX::SimpleMath::Vector2 GetMousePos()	 const { return mousePosCurrent; }
+	Vector2_LONG GetMouseDelta() const { return mouseDeltaCurrent; }
+	Vector2_SHORT GetWheelDelta() const { return wheelDeltaCurrent; }
 
 
 	//キーマウ入力受け取り系
@@ -40,24 +40,24 @@ private:
 
 	//キーボード入力
 	std::vector<bool>		isKeyPress;	//生値で押されているか
-	std::vector<InputState> keyState;
+	std::vector<InputState> keyStateCurrent;
 	std::vector<InputState> keyStatePrev;
 
 	//マウスのボタン入力
 	std::vector<bool>		isMouseButtonPress;	//生値で押されているか
-	std::vector<InputState> mouseButtonState;
+	std::vector<InputState> mouseButtonStateCurrent;
 	std::vector<InputState> mouseButtonStatePrev;
 
 	//マウス移動
-	Vector2_LONG mouseDelta;
+	Vector2_LONG mouseDeltaCurrent;
 	Vector2_LONG mouseDeltaPrev;
 
 	//マウス位置
-	DirectX::SimpleMath::Vector2 mousePos;
+	DirectX::SimpleMath::Vector2 mousePosCurrent;
 	DirectX::SimpleMath::Vector2 mousePosPrev;
 	
 	//マウスホイール
-	Vector2_SHORT wheelDelta;
+	Vector2_SHORT wheelDeltaCurrent;
 	Vector2_SHORT wheelDeltaPrev;
 
 	//生入力の状態更新

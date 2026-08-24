@@ -4,25 +4,25 @@
 
 KeyMouseInput::KeyMouseInput() {
 
-	isKeyPress.resize(	KeyMouseConst::KeyMax, false);
-	keyState.resize(	KeyMouseConst::KeyMax, InputState::None);
-	keyStatePrev.resize(KeyMouseConst::KeyMax, InputState::None);
+	isKeyPress.resize(		KeyMouseConst::KeyMax, false);
+	keyStateCurrent.resize(	KeyMouseConst::KeyMax, InputState::None);
+	keyStatePrev.resize(	KeyMouseConst::KeyMax, InputState::None);
 
-	isMouseButtonPress.resize(	KeyMouseConst::MouseButtonNum, false);
-	mouseButtonState.resize(	KeyMouseConst::MouseButtonNum, InputState::None);
-	mouseButtonStatePrev.resize(KeyMouseConst::MouseButtonNum, InputState::None);
+	isMouseButtonPress.resize(		KeyMouseConst::MouseButtonNum, false);
+	mouseButtonStateCurrent.resize(	KeyMouseConst::MouseButtonNum, InputState::None);
+	mouseButtonStatePrev.resize(	KeyMouseConst::MouseButtonNum, InputState::None);
 
-	mouseDelta		= Vector2_LONG::Zero();
-	mouseDeltaPrev	= Vector2_LONG::Zero();
+	mouseDeltaCurrent	= Vector2_LONG::Zero();
+	mouseDeltaPrev		= Vector2_LONG::Zero();
 
-	wheelDelta		= Vector2_SHORT::Zero();
-	wheelDeltaPrev	= Vector2_SHORT::Zero();
+	wheelDeltaCurrent	= Vector2_SHORT::Zero();
+	wheelDeltaPrev		= Vector2_SHORT::Zero();
 
-	mousePos = DirectX::SimpleMath::Vector2::Zero;
-	mousePosPrev = DirectX::SimpleMath::Vector2::Zero;
+	mousePosCurrent = DirectX::SimpleMath::Vector2::Zero;
+	mousePosPrev	= DirectX::SimpleMath::Vector2::Zero;
 
-	wheelDelta		= Vector2_SHORT::Zero();
-	wheelDeltaPrev	= Vector2_SHORT::Zero();
+	wheelDeltaCurrent	= Vector2_SHORT::Zero();
+	wheelDeltaPrev		= Vector2_SHORT::Zero();
 
 }
 
@@ -125,22 +125,22 @@ void KeyMouseInput::SetLParam(LPARAM lParam) {
 void KeyMouseInput::Update() {
 
 	//キーボード
-	keyStatePrev = keyState;
+	keyStatePrev = keyStateCurrent;
 	UpdateKeyboard();
 
 	//マウス
-	mouseButtonStatePrev = mouseButtonState;
-	mousePosPrev = mousePos;
-	mouseDeltaPrev = mouseDelta;
-	wheelDeltaPrev = wheelDelta;
+	mouseButtonStatePrev = mouseButtonStateCurrent;
+	mousePosPrev		 = mousePosCurrent;
+	mouseDeltaPrev		 = mouseDeltaCurrent;
+	wheelDeltaPrev		 = wheelDeltaCurrent;
 	UpdateMouseButton();
 
 	//マウス移動
-	mouseDelta.x = static_cast<LONG>(mousePos.x - mousePosPrev.x);
-	mouseDelta.y = static_cast<LONG>(mousePos.y - mousePosPrev.y);
+	mouseDeltaCurrent.x = static_cast<LONG>(mousePosCurrent.x - mousePosPrev.x);
+	mouseDeltaCurrent.y = static_cast<LONG>(mousePosCurrent.y - mousePosPrev.y);
 
 	//マウスホイールのリセット
-	wheelDelta = Vector2_SHORT::Zero();
+	wheelDeltaCurrent = Vector2_SHORT::Zero();
 }
 
 void KeyMouseInput::UpdateKeyboard() {
@@ -152,14 +152,14 @@ void KeyMouseInput::UpdateKeyboard() {
 			if (keyStatePrev[i] == InputState::None ||
 				keyStatePrev[i] == InputState::DeActive) {
 
-				keyState[i] = InputState::Active;
+				keyStateCurrent[i] = InputState::Active;
 				continue;
 
 			}
 
 			if (keyStatePrev[i] == InputState::Active) {
 
-				keyState[i] = InputState::Hold;
+				keyStateCurrent[i] = InputState::Hold;
 				continue;
 
 			}
@@ -170,14 +170,14 @@ void KeyMouseInput::UpdateKeyboard() {
 			if (keyStatePrev[i] == InputState::Active ||
 				keyStatePrev[i] == InputState::Hold) {
 
-				keyState[i] = InputState::DeActive;
+				keyStateCurrent[i] = InputState::DeActive;
 				continue;
 
 			}
 
 			if (keyStatePrev[i] == InputState::DeActive) {
 
-				keyState[i] = InputState::None;
+				keyStateCurrent[i] = InputState::None;
 				continue;
 
 			}
@@ -197,14 +197,14 @@ void KeyMouseInput::UpdateMouseButton() {
 			if (mouseButtonStatePrev[mouseNum] == InputState::None ||
 				mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
 
-				mouseButtonState[mouseNum] = InputState::Active;
+				mouseButtonStateCurrent[mouseNum] = InputState::Active;
 				continue;
 
 			}
 
 			if (mouseButtonStatePrev[mouseNum] == InputState::Active) {
 
-				mouseButtonState[mouseNum] = InputState::Hold;
+				mouseButtonStateCurrent[mouseNum] = InputState::Hold;
 				continue;
 
 			}
@@ -215,14 +215,14 @@ void KeyMouseInput::UpdateMouseButton() {
 			if (mouseButtonStatePrev[mouseNum] == InputState::Active ||
 				mouseButtonStatePrev[mouseNum] == InputState::Hold) {
 
-				mouseButtonState[mouseNum] = InputState::DeActive;
+				mouseButtonStateCurrent[mouseNum] = InputState::DeActive;
 				continue;
 
 			}
 
 			if (mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
 
-				mouseButtonState[mouseNum] = InputState::None;
+				mouseButtonStateCurrent[mouseNum] = InputState::None;
 				continue;
 
 			}
@@ -256,8 +256,8 @@ void KeyMouseInput::SetMouseButton(USHORT number, bool isPress) {
 
 void KeyMouseInput::SetMouseMove(LONG dx, LONG dy) {
 
-	mousePos.x += static_cast<float>(dx);
-	mousePos.y += static_cast<float>(dy);
+	mousePosCurrent.x += static_cast<float>(dx);
+	mousePosCurrent.y += static_cast<float>(dy);
 
 }
 
@@ -265,12 +265,12 @@ void KeyMouseInput::SetMouseWheel(bool isVertical, SHORT delta) {
 
 	if (isVertical) {
 
-		wheelDelta.y += delta;
+		wheelDeltaCurrent.y += delta;
 
 	}
 	else {
 
-		wheelDelta.x += delta;
+		wheelDeltaCurrent.x += delta;
 
 	}
 
