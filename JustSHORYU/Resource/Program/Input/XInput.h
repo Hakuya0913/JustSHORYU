@@ -9,6 +9,7 @@ XInput入力状態管理クラス
 
 #include<Windows.h>
 #include<Xinput.h>
+#include<vector>
 #include"ConstantInput.h"
 #include"InterfaceInput.h"
 
@@ -26,11 +27,21 @@ public:
 	float GetAnalogValue(PadInput inputType) const;
 
 private:
+	
+	//配列用インデックス変換関数
+	PadInputIndex	GetIndex(PadInput) const;
+	PadInput		GetPadInput(PadInputIndex index) const;
+
+	void UpdateButton();
 
 	DWORD padIndex;
 	bool isConnect;
 
-	XINPUT_STATE stateCurrent;
-	XINPUT_STATE statePrev;
+	XINPUT_STATE xInputState;
+
+	std::vector<InputState> buttonStateCurrent;
+	std::vector<InputState> buttonStatePrev;
+
+	std::vector<float> analogValue;
 
 };

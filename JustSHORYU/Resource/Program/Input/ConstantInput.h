@@ -19,6 +19,9 @@ namespace KeyMouseConst{
 
 namespace PadConst {
 
+	constexpr UINT ButtonNum = 16;
+	constexpr UINT AnalogNum = 6;
+
 	constexpr float StickMax = 32767.0f;
 	constexpr UINT TriggerMax = 255;
 
@@ -29,33 +32,77 @@ namespace PadConst {
 
 }
 
-enum class PadInput {
+enum class PadInput : UINT{
 
-	Up		= XINPUT_GAMEPAD_DPAD_UP,		//0x0001
-	Down	= XINPUT_GAMEPAD_DPAD_DOWN,		//0x0002
-	Left	= XINPUT_GAMEPAD_DPAD_LEFT,		//0x0004
-	Right	= XINPUT_GAMEPAD_DPAD_RIGHT,	//0x0008
+	Up		= XINPUT_GAMEPAD_DPAD_UP,			//0x0001
+	Down	= XINPUT_GAMEPAD_DPAD_DOWN,			//0x0002
+	Left	= XINPUT_GAMEPAD_DPAD_LEFT,			//0x0004
+	Right	= XINPUT_GAMEPAD_DPAD_RIGHT,		//0x0008
 
-	A = XINPUT_GAMEPAD_A,	//0x1000
-	B = XINPUT_GAMEPAD_B,	//0x2000
-	X = XINPUT_GAMEPAD_X,	//0x4000
-	Y = XINPUT_GAMEPAD_Y,	//0x8000	
+	A		= XINPUT_GAMEPAD_A,					//0x1000
+	B		= XINPUT_GAMEPAD_B,					//0x2000
+	X		= XINPUT_GAMEPAD_X,					//0x4000
+	Y		= XINPUT_GAMEPAD_Y,					//0x8000	
 
-	LB = XINPUT_GAMEPAD_LEFT_SHOULDER,	//0x0100
-	RB = XINPUT_GAMEPAD_RIGHT_SHOULDER,	//0x0200
+	LB		= XINPUT_GAMEPAD_LEFT_SHOULDER,		//0x0100
+	RB		= XINPUT_GAMEPAD_RIGHT_SHOULDER,	//0x0200
 
-	LThumb = XINPUT_GAMEPAD_LEFT_THUMB,		//0x0040
-	RThumb = XINPUT_GAMEPAD_RIGHT_THUMB,	//0x0080
+	LThumb	= XINPUT_GAMEPAD_LEFT_THUMB,		//0x0040
+	RThumb	= XINPUT_GAMEPAD_RIGHT_THUMB,		//0x0080
 
-	Start	= XINPUT_GAMEPAD_START,	//0x0010
-	View	= XINPUT_GAMEPAD_BACK,	//0x0020
-
+	Start	= XINPUT_GAMEPAD_START,				//0x0010
+	View	= XINPUT_GAMEPAD_BACK,				//0x0020
 	XBox,
+
+	//アナログ識別用(これより値が大きければアナログ入力)
+	ThresholdAnalog,	
 
 	LStickX, LStickY,
 	RStickX, RStickY,
 
-	LTrigger, RTrigger
+	LT, RT,
+
+	//例外用
+	None
+
+};
+
+enum class PadInputIndex : UINT {
+
+	//デジタル
+
+	Up		= 0,
+	Down	= 1,
+	Left	= 2,
+	Right	= 3,
+
+	A		= 4,
+	B		= 5,
+	X		= 6,
+	Y		= 7,
+
+	LB		= 8,
+	RB		= 9,
+
+	LThumb	= 10,
+	RThumb	= 11,
+
+	Start	= 12,
+	View	= 13,
+	XBox	= 14,
+
+	//アナログ
+
+	LStickX	= 0,
+	LStickY = 1,
+	RStickX = 2,
+	RStickY = 3,
+
+	LT		= 4,
+	RT		= 5,
+
+	//例外用
+	None
 
 };
 
