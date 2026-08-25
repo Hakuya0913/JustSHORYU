@@ -8,11 +8,11 @@ XInput::XInput(DWORD index)
 
 	ZeroMemory(&xInputState, sizeof(XINPUT_STATE));
 
-	buttonStateCurrent.resize(	static_cast<int>(PadInputIndexDegital::Count), InputState::None);
-	buttonStatePrev.resize(		static_cast<int>(PadInputIndexDegital::Count), InputState::None);
+	buttonStateCurrent.resize(	DegitalList.size(), InputState::None);
+	buttonStatePrev.resize(		DegitalList.size(), InputState::None);
 
-	analogValueCurrent.resize(	static_cast<int>(PadInputIndexAnalog::Count), 0.0f);
-	analogValuePrev.resize(		static_cast<int>(PadInputIndexAnalog::Count), 0.0f);
+	analogValueCurrent.resize(	AnalogList.size(), 0.0f);
+	analogValuePrev.resize(		AnalogList.size(), 0.0f);
 
 }
 
@@ -44,9 +44,46 @@ void XInput::UpdateDegitalInput() {
 
 	auto button = xInputState.Gamepad.wButtons;
 
-	for (auto list : DegitalList) {
+	for (int i = 0; i < DegitalList.size(); ++i) {
 
-		int index = ConvertToPadInputIndexAnalog(list);
+		bool isPress = button & ConvertWORD(DegitalList[i]);
+
+		if (isPress) {
+
+			if (buttonStatePrev[i] == InputState::Release ||
+				buttonStatePrev[i] == InputState::None) {
+
+				buttonStateCurrent[i] = InputState::Trigger;
+				continue;
+
+			}
+
+			if (buttonStatePrev[i] == InputState::Trigger) {
+
+				buttonStateCurrent[i] = InputState::Hold;
+				continue;
+
+			}
+
+		}
+		else {
+
+			if (buttonStatePrev[i] == InputState::Trigger ||
+				buttonStatePrev[i] == InputState::Hold) {
+
+				buttonStateCurrent[i] = InputState::Release;
+				continue;
+
+			}
+
+			if (buttonStatePrev[i] == InputState::Release) {
+
+				buttonStateCurrent[i] = InputState::None;
+				continue;
+
+			}
+
+		}
 
 	}
 
@@ -54,17 +91,11 @@ void XInput::UpdateDegitalInput() {
 
 InputState XInput::GetDegitalState(PadInput inputType) const {
 
-	PadInputIndexDegital index = ConvertToPadInputIndexDegital(inputType);
-
-	//無効な値、アナログ入力ならはじく
-	if (index == PadInputIndexDegital::None ||
-		inputType > PadInput::ThresholdAnalog) {
+	if (static_cast<int>(inputType) > static_cast<int>(PadInput::ThresholdAnalog)) {
 
 		return InputState::None;
 
 	}
-
-	return buttonStateCurrent[static_cast<UINT>(index)];
 
 }
 

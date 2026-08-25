@@ -38,28 +38,27 @@ namespace PadConst {
 
 enum class PadInput {
 
-	Up		= XINPUT_GAMEPAD_DPAD_UP,			//0x0001
-	Down	= XINPUT_GAMEPAD_DPAD_DOWN,			//0x0002
-	Left	= XINPUT_GAMEPAD_DPAD_LEFT,			//0x0004
-	Right	= XINPUT_GAMEPAD_DPAD_RIGHT,		//0x0008
+	Up,
+	Down,
+	Left,
+	Right,
 
-	A		= XINPUT_GAMEPAD_A,					//0x1000
-	B		= XINPUT_GAMEPAD_B,					//0x2000
-	X		= XINPUT_GAMEPAD_X,					//0x4000
-	Y		= XINPUT_GAMEPAD_Y,					//0x8000	
+	A,
+	B,
+	X,
+	Y,
 
-	LB		= XINPUT_GAMEPAD_LEFT_SHOULDER,		//0x0100
-	RB		= XINPUT_GAMEPAD_RIGHT_SHOULDER,	//0x0200
+	LB,
+	RB,
 
-	LThumb	= XINPUT_GAMEPAD_LEFT_THUMB,		//0x0040
-	RThumb	= XINPUT_GAMEPAD_RIGHT_THUMB,		//0x0080
+	LThumb,
+	RThumb,
 
-	Start	= XINPUT_GAMEPAD_START,				//0x0010
-	View	= XINPUT_GAMEPAD_BACK,				//0x0020
-	XBox,
+	Start,
+	View,
 
 	//アナログ識別用(これより値が大きければアナログ入力)
-	ThresholdAnalog,	
+	ThresholdAnalog,
 
 	LStickX, LStickY,
 	RStickX, RStickY,
@@ -71,8 +70,7 @@ enum class PadInput {
 
 };
 
-//forループ用
-static constexpr std::array < PadInput, 15 > DegitalList =
+static constexpr std::array<PadInput, 15> DegitalList =
 {
 
 	PadInput::Up,
@@ -92,22 +90,106 @@ static constexpr std::array < PadInput, 15 > DegitalList =
 	PadInput::RThumb,
 
 	PadInput::Start,
-	PadInput::View,
-	PadInput::XBox,
+	PadInput::View
 
 };
 
 static constexpr std::array<PadInput, 6> AnalogList =
 {
 
-	PadInputIndexAnalog::LStickX,
-	PadInputIndexAnalog::LStickY,
+	PadInput::LStickX,
+	PadInput::LStickY,
 
-	PadInputIndexAnalog::RStickX,
-	PadInputIndexAnalog::RStickY,
+	PadInput::RStickX,
+	PadInput::RStickY,
 
-	PadInputIndexAnalog::LT,
-	PadInputIndexAnalog::RT
+	PadInput::LT,
+	PadInput::RT
+
+};
+
+static constexpr int ConvertArrayIndex(PadInput padInput) {
+
+	switch (padInput) {
+
+	//デジタル入力用配列インデックス
+
+	case PadInput::Up:		return  0;
+	case PadInput::Down:	return  1;
+	case PadInput::Left:	return  2;
+	case PadInput::Right:	return  3;
+
+	case PadInput::A:		return  4;
+	case PadInput::B:		return  5;
+	case PadInput::X:		return  6;
+	case PadInput::Y:		return  7;
+
+	case PadInput::LB:		return  8;
+	case PadInput::RB:		return  9;
+
+	case PadInput::LThumb:	return 10;
+	case PadInput::RThumb:	return 11;
+
+	case PadInput::Start:	return 12;
+	case PadInput::View:	return 13;
+
+	//アナログ入力用配列インデックス
+
+	case PadInput::LStickX: return  0;
+	case PadInput::LStickY: return  1;
+
+	case PadInput::RStickX: return  2;
+	case PadInput::RStickY: return  3;
+
+	case PadInput::LT:		return  4;
+	case PadInput::RT:		return  5;
+
+	default:				return -1;
+
+	}
+
+}
+
+static constexpr WORD ConvertWORD(PadInput padInput) {
+
+	switch (padInput) {
+
+	case PadInput::Up:		return XINPUT_GAMEPAD_DPAD_UP;
+	case PadInput::Down:	return XINPUT_GAMEPAD_DPAD_DOWN;
+	case PadInput::Left:	return XINPUT_GAMEPAD_DPAD_LEFT;
+	case PadInput::Right:	return XINPUT_GAMEPAD_DPAD_RIGHT;
+
+	case PadInput::A:		return XINPUT_GAMEPAD_A;
+	case PadInput::B:		return XINPUT_GAMEPAD_B;
+	case PadInput::X:		return XINPUT_GAMEPAD_X;
+	case PadInput::Y:		return XINPUT_GAMEPAD_Y;
+
+	case PadInput::LB:		return XINPUT_GAMEPAD_LEFT_SHOULDER;
+	case PadInput::RB:		return XINPUT_GAMEPAD_RIGHT_SHOULDER;
+
+	case PadInput::LThumb:	return XINPUT_GAMEPAD_LEFT_THUMB;
+	case PadInput::RThumb:	return XINPUT_GAMEPAD_RIGHT_THUMB;
+
+	case PadInput::Start:	return XINPUT_GAMEPAD_START;
+	case PadInput::View:	return XINPUT_GAMEPAD_BACK;
+
+	default:				return 0;
+
+	}
+
+}
+
+static constexpr std::array<PadInput, 6> AnalogList =
+{
+
+	PadInput::LStickX,
+	PadInput::LStickY,
+
+	PadInput::RStickX,
+	PadInput::RStickY,
+
+	PadInput::LT,
+	PadInput::RT
 
 };
 
@@ -115,7 +197,7 @@ static constexpr std::array<PadInput, 6> AnalogList =
 enum class InputState {
 
 	Trigger,	//押下の瞬間
-	Active,		//押下継続
+	Hold,		//押下継続
 	Release,	//離上の瞬間
 	None		//入力なし
 

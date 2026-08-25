@@ -159,7 +159,7 @@ void KeyMouseInput::UpdateKeyboard() {
 
 			if (keyStatePrev[i] == InputState::Trigger) {
 
-				keyStateCurrent[i] = InputState::Active;
+				keyStateCurrent[i] = InputState::Hold;
 				continue;
 
 			}
@@ -168,7 +168,7 @@ void KeyMouseInput::UpdateKeyboard() {
 		else {
 
 			if (keyStatePrev[i] == InputState::Trigger ||
-				keyStatePrev[i] == InputState::Active) {
+				keyStatePrev[i] == InputState::Hold) {
 
 				keyStateCurrent[i] = InputState::Release;
 				continue;
@@ -204,7 +204,7 @@ void KeyMouseInput::UpdateMouseButton() {
 
 			if (mouseButtonStatePrev[mouseNum] == InputState::Trigger) {
 
-				mouseButtonStateCurrent[mouseNum] = InputState::Active;
+				mouseButtonStateCurrent[mouseNum] = InputState::Hold;
 				continue;
 
 			}
@@ -213,7 +213,7 @@ void KeyMouseInput::UpdateMouseButton() {
 		else {
 
 			if (mouseButtonStatePrev[mouseNum] == InputState::Trigger ||
-				mouseButtonStatePrev[mouseNum] == InputState::Active) {
+				mouseButtonStatePrev[mouseNum] == InputState::Hold) {
 
 				mouseButtonStateCurrent[mouseNum] = InputState::Release;
 				continue;
