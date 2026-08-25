@@ -8,14 +8,20 @@ XInput::XInput(DWORD index)
 
 	ZeroMemory(&xInputState, sizeof(XINPUT_STATE));
 
-	buttonStateCurrent.resize(PadConst::ButtonNum, InputState::None);
-	analogValue.resize(PadConst::AnalogNum, 0.0f);
+	buttonStateCurrent.resize(	static_cast<int>(PadInputIndexDegital::Count), InputState::None);
+	buttonStatePrev.resize(		static_cast<int>(PadInputIndexDegital::Count), InputState::None);
+
+	analogValueCurrent.resize(	static_cast<int>(PadInputIndexAnalog::Count), 0.0f);
+	analogValuePrev.resize(		static_cast<int>(PadInputIndexAnalog::Count), 0.0f);
 
 }
 
 void XInput::Update() {
 
 	DWORD result;
+
+	//前フレーム情報の更新
+	buttonStatePrev = buttonStateCurrent;
 
 	ZeroMemory(&xInputState, sizeof(XINPUT_STATE));
 	result = XInputGetState(padIndex, &xInputState);
@@ -31,17 +37,16 @@ void XInput::Update() {
 
 	}
 
-	UpdateButton();
 
 }
 
-void XInput::UpdateButton() {
+void XInput::UpdateDegitalInput() {
 
-	buttonStatePrev = buttonStateCurrent;
+	auto button = xInputState.Gamepad.wButtons;
 
-	for (UINT i = 0; i < buttonStateCurrent.size(); ++i) {
+	for (auto list : DegitalList) {
 
-
+		int index = ConvertToPadInputIndexAnalog(list);
 
 	}
 
@@ -49,37 +54,35 @@ void XInput::UpdateButton() {
 
 InputState XInput::GetDegitalState(PadInput inputType) const {
 
-	UINT index;
-	index = GetIndex(inputType);
+	PadInputIndexDegital index = ConvertToPadInputIndexDegital(inputType);
 
 	//無効な値、アナログ入力ならはじく
-	if (index == -1 ||
+	if (index == PadInputIndexDegital::None ||
 		inputType > PadInput::ThresholdAnalog) {
 
 		return InputState::None;
 
 	}
 
-	return buttonStateCurrent[index];
+	return buttonStateCurrent[static_cast<UINT>(index)];
 
 }
 
 AnalogStrength XInput::GetAnalogStrength(PadInput inputType) const {
 
-	UINT index;
-	index = GetIndex(inputType);
+	PadInputIndexAnalog index = ConvertToPadInputIndexAnalog(inputType);
 
 	//無効な値、デジタル入力ならはじく
-	if (index == -1 ||
+	if (index == PadInputIndexAnalog::None ||
 		inputType < PadInput::ThresholdAnalog) {
 
 		return AnalogStrength::Zero;
 
 	}
 
-	if (analogValue[index] > PadConst::ThresholdLow)	return AnalogStrength::Low;
-	if (analogValue[index] > PadConst::ThresholdMiddle) return AnalogStrength::Middle;
-	if (analogValue[index] > PadConst::ThresholdHigh)	return AnalogStrength::High;
+	if (analogValueCurrent[static_cast<UINT>(index)] > PadConst::ThresholdLow)		return AnalogStrength::Low;
+	if (analogValueCurrent[static_cast<UINT>(index)] > PadConst::ThresholdMiddle)	return AnalogStrength::Middle;
+	if (analogValueCurrent[static_cast<UINT>(index)] > PadConst::ThresholdHigh)	return AnalogStrength::High;
 
 	return AnalogStrength::Zero;
 
@@ -87,73 +90,120 @@ AnalogStrength XInput::GetAnalogStrength(PadInput inputType) const {
 
 float XInput::GetAnalogValue(PadInput inputType) const {
 
-	UINT index;
-	index = GetIndex(inputType);
+	PadInputIndexAnalog index = ConvertToPadInputIndexAnalog(inputType);
 
 	//無効な値、デジタル入力ならはじく
-	if (index == -1 ||
+	if (index == PadInputIndexAnalog::None ||
 		inputType < PadInput::ThresholdAnalog) {
 
 		return 0.0f;
 
 	}
 
-	return analogValue[index];
+	return analogValueCurrent[static_cast<UINT>(index)];
 
 }
 
-PadInputIndex XInput::GetIndex(PadInput inputType) const {
+/*
+
+PadInputIndexDegital XInput::ConvertToPadInputIndexDegital(PadInput inputType) const {
 
 	switch (inputType) {
 
 	//デジタル用
 
-	case PadInput::Up:		return PadInputIndex::Up;	break;
-	case PadInput::Down:	return PadInputIndex::Down;	break;
-	case PadInput::Left:	return PadInputIndex::Left;	break;
-	case PadInput::Right:	return PadInputIndex::Right;	break;
+		case PadInput::Up:		return PadInputIndexDegital::Up;
+		case PadInput::Down:	return PadInputIndexDegital::Down;
+		case PadInput::Left:	return PadInputIndexDegital::Left;
+		case PadInput::Right:	return PadInputIndexDegital::Right;
 
-	case PadInput::A:		return PadInputIndex::A;	break;
-	case PadInput::B:		return PadInputIndex::B;	break;
-	case PadInput::X:		return PadInputIndex::X;	break;
-	case PadInput::Y:		return PadInputIndex::Y;	break;
+		case PadInput::A:		return PadInputIndexDegital::A;
+		case PadInput::B:		return PadInputIndexDegital::B;
+		case PadInput::X:		return PadInputIndexDegital::X;
+		case PadInput::Y:		return PadInputIndexDegital::Y;
 
-	case PadInput::LB:		return PadInputIndex::LB;	break;
-	case PadInput::RB:		return PadInputIndex::RB;	break;
+		case PadInput::LB:		return PadInputIndexDegital::LB;
+		case PadInput::RB:		return PadInputIndexDegital::RB;
 
-	case PadInput::LThumb:	return PadInputIndex::LThumb;	break;
-	case PadInput::RThumb:	return PadInputIndex::RThumb;	break;
+		case PadInput::LThumb:	return PadInputIndexDegital::LThumb;
+		case PadInput::RThumb:	return PadInputIndexDegital::RThumb;
 
-	case PadInput::Start:	return PadInputIndex::Start;	break;
-	case PadInput::View:	return PadInputIndex::View;	break;
-	case PadInput::XBox:	return PadInputIndex::XBox;	break;
-	
-	//アナログ用
+		case PadInput::Start:	return PadInputIndexDegital::Start;
+		case PadInput::View:	return PadInputIndexDegital::View;
+		case PadInput::XBox:	return PadInputIndexDegital::XBox;
 
-	case PadInput::LStickX:	return PadInputIndex::LStickX;	break;
-	case PadInput::LStickY:	return PadInputIndex::LStickY;	break;
-
-	case PadInput::RStickX:	return PadInputIndex::RStickX;	break;
-	case PadInput::RStickY:	return PadInputIndex::RStickY;	break;
-
-	case PadInput::LT:		return PadInputIndex::LT;	break;
-	case PadInput::RT:		return PadInputIndex::RT;	break;
-
-	default:
-
-		return PadInputIndex::None;
-
-		break;
+		default:				return PadInputIndexDegital::None;
 	}
 
 }
 
-PadInput XInput::GetPadInput(UINT index) const {
+PadInputIndexAnalog XInput::ConvertToPadInputIndexAnalog(PadInput inputType) const {
+
+	switch (inputType) {
+
+		case PadInput::LStickX:	return PadInputIndexAnalog::LStickX;
+		case PadInput::LStickY:	return PadInputIndexAnalog::LStickY;
+
+		case PadInput::RStickX:	return PadInputIndexAnalog::RStickX;
+		case PadInput::RStickY:	return PadInputIndexAnalog::RStickY;
+
+		case PadInput::LT:		return PadInputIndexAnalog::LT;
+		case PadInput::RT:		return PadInputIndexAnalog::RT;
+
+		default:				return PadInputIndexAnalog::None;
+
+	}
+
+}
+
+PadInput XInput::ConvertToPadInput(PadInputIndexDegital index) const {
 
 	switch (index) {
 
+		case PadInputIndexDegital::Up:		return PadInput::Up;
+		case PadInputIndexDegital::Down:	return PadInput::Down;
+		case PadInputIndexDegital::Left:	return PadInput::Left;
+		case PadInputIndexDegital::Right:	return PadInput::Right;
 
+		case PadInputIndexDegital::A:		return PadInput::A;
+		case PadInputIndexDegital::B:		return PadInput::B;
+		case PadInputIndexDegital::X:		return PadInput::X;
+		case PadInputIndexDegital::Y:		return PadInput::Y;
+
+		case PadInputIndexDegital::LB:		return PadInput::LB;
+		case PadInputIndexDegital::RB:		return PadInput::RB;
+
+		case PadInputIndexDegital::LThumb:	return PadInput::LThumb;
+		case PadInputIndexDegital::RThumb:	return PadInput::RThumb;
+
+		case PadInputIndexDegital::Start:	return PadInput::Start;
+		case PadInputIndexDegital::View:	return PadInput::View;
+		case PadInputIndexDegital::XBox:	return PadInput::XBox;
+
+		default:							return PadInput::None;
 
 	}
 
 }
+
+PadInput XInput::ConvertToPadInput(PadInputIndexAnalog index) const {
+
+	switch (index)
+	{
+
+		case PadInputIndexAnalog::LStickX:	return PadInput::LStickX;
+		case PadInputIndexAnalog::LStickY:	return PadInput::LStickY;
+
+		case PadInputIndexAnalog::RStickX:	return PadInput::RStickX;
+		case PadInputIndexAnalog::RStickY:	return PadInput::RStickY;
+
+		case PadInputIndexAnalog::LT:		return PadInput::LT;
+		case PadInputIndexAnalog::RT:		return PadInput::RT;
+
+		default:							return PadInput::None;
+
+	}
+
+}
+
+*/

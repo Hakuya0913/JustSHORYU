@@ -150,16 +150,16 @@ void KeyMouseInput::UpdateKeyboard() {
 		if (isKeyPress[i]) {
 
 			if (keyStatePrev[i] == InputState::None ||
-				keyStatePrev[i] == InputState::DeActive) {
+				keyStatePrev[i] == InputState::Release) {
 
-				keyStateCurrent[i] = InputState::Active;
+				keyStateCurrent[i] = InputState::Trigger;
 				continue;
 
 			}
 
-			if (keyStatePrev[i] == InputState::Active) {
+			if (keyStatePrev[i] == InputState::Trigger) {
 
-				keyStateCurrent[i] = InputState::Hold;
+				keyStateCurrent[i] = InputState::Active;
 				continue;
 
 			}
@@ -167,15 +167,15 @@ void KeyMouseInput::UpdateKeyboard() {
 		}
 		else {
 
-			if (keyStatePrev[i] == InputState::Active ||
-				keyStatePrev[i] == InputState::Hold) {
+			if (keyStatePrev[i] == InputState::Trigger ||
+				keyStatePrev[i] == InputState::Active) {
 
-				keyStateCurrent[i] = InputState::DeActive;
+				keyStateCurrent[i] = InputState::Release;
 				continue;
 
 			}
 
-			if (keyStatePrev[i] == InputState::DeActive) {
+			if (keyStatePrev[i] == InputState::Release) {
 
 				keyStateCurrent[i] = InputState::None;
 				continue;
@@ -195,16 +195,16 @@ void KeyMouseInput::UpdateMouseButton() {
 		if (isMouseButtonPress[mouseNum]) {
 
 			if (mouseButtonStatePrev[mouseNum] == InputState::None ||
-				mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
+				mouseButtonStatePrev[mouseNum] == InputState::Release) {
 
-				mouseButtonStateCurrent[mouseNum] = InputState::Active;
+				mouseButtonStateCurrent[mouseNum] = InputState::Trigger;
 				continue;
 
 			}
 
-			if (mouseButtonStatePrev[mouseNum] == InputState::Active) {
+			if (mouseButtonStatePrev[mouseNum] == InputState::Trigger) {
 
-				mouseButtonStateCurrent[mouseNum] = InputState::Hold;
+				mouseButtonStateCurrent[mouseNum] = InputState::Active;
 				continue;
 
 			}
@@ -212,15 +212,15 @@ void KeyMouseInput::UpdateMouseButton() {
 		}
 		else {
 
-			if (mouseButtonStatePrev[mouseNum] == InputState::Active ||
-				mouseButtonStatePrev[mouseNum] == InputState::Hold) {
+			if (mouseButtonStatePrev[mouseNum] == InputState::Trigger ||
+				mouseButtonStatePrev[mouseNum] == InputState::Active) {
 
-				mouseButtonStateCurrent[mouseNum] = InputState::DeActive;
+				mouseButtonStateCurrent[mouseNum] = InputState::Release;
 				continue;
 
 			}
 
-			if (mouseButtonStatePrev[mouseNum] == InputState::DeActive) {
+			if (mouseButtonStatePrev[mouseNum] == InputState::Release) {
 
 				mouseButtonStateCurrent[mouseNum] = InputState::None;
 				continue;

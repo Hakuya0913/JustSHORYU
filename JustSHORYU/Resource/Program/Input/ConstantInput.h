@@ -1,6 +1,7 @@
 #pragma once
 #include<Windows.h>
 #include<Xinput.h>
+#include<array>
 
 namespace KeyMouseConst{
 
@@ -19,20 +20,23 @@ namespace KeyMouseConst{
 
 namespace PadConst {
 
-	constexpr UINT ButtonNum = 16;
-	constexpr UINT AnalogNum = 6;
+	//入力の最大値
+	constexpr float StickMax	= 32767.0f;
+	constexpr UINT TriggerMax	= 255;
 
-	constexpr float StickMax = 32767.0f;
-	constexpr UINT TriggerMax = 255;
+	//デッドゾーン
+	//「これ未満」ならデッドゾーン圏内として扱う
+	constexpr float Deadzone = 0.1f;
 
 	//アナログ入力正規化後の閾値
+	//「それ以上」ならその強さとして扱う
 	constexpr float ThresholdLow	= 0.1f;
 	constexpr float ThresholdMiddle = 0.4f;
 	constexpr float ThresholdHigh	= 0.7f;
 
 }
 
-enum class PadInput : UINT{
+enum class PadInput {
 
 	Up		= XINPUT_GAMEPAD_DPAD_UP,			//0x0001
 	Down	= XINPUT_GAMEPAD_DPAD_DOWN,			//0x0002
@@ -67,51 +71,52 @@ enum class PadInput : UINT{
 
 };
 
-enum class PadInputIndex : UINT {
+//forループ用
+static constexpr std::array < PadInput, 15 > DegitalList =
+{
 
-	//デジタル
+	PadInput::Up,
+	PadInput::Down,
+	PadInput::Left,
+	PadInput::Right,
 
-	Up		= 0,
-	Down	= 1,
-	Left	= 2,
-	Right	= 3,
+	PadInput::A,
+	PadInput::B,
+	PadInput::X,
+	PadInput::Y,
 
-	A		= 4,
-	B		= 5,
-	X		= 6,
-	Y		= 7,
+	PadInput::LB,
+	PadInput::RB,
 
-	LB		= 8,
-	RB		= 9,
+	PadInput::LThumb,
+	PadInput::RThumb,
 
-	LThumb	= 10,
-	RThumb	= 11,
+	PadInput::Start,
+	PadInput::View,
+	PadInput::XBox,
 
-	Start	= 12,
-	View	= 13,
-	XBox	= 14,
+};
 
-	//アナログ
+static constexpr std::array<PadInput, 6> AnalogList =
+{
 
-	LStickX	= 0,
-	LStickY = 1,
-	RStickX = 2,
-	RStickY = 3,
+	PadInputIndexAnalog::LStickX,
+	PadInputIndexAnalog::LStickY,
 
-	LT		= 4,
-	RT		= 5,
+	PadInputIndexAnalog::RStickX,
+	PadInputIndexAnalog::RStickY,
 
-	//例外用
-	None
+	PadInputIndexAnalog::LT,
+	PadInputIndexAnalog::RT
 
 };
 
 //入力の有無(変化時と継続)
 enum class InputState {
 
-	Active,		//押下の瞬間
-	Hold,		//押下継続
-	DeActive,	//離上の瞬間
+	Trigger,	//押下の瞬間
+	Active,		//押下継続
+	Release,	//離上の瞬間
 	None		//入力なし
 
 };

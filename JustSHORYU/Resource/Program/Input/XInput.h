@@ -20,19 +20,25 @@ public:
 
 	void Update() override;
 
+	//Getter
 	bool IsConnect() const { return isConnect; }
 
-	InputState GetDegitalState(PadInput inputType) const;
-	AnalogStrength GetAnalogStrength(PadInput inputType) const;
-	float GetAnalogValue(PadInput inputType) const;
+	InputState		GetDegitalState(PadInput inputType) const;
+	AnalogStrength	GetAnalogStrength(PadInput inputType) const;
+	float			GetAnalogValue(PadInput inputType) const;
 
 private:
 	
+	/*いらなくなるかも
 	//配列用インデックス変換関数
-	PadInputIndex	GetIndex(PadInput) const;
-	PadInput		GetPadInput(PadInputIndex index) const;
+	PadInputIndexDegital	ConvertToPadInputIndexDegital(PadInput) const;
+	PadInputIndexAnalog		ConvertToPadInputIndexAnalog(PadInput)	const;
+	PadInput				ConvertToPadInput(PadInputIndexDegital index) const;
+	PadInput				ConvertToPadInput(PadInputIndexAnalog  index) const;
+	*/
 
-	void UpdateButton();
+	void UpdateDegitalInput();
+	void UpdateAnalogInput();
 
 	DWORD padIndex;
 	bool isConnect;
@@ -42,6 +48,7 @@ private:
 	std::vector<InputState> buttonStateCurrent;
 	std::vector<InputState> buttonStatePrev;
 
-	std::vector<float> analogValue;
+	std::vector<float> analogValueCurrent;
+	std::vector<float> analogValuePrev;
 
 };
