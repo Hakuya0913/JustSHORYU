@@ -5,10 +5,14 @@
 
 namespace KeyMouseConst{
 
-	constexpr int KeyMax		 = 256;
+	// キーの数
+	constexpr int KeyCount		 = 256;
 
-	constexpr UINT RowInputDeviceCount = 2;
+	//取得したいRawInputデバイス数
+	//今回は「キーボード＋マウス」の2つ
+	constexpr UINT RawInputDeviceCount = 2;
 	
+	//マウスボタンの割付
 	constexpr UINT MouseButtonNum = 5;
 	constexpr UINT MouseButtonL	  = 0;
 	constexpr UINT MouseButtonR   = 1;
@@ -19,6 +23,8 @@ namespace KeyMouseConst{
 }
 
 namespace PadConst {
+
+
 
 	//入力の最大値
 	constexpr float StickMax	= 32767.0f;
@@ -36,7 +42,7 @@ namespace PadConst {
 
 }
 
-enum class PadInput {
+enum class PadInputDigital {
 
 	Up,
 	Down,
@@ -55,141 +61,73 @@ enum class PadInput {
 	RThumb,
 
 	Start,
-	View,
-
-	//アナログ識別用(これより値が大きければアナログ入力)
-	ThresholdAnalog,
-
-	LStickX, LStickY,
-	RStickX, RStickY,
-
-	LT, RT,
-
-	//例外用
-	None
+	View
 
 };
 
-static constexpr std::array<PadInput, 15> DegitalList =
-{
+enum class PadInputAnalog {
 
-	PadInput::Up,
-	PadInput::Down,
-	PadInput::Left,
-	PadInput::Right,
+	LStickX, 
+	LStickY,
 
-	PadInput::A,
-	PadInput::B,
-	PadInput::X,
-	PadInput::Y,
+	RStickX,
+	RStickY,
 
-	PadInput::LB,
-	PadInput::RB,
-
-	PadInput::LThumb,
-	PadInput::RThumb,
-
-	PadInput::Start,
-	PadInput::View
+	LT, 
+	RT,
 
 };
 
-static constexpr std::array<PadInput, 6> AnalogList =
+
+
+static constexpr std::array<PadInputDigital, 14> DigitalList =
 {
 
-	PadInput::LStickX,
-	PadInput::LStickY,
+	PadInputDigital::Up,
+	PadInputDigital::Down,
+	PadInputDigital::Left,
+	PadInputDigital::Right,
 
-	PadInput::RStickX,
-	PadInput::RStickY,
+	PadInputDigital::A,
+	PadInputDigital::B,
+	PadInputDigital::X,
+	PadInputDigital::Y,
 
-	PadInput::LT,
-	PadInput::RT
+	PadInputDigital::LB,
+	PadInputDigital::RB,
+
+	PadInputDigital::LThumb,
+	PadInputDigital::RThumb,
+
+	PadInputDigital::Start,
+	PadInputDigital::View
 
 };
 
-static constexpr int ConvertArrayIndex(PadInput padInput) {
+static constexpr std::array<size_t, 14> PadInputIndexTableDigital =
+{
+	0, 1, 2, 3,	//Up, Down, Left, Right
 
-	switch (padInput) {
+	4, 5, 6, 7,	//A, B, X, Y
 
-	//デジタル入力用配列インデックス
+	8, 9,		//LB, RB
 
-	case PadInput::Up:		return  0;
-	case PadInput::Down:	return  1;
-	case PadInput::Left:	return  2;
-	case PadInput::Right:	return  3;
+	10, 11,		//LThumb, RThumb
 
-	case PadInput::A:		return  4;
-	case PadInput::B:		return  5;
-	case PadInput::X:		return  6;
-	case PadInput::Y:		return  7;
+	12, 13		//Start, View
+};
 
-	case PadInput::LB:		return  8;
-	case PadInput::RB:		return  9;
-
-	case PadInput::LThumb:	return 10;
-	case PadInput::RThumb:	return 11;
-
-	case PadInput::Start:	return 12;
-	case PadInput::View:	return 13;
-
-	//アナログ入力用配列インデックス
-
-	case PadInput::LStickX: return  0;
-	case PadInput::LStickY: return  1;
-
-	case PadInput::RStickX: return  2;
-	case PadInput::RStickY: return  3;
-
-	case PadInput::LT:		return  4;
-	case PadInput::RT:		return  5;
-
-	default:				return -1;
-
-	}
-
-}
-
-static constexpr WORD ConvertWORD(PadInput padInput) {
-
-	switch (padInput) {
-
-	case PadInput::Up:		return XINPUT_GAMEPAD_DPAD_UP;
-	case PadInput::Down:	return XINPUT_GAMEPAD_DPAD_DOWN;
-	case PadInput::Left:	return XINPUT_GAMEPAD_DPAD_LEFT;
-	case PadInput::Right:	return XINPUT_GAMEPAD_DPAD_RIGHT;
-
-	case PadInput::A:		return XINPUT_GAMEPAD_A;
-	case PadInput::B:		return XINPUT_GAMEPAD_B;
-	case PadInput::X:		return XINPUT_GAMEPAD_X;
-	case PadInput::Y:		return XINPUT_GAMEPAD_Y;
-
-	case PadInput::LB:		return XINPUT_GAMEPAD_LEFT_SHOULDER;
-	case PadInput::RB:		return XINPUT_GAMEPAD_RIGHT_SHOULDER;
-
-	case PadInput::LThumb:	return XINPUT_GAMEPAD_LEFT_THUMB;
-	case PadInput::RThumb:	return XINPUT_GAMEPAD_RIGHT_THUMB;
-
-	case PadInput::Start:	return XINPUT_GAMEPAD_START;
-	case PadInput::View:	return XINPUT_GAMEPAD_BACK;
-
-	default:				return 0;
-
-	}
-
-}
-
-static constexpr std::array<PadInput, 6> AnalogList =
+static constexpr std::array<PadInputAnalog, 6> AnalogList =
 {
 
-	PadInput::LStickX,
-	PadInput::LStickY,
+	PadInputAnalog::LStickX,
+	PadInputAnalog::LStickY,
 
-	PadInput::RStickX,
-	PadInput::RStickY,
+	PadInputAnalog::RStickX,
+	PadInputAnalog::RStickY,
 
-	PadInput::LT,
-	PadInput::RT
+	PadInputAnalog::LT,
+	PadInputAnalog::RT
 
 };
 

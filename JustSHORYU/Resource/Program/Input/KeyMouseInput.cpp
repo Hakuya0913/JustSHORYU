@@ -4,9 +4,9 @@
 
 KeyMouseInput::KeyMouseInput() {
 
-	isKeyPress.resize(		KeyMouseConst::KeyMax, false);
-	keyStateCurrent.resize(	KeyMouseConst::KeyMax, InputState::None);
-	keyStatePrev.resize(	KeyMouseConst::KeyMax, InputState::None);
+	isKeyPress.resize(		KeyMouseConst::KeyCount, false);
+	keyStateCurrent.resize(	KeyMouseConst::KeyCount, InputState::None);
+	keyStatePrev.resize(	KeyMouseConst::KeyCount, InputState::None);
 
 	isMouseButtonPress.resize(		KeyMouseConst::MouseButtonNum, false);
 	mouseButtonStateCurrent.resize(	KeyMouseConst::MouseButtonNum, InputState::None);
@@ -28,7 +28,7 @@ KeyMouseInput::KeyMouseInput() {
 
 void KeyMouseInput::RegisterRID(HWND hwnd) {
 
-	RAWINPUTDEVICE rid[KeyMouseConst::RowInputDeviceCount] = {};
+	RAWINPUTDEVICE rid[KeyMouseConst::RawInputDeviceCount] = {};
 
 	//キーボード設定
 	rid[0].usUsagePage	= HID_USAGE_PAGE_GENERIC;
@@ -42,7 +42,7 @@ void KeyMouseInput::RegisterRID(HWND hwnd) {
 	rid[1].dwFlags		= RIDEV_INPUTSINK;
 	rid[1].hwndTarget	= hwnd;
 
-	RegisterRawInputDevices(rid, KeyMouseConst::RowInputDeviceCount, sizeof(RAWINPUTDEVICE));
+	RegisterRawInputDevices(rid, KeyMouseConst::RawInputDeviceCount, sizeof(RAWINPUTDEVICE));
 
 }
 
@@ -235,7 +235,7 @@ void KeyMouseInput::UpdateMouseButton() {
 
 void KeyMouseInput::SetKeyboard(USHORT vk, bool isPress) {
 
-	if (vk >= KeyMouseConst::KeyMax) return;
+	if (vk >= KeyMouseConst::KeyCount) return;
 
 	isKeyPress[vk] = isPress;
 

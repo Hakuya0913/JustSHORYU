@@ -23,19 +23,15 @@ public:
 	//Getter
 	bool IsConnect() const { return isConnect; }
 
-	InputState		GetDegitalState(PadInput inputType) const;
-	AnalogStrength	GetAnalogStrength(PadInput inputType) const;
-	float			GetAnalogValue(PadInput inputType) const;
+	InputState		GetDegitalState(	PadInputDigital inputType) const;
+	AnalogStrength	GetAnalogStrength(	PadInputAnalog  inputType) const;
+	float			GetAnalogValue(		PadInputAnalog  inputType) const;
 
 private:
-	
-	/*いらなくなるかも
-	//配列用インデックス変換関数
-	PadInputIndexDegital	ConvertToPadInputIndexDegital(PadInput) const;
-	PadInputIndexAnalog		ConvertToPadInputIndexAnalog(PadInput)	const;
-	PadInput				ConvertToPadInput(PadInputIndexDegital index) const;
-	PadInput				ConvertToPadInput(PadInputIndexAnalog  index) const;
-	*/
+
+	//PadInputを意味を持つ数字で返す
+	WORD	ConvertWORD(		PadInputDigital padInput)	const;	//XINPUT_GAMEPAD系のビットフラグに変換
+	float	ConvertAnalogValue(	PadInputAnalog	padInput)	const;	//アナログ入力の正規化値を返す
 
 	void UpdateDegitalInput();
 	void UpdateAnalogInput();
@@ -43,12 +39,15 @@ private:
 	DWORD padIndex;
 	bool isConnect;
 
+	//XInputの状態を保存
 	XINPUT_STATE xInputState;
 
-	std::vector<InputState> buttonStateCurrent;
-	std::vector<InputState> buttonStatePrev;
+	//ボタン入力の状態を保存
+	std::array<InputState, DigitalList.size()> buttonStateCurrent;
+	std::array<InputState, DigitalList.size()> buttonStatePrev;
 
-	std::vector<float> analogValueCurrent;
-	std::vector<float> analogValuePrev;
+	//アナログ入力の正規化値を保存
+	std::array<float, AnalogList.size()> analogValueCurrent;
+	std::array<float, AnalogList.size()> analogValuePrev;
 
 };
