@@ -41,7 +41,8 @@ private:
 	void UpdateAnalogInput();
 
 	//デッドゾーン適用
-	DirectX::SimpleMath::Vector2 ApplyDeadzoneRadial(DirectX::SimpleMath::Vector2 vector);
+	DirectX::SimpleMath::Vector2 ApplyDeadzoneRadial(DirectX::SimpleMath::Vector2 vector) const;
+	float						 ApplyDeadzone(float value) const;
 
 	DWORD padIndex;
 	bool isConnect;

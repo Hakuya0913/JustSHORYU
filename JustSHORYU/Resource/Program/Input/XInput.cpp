@@ -191,11 +191,13 @@ float XInput::ConvertAnalogValue(PadInputAnalog padInput) const {
 	result = std::clamp(result, -1.0f, 1.0f);
 
 	//デッドゾーン適用
+	result = ApplyDeadzone(result);
 
+	return result;
 
 }
 
-DirectX::SimpleMath::Vector2 XInput::ApplyDeadzoneRadial(DirectX::SimpleMath::Vector2 vector) {
+DirectX::SimpleMath::Vector2 XInput::ApplyDeadzoneRadial(DirectX::SimpleMath::Vector2 vector) const {
 
 	float length = vector.Length();
 
@@ -210,5 +212,20 @@ DirectX::SimpleMath::Vector2 XInput::ApplyDeadzoneRadial(DirectX::SimpleMath::Ve
 	float scale = (length - deadzone) / (1.0f - deadzone);
 
 	return vector / length * scale;
+
+}
+
+float XInput::ApplyDeadzone(float value) const {
+	
+	float absValue = std::abs(value);
+	auto deadzone = PadConst::Deadzone;
+
+	if (absValue < deadzone) {
+
+		return 0.0f;
+
+	}
+
+	return value;
 
 }
