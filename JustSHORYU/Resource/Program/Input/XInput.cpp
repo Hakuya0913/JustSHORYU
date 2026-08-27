@@ -1,4 +1,5 @@
 #include"XInput.h"
+#include<algorithm>
 
 #pragma comment(lib, "XInput.lib")
 
@@ -13,6 +14,8 @@ XInput::XInput(DWORD index)
 
 	analogValueCurrent.fill(0.0f);
 	analogValuePrev.fill(	0.0f);
+
+	analogValueDelta.fill(0.0f);
 
 }
 
@@ -86,31 +89,51 @@ void XInput::UpdateAnalogInput() {
 
 	analogValuePrev = analogValueCurrent;
 
-	for (int i = 0; i < analogValueCurrent.size(); ++i) {
+	for (size_t i = 0; i < AnalogList.size(); ++i) {
 
-		analogValueCurrent[i] = ConvertAnalogValue(AnalogList[i]);
+		PadInputAnalog padInput = AnalogList[i];
+
+		size_t index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+
+		analogValueCurrent[index] = ConvertAnalogValue(padInput);
+		
+		analogValueDelta[index]	= analogValueCurrent[index] - analogValuePrev[index];
 
 	}
 }
 
 InputState XInput::GetDegitalState(PadInputDigital inputType) const {
 
-	return buttonStateCurrent[PadInputIndexTableDigital[static_cast<int>(inputType)]];
+	auto index = PadInputIndexTableDigital[static_cast<int>(inputType)];
+
+	return buttonStateCurrent[index];
 
 }
 
-AnalogStrength XInput::GetAnalogStrength(PadInputAnalog inputType) const {
+AnalogStrength XInput::GetAnalogStrength(PadInputAnalog padInput) const {
 
-	if (analogValueCurrent[static_cast<int>(inputType)] > PadConst::ThresholdHigh)		return AnalogStrength::High;
-	if (analogValueCurrent[static_cast<int>(inputType)] > PadConst::ThresholdMiddle)	return AnalogStrength::Middle;
-	if (analogValueCurrent[static_cast<int>(inputType)] > PadConst::ThresholdLow)		return AnalogStrength::Low;
+	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+
+	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdHigh)		return AnalogStrength::High;
+	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdMiddle)	return AnalogStrength::Middle;
+	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdLow)		return AnalogStrength::Low;
 
 	return AnalogStrength::Zero;
 }
 
-float XInput::GetAnalogValue(PadInputAnalog inputType) const {
+float XInput::GetAnalogValue(PadInputAnalog padInput) const {
 
-	return analogValueCurrent[static_cast<int>(inputType)];
+	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+
+	return analogValueCurrent[index];
+
+}
+
+float XInput::GetAnalogDelta(PadInputAnalog padInput) const {
+
+	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+
+	return analogValueDelta[index];
 
 }
 
@@ -140,5 +163,52 @@ WORD XInput::ConvertWORD(PadInputDigital padInput) const {
 	default:						return 0;
 
 	}
+
+}
+
+float XInput::ConvertAnalogValue(PadInputAnalog padInput) const {
+
+	auto gamepad = xInputState.Gamepad;
+
+	float result;
+
+	switch (padInput) {
+
+	case PadInputAnalog::LStickX:	result = static_cast<float>(gamepad.sThumbLX) / PadConst::StickMax;
+	case PadInputAnalog::LStickY:	result = static_cast<float>(gamepad.sThumbLY) / PadConst::StickMax;
+
+	case PadInputAnalog::RStickX:	result = static_cast<float>(gamepad.sThumbRX) / PadConst::StickMax;
+	case PadInputAnalog::RStickY:	result = static_cast<float>(gamepad.sThumbRY) / PadConst::StickMax;
+
+	case PadInputAnalog::LT:		result = static_cast<float>(gamepad.bLeftTrigger)	/ PadConst::TriggerMax;
+	case PadInputAnalog::RT:		result = static_cast<float>(gamepad.bRightTrigger)	/ PadConst::TriggerMax;
+
+	default:						result = 0.0f;
+
+	}
+
+	//-1～1の範囲に正規化結果を収める
+	result = std::clamp(result, -1.0f, 1.0f);
+
+	//デッドゾーン適用
+
+
+}
+
+DirectX::SimpleMath::Vector2 XInput::ApplyDeadzoneRadial(DirectX::SimpleMath::Vector2 vector) {
+
+	float length = vector.Length();
+
+	auto deadzone = PadConst::Deadzone;
+
+	if (length < deadzone) {
+
+		return { 0.0f,0.0f };
+
+	}
+
+	float scale = (length - deadzone) / (1.0f - deadzone);
+
+	return vector / length * scale;
 
 }

@@ -42,6 +42,8 @@ namespace PadConst {
 
 }
 
+//使用する入力の名前
+//連番前提で動作する
 enum class PadInputDigital {
 
 	Up,
@@ -65,6 +67,8 @@ enum class PadInputDigital {
 
 };
 
+//使用するアナログ入力の名前
+//連番前提で動作する
 enum class PadInputAnalog {
 
 	LStickX, 
@@ -77,8 +81,6 @@ enum class PadInputAnalog {
 	RT,
 
 };
-
-
 
 static constexpr std::array<PadInputDigital, 14> DigitalList =
 {
@@ -104,6 +106,8 @@ static constexpr std::array<PadInputDigital, 14> DigitalList =
 
 };
 
+//XInputクラスが保持するデジタル入力の配列の添え字
+//コメントは現状のPadInputでの並び順
 static constexpr std::array<size_t, 14> PadInputIndexTableDigital =
 {
 	0, 1, 2, 3,	//Up, Down, Left, Right
@@ -128,6 +132,19 @@ static constexpr std::array<PadInputAnalog, 6> AnalogList =
 
 	PadInputAnalog::LT,
 	PadInputAnalog::RT
+
+};
+
+//XInputクラスが保持するアナログ入力の配列の添え字
+//コメントは現状のPadInputでの並び順
+static constexpr std::array<size_t, 6> PadInputIndexTableAnalog =
+{
+
+	0,1,	//LStickX,LStickY,
+
+	2,3,	//RStickX,RStickY
+
+	4,5		//LT,RT
 
 };
 
