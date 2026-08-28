@@ -110,6 +110,7 @@ static constexpr std::array<PadInputDigital, 14> DigitalList =
 //ƒRƒƒ“ƒg‚ÍŒ»ó‚ÌPadInput‚Å‚Ì•À‚Ñ‡
 static constexpr std::array<size_t, 14> PadInputIndexTableDigital =
 {
+
 	0, 1, 2, 3,	//Up, Down, Left, Right
 
 	4, 5, 6, 7,	//A, B, X, Y
@@ -119,6 +120,7 @@ static constexpr std::array<size_t, 14> PadInputIndexTableDigital =
 	10, 11,		//LThumb, RThumb
 
 	12, 13		//Start, View
+
 };
 
 static constexpr std::array<PadInputAnalog, 6> AnalogList =

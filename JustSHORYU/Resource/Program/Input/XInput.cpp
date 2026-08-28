@@ -3,18 +3,36 @@
 
 #pragma comment(lib, "XInput.lib")
 
+/*
+
+enum と　index の依存を減らす
+
+デッドゾーン処理の追加
+スティックは円形
+トリガーは線形
+
+接続状態と非接続状態の処理追加
+
+*/
+
 XInput::XInput(DWORD index)
 	: padIndex(index), isConnect(false) 
 {
 
-	ZeroMemory(&xInputState, sizeof(XINPUT_STATE));
+	InitState();
+
+}
+
+//状態の全初期化
+void XInput::InitState() {
+
+	ZeroMemory(&xInputState, sizeof(_XINPUT_STATE));
 
 	buttonStateCurrent.fill(InputState::None);
-	buttonStatePrev.fill(	InputState::None);
+	buttonStatePrev.fill(InputState::None);
 
 	analogValueCurrent.fill(0.0f);
-	analogValuePrev.fill(	0.0f);
-
+	analogValuePrev.fill(0.0f);
 	analogValueDelta.fill(0.0f);
 
 }
@@ -28,8 +46,12 @@ void XInput::Update() {
 
 	isConnect = (result == ERROR_SUCCESS);
 
-	UpdateDegitalInput();
-	UpdateAnalogInput();
+	if (isConnect) {
+
+		UpdateDegitalInput();
+		UpdateAnalogInput();
+
+	}
 
 }
 
@@ -95,14 +117,16 @@ void XInput::UpdateAnalogInput() {
 
 		size_t index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
 
-		analogValueCurrent[index] = ConvertAnalogValue(padInput);
-		
-		analogValueDelta[index]	= analogValueCurrent[index] - analogValuePrev[index];
+		analogValueCurrent[index]	= ConvertAnalogValue(padInput);
+		analogValueDelta[index]		= analogValueCurrent[index] - analogValuePrev[index];
 
 	}
 }
 
 InputState XInput::GetDegitalState(PadInputDigital inputType) const {
+
+	//未接続ならNone
+	if (!isConnect) return InputState::None;
 
 	auto index = PadInputIndexTableDigital[static_cast<int>(inputType)];
 
@@ -111,6 +135,9 @@ InputState XInput::GetDegitalState(PadInputDigital inputType) const {
 }
 
 AnalogStrength XInput::GetAnalogStrength(PadInputAnalog padInput) const {
+
+	//未接続なら強さ0
+	if (!isConnect) return AnalogStrength::Zero;
 
 	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
 
@@ -122,6 +149,9 @@ AnalogStrength XInput::GetAnalogStrength(PadInputAnalog padInput) const {
 }
 
 float XInput::GetAnalogValue(PadInputAnalog padInput) const {
+
+	//未接続なら入力0
+	if (!isConnect) return 0.0f;
 
 	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
 
@@ -174,14 +204,14 @@ float XInput::ConvertAnalogValue(PadInputAnalog padInput) const {
 
 	switch (padInput) {
 
-	case PadInputAnalog::LStickX:	result = static_cast<float>(gamepad.sThumbLX) / PadConst::StickMax;
-	case PadInputAnalog::LStickY:	result = static_cast<float>(gamepad.sThumbLY) / PadConst::StickMax;
+	case PadInputAnalog::LStickX:	result = static_cast<float>(gamepad.sThumbLX) / PadConst::StickMax;			break;
+	case PadInputAnalog::LStickY:	result = static_cast<float>(gamepad.sThumbLY) / PadConst::StickMax;			break;
 
-	case PadInputAnalog::RStickX:	result = static_cast<float>(gamepad.sThumbRX) / PadConst::StickMax;
-	case PadInputAnalog::RStickY:	result = static_cast<float>(gamepad.sThumbRY) / PadConst::StickMax;
+	case PadInputAnalog::RStickX:	result = static_cast<float>(gamepad.sThumbRX) / PadConst::StickMax;			break;
+	case PadInputAnalog::RStickY:	result = static_cast<float>(gamepad.sThumbRY) / PadConst::StickMax;			break;
 
-	case PadInputAnalog::LT:		result = static_cast<float>(gamepad.bLeftTrigger)	/ PadConst::TriggerMax;
-	case PadInputAnalog::RT:		result = static_cast<float>(gamepad.bRightTrigger)	/ PadConst::TriggerMax;
+	case PadInputAnalog::LT:		result = static_cast<float>(gamepad.bLeftTrigger)	/ PadConst::TriggerMax; break;
+	case PadInputAnalog::RT:		result = static_cast<float>(gamepad.bRightTrigger)	/ PadConst::TriggerMax;	break;
 
 	default:						result = 0.0f;
 

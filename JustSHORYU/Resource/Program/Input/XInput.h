@@ -36,6 +36,9 @@ private:
 	WORD	ConvertWORD(		PadInputDigital padInput)	const;	//XINPUT_GAMEPAD系のビットフラグに変換
 	float	ConvertAnalogValue(	PadInputAnalog	padInput)	const;	//アナログ入力の正規化値を返す
 
+	//全状態初期化
+	void InitState();
+
 	//状態の更新
 	void UpdateDegitalInput();
 	void UpdateAnalogInput();
