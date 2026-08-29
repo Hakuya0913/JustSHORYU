@@ -7,6 +7,7 @@
 */
 
 #include"KeyMouseInput.h"
+#include"XInput.h"
 
 class InputManager {
 public:
@@ -22,6 +23,9 @@ public:
 
 private:
 
-	KeyMouseInput keyMouseInput;
+	InputManager() = default;
+
+	KeyMouseInput	keyMouseInput;
+	XInput			xInput;
 
 };
