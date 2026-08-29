@@ -16,7 +16,7 @@ enum と　index の依存を減らす
 */
 
 XInput::XInput(DWORD index)
-	: padIndex(index), isConnect(false) 
+	: padIndex(index), isConnectCurrent(false) 
 {
 
 	InitState();
@@ -29,11 +29,11 @@ void XInput::InitState() {
 	ZeroMemory(&xInputState, sizeof(_XINPUT_STATE));
 
 	buttonStateCurrent.fill(InputState::None);
-	buttonStatePrev.fill(InputState::None);
+	buttonStatePrev.fill(	InputState::None);
 
 	analogValueCurrent.fill(0.0f);
-	analogValuePrev.fill(0.0f);
-	analogValueDelta.fill(0.0f);
+	analogValuePrev.fill(	0.0f);
+	analogValueDelta.fill(	0.0f);
 
 }
 
@@ -44,12 +44,20 @@ void XInput::Update() {
 	ZeroMemory(&xInputState, sizeof(XINPUT_STATE));
 	result = XInputGetState(padIndex, &xInputState);
 
-	isConnect = (result == ERROR_SUCCESS);
+	isConnectPrev = isConnectCurrent;
+	isConnectCurrent = (result == ERROR_SUCCESS);
 
-	if (isConnect) {
+	if (isConnectCurrent) {
 
 		UpdateDegitalInput();
 		UpdateAnalogInput();
+		
+	}
+
+	if (isConnectPrev		== true &&
+		isConnectCurrent	== false) {
+
+		InitState();
 
 	}
 
@@ -61,24 +69,23 @@ void XInput::UpdateDegitalInput() {
 
 	auto button = xInputState.Gamepad.wButtons;
 
-	for (size_t i = 0; i < DigitalList.size(); ++i) {
+	for (int i = 0; i < static_cast<int>(PadInputDigital::Count); ++i) {
 
-		bool	isPress	= button & ConvertWORD(DigitalList[i]);
-		size_t	index	= PadInputIndexTableDigital[static_cast<int>(DigitalList[i])];
+		bool isPress = (button & ConvertWORD(static_cast<PadInputDigital>(i))) != 0;
 
 		if (isPress) {
 
-			if (buttonStatePrev[index] == InputState::Release ||
-				buttonStatePrev[index] == InputState::None) {
+			if (buttonStatePrev[i] == InputState::Release ||
+				buttonStatePrev[i] == InputState::None) {
 
-				buttonStateCurrent[index] = InputState::Trigger;
+				buttonStateCurrent[i] = InputState::Trigger;
 				continue;
 
 			}
 
-			if (buttonStatePrev[index] == InputState::Trigger) {
+			if (buttonStatePrev[i] == InputState::Trigger) {
 
-				buttonStateCurrent[index] = InputState::Hold;
+				buttonStateCurrent[i] = InputState::Hold;
 				continue;
 
 			}
@@ -86,17 +93,17 @@ void XInput::UpdateDegitalInput() {
 		}
 		else {
 
-			if (buttonStatePrev[index] == InputState::Trigger ||
-				buttonStatePrev[index] == InputState::Hold) {
+			if (buttonStatePrev[i] == InputState::Trigger ||
+				buttonStatePrev[i] == InputState::Hold) {
 
-				buttonStateCurrent[index] = InputState::Release;
+				buttonStateCurrent[i] = InputState::Release;
 				continue;
 
 			}
 
-			if (buttonStatePrev[index] == InputState::Release) {
+			if (buttonStatePrev[i] == InputState::Release) {
 
-				buttonStateCurrent[index] = InputState::None;
+				buttonStateCurrent[i] = InputState::None;
 				continue;
 
 			}
@@ -111,39 +118,72 @@ void XInput::UpdateAnalogInput() {
 
 	analogValuePrev = analogValueCurrent;
 
-	for (size_t i = 0; i < AnalogList.size(); ++i) {
+	for (int i = 0; i < static_cast<int>(PadInputAnalog::Count); ++i) {
 
-		PadInputAnalog padInput = AnalogList[i];
-
-		size_t index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
-
-		analogValueCurrent[index]	= ConvertAnalogValue(padInput);
-		analogValueDelta[index]		= analogValueCurrent[index] - analogValuePrev[index];
+		analogValueCurrent[i]	= ConvertAnalogValue(static_cast<PadInputAnalog>(i));
+		analogValueDelta[i]		= analogValueCurrent[i] - analogValuePrev[i];
 
 	}
+
+	//各デッドゾーン適用
+	//スティックのデッドゾーン処理
+	DirectX::SimpleMath::Vector2 stick;
+	DirectX::SimpleMath::Vector2 deadzonedStick;
+
+	//LStickへのデッドゾーン付与(円形デッドゾーン)
+	{
+
+		stick.x = static_cast<float>(analogValueCurrent[static_cast<int>(PadInputAnalog::LStickX)]);
+		stick.y = static_cast<float>(analogValueCurrent[static_cast<int>(PadInputAnalog::LStickY)]);
+
+		deadzonedStick = ApplyDeadzoneRadial(stick);
+		analogValueCurrent[static_cast<int>(PadInputAnalog::LStickX)] = deadzonedStick.x;
+		analogValueCurrent[static_cast<int>(PadInputAnalog::LStickY)] = deadzonedStick.y;
+
+	}
+
+	//RStickへのデッドゾーン付与
+	{
+
+		stick.x = static_cast<float>(analogValueCurrent[static_cast<int>(PadInputAnalog::RStickX)]);
+		stick.y = static_cast<float>(analogValueCurrent[static_cast<int>(PadInputAnalog::RStickY)]);
+
+		deadzonedStick = ApplyDeadzoneRadial(stick);
+		analogValueCurrent[static_cast<int>(PadInputAnalog::RStickX)] = deadzonedStick.x;
+		analogValueCurrent[static_cast<int>(PadInputAnalog::RStickY)] = deadzonedStick.y;
+
+	}
+
+	//トリガーの入力
+	float deadzonedTrigger;
+
+	deadzonedTrigger = ApplyDeadzone(analogValueCurrent[static_cast<int>(PadInputAnalog::LT)]);
+	analogValueCurrent[static_cast<int>(PadInputAnalog::LT)] = deadzonedTrigger;
+
+	deadzonedTrigger = ApplyDeadzone(analogValueCurrent[static_cast<int>(PadInputAnalog::RT)]);
+	analogValueCurrent[static_cast<int>(PadInputAnalog::RT)] = deadzonedTrigger;
+
 }
 
-InputState XInput::GetDegitalState(PadInputDigital inputType) const {
+InputState XInput::GetDegitalState(PadInputDigital padInput) const {
 
 	//未接続ならNone
-	if (!isConnect) return InputState::None;
+	if (!isConnectCurrent) return InputState::None;
 
-	auto index = PadInputIndexTableDigital[static_cast<int>(inputType)];
-
-	return buttonStateCurrent[index];
+	return buttonStateCurrent[static_cast<int>(padInput)];
 
 }
 
 AnalogStrength XInput::GetAnalogStrength(PadInputAnalog padInput) const {
 
 	//未接続なら強さ0
-	if (!isConnect) return AnalogStrength::Zero;
+	if (!isConnectCurrent) return AnalogStrength::Zero;
 
-	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+	int index = static_cast<int>(padInput);
 
-	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdHigh)		return AnalogStrength::High;
-	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdMiddle)	return AnalogStrength::Middle;
-	if (analogValueCurrent[static_cast<int>(index)] > PadConst::ThresholdLow)		return AnalogStrength::Low;
+	if (analogValueCurrent[index] > PadConst::ThresholdHigh)	return AnalogStrength::High;
+	if (analogValueCurrent[index] > PadConst::ThresholdMiddle)	return AnalogStrength::Middle;
+	if (analogValueCurrent[index] > PadConst::ThresholdLow)		return AnalogStrength::Low;
 
 	return AnalogStrength::Zero;
 }
@@ -151,9 +191,9 @@ AnalogStrength XInput::GetAnalogStrength(PadInputAnalog padInput) const {
 float XInput::GetAnalogValue(PadInputAnalog padInput) const {
 
 	//未接続なら入力0
-	if (!isConnect) return 0.0f;
+	if (!isConnectCurrent) return 0.0f;
 
-	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+	int index = static_cast<int>(padInput);
 
 	return analogValueCurrent[index];
 
@@ -161,7 +201,7 @@ float XInput::GetAnalogValue(PadInputAnalog padInput) const {
 
 float XInput::GetAnalogDelta(PadInputAnalog padInput) const {
 
-	auto index = PadInputIndexTableAnalog[static_cast<int>(padInput)];
+	int index = static_cast<int>(padInput);
 
 	return analogValueDelta[index];
 
@@ -219,9 +259,6 @@ float XInput::ConvertAnalogValue(PadInputAnalog padInput) const {
 
 	//-1～1の範囲に正規化結果を収める
 	result = std::clamp(result, -1.0f, 1.0f);
-
-	//デッドゾーン適用
-	result = ApplyDeadzone(result);
 
 	return result;
 

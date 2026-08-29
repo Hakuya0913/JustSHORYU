@@ -23,7 +23,7 @@ public:
 	void Update() override;
 
 	//Getter
-	bool IsConnect() const { return isConnect; }
+	bool IsConnect() const { return isConnectCurrent; }
 
 	InputState		GetDegitalState(	PadInputDigital inputType) const;
 	AnalogStrength	GetAnalogStrength(	PadInputAnalog  inputType) const;
@@ -48,18 +48,19 @@ private:
 	float						 ApplyDeadzone(float value) const;
 
 	DWORD padIndex;
-	bool isConnect;
+	bool isConnectCurrent;
+	bool isConnectPrev;
 
 	//XInputの状態を保存
 	XINPUT_STATE xInputState;
 
 	//ボタン入力の状態を保存
-	std::array<InputState, DigitalList.size()> buttonStateCurrent;
-	std::array<InputState, DigitalList.size()> buttonStatePrev;
+	std::array<InputState, static_cast<int>(PadInputDigital::Count)> buttonStateCurrent;
+	std::array<InputState, static_cast<int>(PadInputDigital::Count)> buttonStatePrev;
 
 	//アナログ入力の正規化値を保存
-	std::array<float, AnalogList.size()> analogValueCurrent;
-	std::array<float, AnalogList.size()> analogValuePrev;
-	std::array<float, AnalogList.size()> analogValueDelta;
+	std::array<float, static_cast<int>(PadInputAnalog::Count)> analogValueCurrent;
+	std::array<float, static_cast<int>(PadInputAnalog::Count)> analogValuePrev;
+	std::array<float, static_cast<int>(PadInputAnalog::Count)> analogValueDelta;
 
 };

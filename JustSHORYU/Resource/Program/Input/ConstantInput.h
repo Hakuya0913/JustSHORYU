@@ -63,7 +63,10 @@ enum class PadInputDigital {
 	RThumb,
 
 	Start,
-	View
+	View,
+
+	//要素数
+	Count
 
 };
 
@@ -80,73 +83,8 @@ enum class PadInputAnalog {
 	LT, 
 	RT,
 
-};
-
-static constexpr std::array<PadInputDigital, 14> DigitalList =
-{
-
-	PadInputDigital::Up,
-	PadInputDigital::Down,
-	PadInputDigital::Left,
-	PadInputDigital::Right,
-
-	PadInputDigital::A,
-	PadInputDigital::B,
-	PadInputDigital::X,
-	PadInputDigital::Y,
-
-	PadInputDigital::LB,
-	PadInputDigital::RB,
-
-	PadInputDigital::LThumb,
-	PadInputDigital::RThumb,
-
-	PadInputDigital::Start,
-	PadInputDigital::View
-
-};
-
-//XInputクラスが保持するデジタル入力の配列の添え字
-//コメントは現状のPadInputでの並び順
-static constexpr std::array<size_t, 14> PadInputIndexTableDigital =
-{
-
-	0, 1, 2, 3,	//Up, Down, Left, Right
-
-	4, 5, 6, 7,	//A, B, X, Y
-
-	8, 9,		//LB, RB
-
-	10, 11,		//LThumb, RThumb
-
-	12, 13		//Start, View
-
-};
-
-static constexpr std::array<PadInputAnalog, 6> AnalogList =
-{
-
-	PadInputAnalog::LStickX,
-	PadInputAnalog::LStickY,
-
-	PadInputAnalog::RStickX,
-	PadInputAnalog::RStickY,
-
-	PadInputAnalog::LT,
-	PadInputAnalog::RT
-
-};
-
-//XInputクラスが保持するアナログ入力の配列の添え字
-//コメントは現状のPadInputでの並び順
-static constexpr std::array<size_t, 6> PadInputIndexTableAnalog =
-{
-
-	0,1,	//LStickX,LStickY,
-
-	2,3,	//RStickX,RStickY
-
-	4,5		//LT,RT
+	//要素数
+	Count
 
 };
 

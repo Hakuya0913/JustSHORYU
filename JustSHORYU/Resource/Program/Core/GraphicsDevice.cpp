@@ -8,11 +8,11 @@ bool GraphicsDevice::Init(HWND hwnd, UINT resolutionW, UINT resolutionH) {
 
 	//各初期化処理を呼ぶ
 
-	if (!CreateDevice()) return false;
-	if (!CreateCmdQueue()) return false;
+	if (!CreateDevice())	return false;
+	if (!CreateCmdQueue())	return false;
 	if (!CreateSwapChain()) return false;
-	if (!CreateCmdList()) return false;
-	if (!CreateFence()) return false;
+	if (!CreateCmdList())	return false;
+	if (!CreateFence())		return false;
 
 	CreateViewport();
 	CreateScissorRect();
@@ -41,10 +41,10 @@ bool GraphicsDevice::CreateCmdQueue() {
 	HRESULT hr;
 
 	D3D12_COMMAND_QUEUE_DESC desc{};
-	desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-	desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-	desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	desc.NodeMask = 0;
+	desc.Type		= D3D12_COMMAND_LIST_TYPE_DIRECT;
+	desc.Priority	= D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+	desc.Flags		= D3D12_COMMAND_QUEUE_FLAG_NONE;
+	desc.NodeMask	= 0;
 
 	hr = device->CreateCommandQueue(
 		&desc,
@@ -72,21 +72,21 @@ bool GraphicsDevice::CreateSwapChain() {
 
 	//スワップチェイン設定
 	DXGI_SWAP_CHAIN_DESC desc{};
-	desc.BufferDesc.Width = resolutionW;
-	desc.BufferDesc.Height = resolutionH;
-	desc.BufferDesc.RefreshRate.Numerator = 60;
+	desc.BufferDesc.Width					= resolutionW;
+	desc.BufferDesc.Height					= resolutionH;
+	desc.BufferDesc.RefreshRate.Numerator	= 60;
 	desc.BufferDesc.RefreshRate.Denominator = 1;
-	desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	desc.BufferCount = ConstVal::D3D::BufferringCount;
-	desc.OutputWindow = hwnd;
-	desc.Windowed = TRUE;
-	desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	desc.BufferDesc.ScanlineOrdering		= DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	desc.BufferDesc.Scaling					= DXGI_MODE_SCALING_UNSPECIFIED;
+	desc.BufferDesc.Format					= DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.SampleDesc.Count					= 1;
+	desc.SampleDesc.Quality					= 0;
+	desc.BufferUsage						= DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	desc.BufferCount						= ConstVal::D3D::BufferringCount;
+	desc.OutputWindow						= hwnd;
+	desc.Windowed							= TRUE;
+	desc.SwapEffect							= DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	desc.Flags								= DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	//スワップチェイン生成
 	IDXGISwapChain* dxgiSwapChain = nullptr;
@@ -193,21 +193,21 @@ bool GraphicsDevice::CreateFence() {
 
 void GraphicsDevice::CreateViewport() {
 
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = static_cast<float>(resolutionW);
-	viewport.Height = static_cast<float>(resolutionH);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	viewport.TopLeftX	= 0;
+	viewport.TopLeftY	= 0;
+	viewport.Width		= static_cast<float>(resolutionW);
+	viewport.Height		= static_cast<float>(resolutionH);
+	viewport.MinDepth	= 0.0f;
+	viewport.MaxDepth	= 1.0f;
 
 }
 
 void GraphicsDevice::CreateScissorRect() {
 
-	scissor.left = 0;
-	scissor.right = resolutionW;
-	scissor.top = 0;
-	scissor.bottom = resolutionH;
+	scissor.left	= 0;
+	scissor.right	= resolutionW;
+	scissor.top		= 0;
+	scissor.bottom	= resolutionH;
 
 }
 
@@ -218,8 +218,8 @@ bool GraphicsDevice::CreateRenderTarget() {
 	//RTV用ディスクリプタヒープ作成
 	D3D12_DESCRIPTOR_HEAP_DESC desc{};
 	desc.NumDescriptors = ConstVal::D3D::BufferringCount;
-	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	desc.Type			= D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	desc.Flags			= D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	hr = device->CreateDescriptorHeap(
 		&desc,
@@ -283,31 +283,31 @@ bool GraphicsDevice::CreateDepthStencil() {
 
 	//深度ステンシルバッファのクリア値設定
 	D3D12_CLEAR_VALUE dsvClearValue;
-	dsvClearValue.Format = DXGI_FORMAT_D32_FLOAT;
-	dsvClearValue.DepthStencil.Depth = 1.0f;
-	dsvClearValue.DepthStencil.Stencil = 0;
+	dsvClearValue.Format				= DXGI_FORMAT_D32_FLOAT;
+	dsvClearValue.DepthStencil.Depth	= 1.0f;
+	dsvClearValue.DepthStencil.Stencil	= 0;
 
 	//VRAMにリソースを置くためのヒーププロパティ設定
 	D3D12_HEAP_PROPERTIES heapProp = {};
-	heapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	heapProp.CreationNodeMask = 1;
-	heapProp.VisibleNodeMask = 1;
+	heapProp.Type					= D3D12_HEAP_TYPE_DEFAULT;
+	heapProp.CPUPageProperty		= D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	heapProp.MemoryPoolPreference	= D3D12_MEMORY_POOL_UNKNOWN;
+	heapProp.CreationNodeMask		= 1;
+	heapProp.VisibleNodeMask		= 1;
 
 	//DepthBuffer作成用のリソースを設定
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	resourceDesc.Alignment = 0;
-	resourceDesc.Width = resolutionW;
-	resourceDesc.Height = resolutionH;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.Dimension			= D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resourceDesc.Alignment			= 0;
+	resourceDesc.Width				= resolutionW;
+	resourceDesc.Height				= resolutionH;
+	resourceDesc.DepthOrArraySize	= 1;
+	resourceDesc.MipLevels			= 1;
+	resourceDesc.Format				= DXGI_FORMAT_D32_FLOAT;
+	resourceDesc.SampleDesc.Count	= 1;
 	resourceDesc.SampleDesc.Quality = 0;
-	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	resourceDesc.Layout				= D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	resourceDesc.Flags				= D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
 	hr = device->CreateCommittedResource(
 		&heapProp,
@@ -358,12 +358,12 @@ void GraphicsDevice::BeginFrame() {
 	//リソースバリアの設定
 	//バックバッファを描画可能な状態へ
 	D3D12_RESOURCE_BARRIER barrier{};
-	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrier.Transition.pResource = currentRenderTarget;
-	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Type					= D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags					= D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource	= currentRenderTarget;
+	barrier.Transition.StateBefore	= D3D12_RESOURCE_STATE_PRESENT;
+	barrier.Transition.StateAfter	= D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.Subresource	= D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 
 	cmdList->ResourceBarrier(1, &barrier);
 
@@ -400,12 +400,12 @@ void GraphicsDevice::EndFrame() {
 	//リソースバリア設定
 	//バックバッファを表示状態へ
 	D3D12_RESOURCE_BARRIER barrier{};
-	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrier.Transition.pResource = currentRenderTarget;
-	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Type					= D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags					= D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource	= currentRenderTarget;
+	barrier.Transition.StateBefore	= D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.StateAfter	= D3D12_RESOURCE_STATE_PRESENT;
+	barrier.Transition.Subresource	= D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 
 	cmdList->ResourceBarrier(1, &barrier);
 
