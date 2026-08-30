@@ -25,7 +25,7 @@ public:
 	//Getter
 	bool IsConnect() const { return isConnectCurrent; }
 
-	InputState		GetDegitalState(	PadInputDigital inputType) const;
+	InputState		GetDigitalState(	PadInputDigital inputType) const;
 	AnalogStrength	GetAnalogStrength(	PadInputAnalog  inputType) const;
 	float			GetAnalogValue(		PadInputAnalog  inputType) const;
 	float			GetAnalogDelta(		PadInputAnalog  inputType) const;

@@ -109,24 +109,49 @@ enum class AnalogStrength {
 };
 
 //ゲームで使用するコマンド一覧
-enum class GameLogic {
+enum class GameLogiDigital {
 
-	MoveForward,
-	MoveBack,
-	MoveLeft,
-	MoveRight,
-	Dash,
+	//GamePlayでのデジタル的コマンド
 	Jump,
+	Dash,
 	Attack,
-	
+	Guard,
+	LockOn,
+	MenuOpen,
+
+	//Menuでのデジタル的コマンド
 	MenuUp,
 	MenuDown,
 	MenuLeft,
 	MenuRight,
+	PgUp,
+	PgDown,
 
 	Confirm,
 	Cancel,
 
+	//例外
 	None
+
+};
+
+enum class GameLogicAnalog {
+
+	//GamePlayでのアナログ的コマンド
+	Move,
+	CameraMove,
+
+	//Menuでのアナログ的コマンド
+	MenuCursor,
+
+	//例外
+	None
+
+};
+
+enum class InputContext {
+
+	GamePlay,
+	Menu
 
 };

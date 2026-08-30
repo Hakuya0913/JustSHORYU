@@ -55,6 +55,18 @@
     <Filter Include="Program\Render\Debug">
       <UniqueIdentifier>{9f1a04b8-597b-4484-9de3-8b3a958bffa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Input\InputBinding">
+      <UniqueIdentifier>{c81feb22-1bbe-4337-904f-ba56161e7828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\InputMapper">
+      <UniqueIdentifier>{832999f6-f94f-459d-9b2f-8a7a5c9ea77c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\InputBinding\Digital">
+      <UniqueIdentifier>{1fcdb98c-4a78-4d71-af2a-20d5f37d91dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\InputBinding\Analog">
+      <UniqueIdentifier>{c26e4d01-a462-4630-ab01-7fe8ec67e43e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -83,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp">
       <Filter>Program\Render\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\InputMapper.cpp">
+      <Filter>Program\Input\InputMapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\InputBindDigital.cpp">
+      <Filter>Program\Input\InputBinding\Digital</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\InputBindAnalog.cpp">
+      <Filter>Program\Input\InputBinding\Analog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h">
       <Filter>Program\Render\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\InputMapper.h">
+      <Filter>Program\Input\InputMapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\InputBindDigital.h">
+      <Filter>Program\Input\InputBinding\Digital</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\InputBindAnalog.h">
+      <Filter>Program\Input\InputBinding\Analog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -165,7 +165,7 @@ void XInput::UpdateAnalogInput() {
 
 }
 
-InputState XInput::GetDegitalState(PadInputDigital padInput) const {
+InputState XInput::GetDigitalState(PadInputDigital padInput) const {
 
 	//ñ¢ê⁄ë±Ç»ÇÁNone
 	if (!isConnectCurrent) return InputState::None;

@@ -28,6 +28,17 @@ void App::Update() {
 			//各オブジェクトの更新処理など
 			GraphicsDevice::GetInstance().BeginFrame();
 
+
+			auto& input = InputManager::GetInstance();
+			
+			input.Update();
+
+			if (input.GetXInput().GetDigitalState(PadInputDigital::A) == InputState::Hold) {
+
+				debugRenderer.DrawTriangle();
+
+			}
+
 			GraphicsDevice::GetInstance().EndFrame();
 
 		}

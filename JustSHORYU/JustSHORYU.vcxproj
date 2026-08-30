@@ -142,7 +142,10 @@
     <ClCompile Include="Resource\Program\App\App.cpp" />
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
+    <ClCompile Include="Resource\Program\Input\InputBindAnalog.cpp" />
+    <ClCompile Include="Resource\Program\Input\InputBindDigital.cpp" />
     <ClCompile Include="Resource\Program\Input\InputManager.cpp" />
+    <ClCompile Include="Resource\Program\Input\InputMapper.cpp" />
     <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp" />
     <ClCompile Include="Resource\Program\Input\XInput.cpp" />
     <ClCompile Include="Resource\Program\main.cpp" />
@@ -155,7 +158,10 @@
     <ClInclude Include="Resource\Program\Core\GraphicsDevice.h" />
     <ClInclude Include="Resource\Program\Core\Window.h" />
     <ClInclude Include="Resource\Program\Input\ConstantInput.h" />
+    <ClInclude Include="Resource\Program\Input\InputBindAnalog.h" />
+    <ClInclude Include="Resource\Program\Input\InputBindDigital.h" />
     <ClInclude Include="Resource\Program\Input\InputManager.h" />
+    <ClInclude Include="Resource\Program\Input\InputMapper.h" />
     <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
     <ClInclude Include="Resource\Program\Input\KeyMouseInput.h" />
     <ClInclude Include="Resource\Program\Input\XInput.h" />
