@@ -18,7 +18,7 @@ XInput“ü—Íó‘ÔŠÇ—ƒNƒ‰ƒX
 class XInput : public InterfaceInput {
 public:
 
-	XInput(DWORD index = 1);
+	XInput(DWORD index = 0);
 
 	void Update() override;
 

@@ -9,6 +9,10 @@ D3Dクラスやゲームシーン管理クラスの
 
 #include"../Core/Window.h"
 
+//デバッグ用
+#include"../Renderer/DebugRenderer.h"
+#include"../Input/InputManager.h"
+
 class App {
 public:
 
@@ -19,5 +23,8 @@ public:
 private:
 
 	Window window;
+
+	//デバッグ用
+	DebugRenderer debugRenderer;
 
 };

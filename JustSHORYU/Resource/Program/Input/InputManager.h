@@ -19,7 +19,8 @@ public:
 
 	void Update();
 
-	KeyMouseInput& GetKeyMouseInput() { return keyMouseInput; }
+	KeyMouseInput&	GetKeyMouseInput() { return keyMouseInput; }
+	XInput&			GetXInput() { return xInput; }
 
 private:
 

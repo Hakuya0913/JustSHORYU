@@ -117,7 +117,7 @@ enum class GameLogic {
 	MoveRight,
 	Dash,
 	Jump,
-	Atack,
+	Attack,
 	
 	MenuUp,
 	MenuDown,

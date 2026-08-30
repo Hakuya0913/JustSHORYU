@@ -6,6 +6,8 @@ void App::Init() {
 	window.Init();
 	GraphicsDevice::GetInstance().Init(window.GetHWND());
 
+	debugRenderer.Init();
+
 }
 
 void App::Update() {

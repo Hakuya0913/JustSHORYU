@@ -49,6 +49,12 @@
     <Filter Include="Program\Math\Vector">
       <UniqueIdentifier>{005ff3a8-6511-40ac-af69-de001f4803a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Render">
+      <UniqueIdentifier>{5e434d15-4b40-41cc-8898-0794354d1dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\Debug">
+      <UniqueIdentifier>{9f1a04b8-597b-4484-9de3-8b3a958bffa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -74,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Math\Vector.cpp">
       <Filter>Program\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp">
+      <Filter>Program\Render\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,8 +122,19 @@
     <ClInclude Include="Resource\Program\Math\Vector.h">
       <Filter>Program\Math\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h">
+      <Filter>Program\Render\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resource\Program\Shader\DebugPS.hlsl">
+      <Filter>ShaderProgram</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\Program\Shader\DebugVS.hlsl">
+      <Filter>ShaderProgram</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

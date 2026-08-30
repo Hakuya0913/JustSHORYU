@@ -3,5 +3,6 @@
 void InputManager::Update() {
 
 	keyMouseInput.Update();
+	xInput.Update();
 
 }

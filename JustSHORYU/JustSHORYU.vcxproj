@@ -147,6 +147,7 @@
     <ClCompile Include="Resource\Program\Input\XInput.cpp" />
     <ClCompile Include="Resource\Program\main.cpp" />
     <ClCompile Include="Resource\Program\Math\Vector.cpp" />
+    <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h" />
@@ -160,10 +161,27 @@
     <ClInclude Include="Resource\Program\Input\XInput.h" />
     <ClInclude Include="Resource\Program\Math\StructureMath.h" />
     <ClInclude Include="Resource\Program\Math\Vector.h" />
+    <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resource\Program\Shader\DebugPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resource\Program\Shader\DebugVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
