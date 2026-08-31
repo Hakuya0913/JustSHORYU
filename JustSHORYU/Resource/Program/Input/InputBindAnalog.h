@@ -2,7 +2,7 @@
 
 /*
 
-ç‰©ç†çš„ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã‚’ã€GameLogiAnalogã¨ç´ä»˜ã‘ã‚‹
+•¨—“IƒAƒiƒƒO“ü—Í‚ğAGameLogiAnalog‚Æ•R•t‚¯‚é
 
 */
 
@@ -12,13 +12,17 @@
 class InputBindAnalog {
 public:
 
-	void SetPadLeftStick() {};
-	void SetPadRightStick() {};
+	InputBindAnalog();
 
-	PadInputAnalog GetPadAnalog() const {};
+	void AddMouseAnalog(MouseInputAnalog input);
+	void AddPadAnalog(PadInputAnalog input);
+
+	const std::vector<MouseInputAnalog>& GetMouseAnalog(MouseInputAnalog index) const { return mouseInputs; }
+	const std::vector<PadInputAnalog>& GetPadAnalog(PadInputAnalog index) const { return padInputs; }
 
 private:
 
-	std::vector<PadInputAnalog> inputs;
+	std::vector<MouseInputAnalog>	mouseInputs;
+	std::vector<PadInputAnalog>		padInputs;
 
 };

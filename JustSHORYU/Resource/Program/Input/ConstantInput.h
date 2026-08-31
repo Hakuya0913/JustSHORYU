@@ -88,6 +88,17 @@ enum class PadInputAnalog {
 
 };
 
+//InputBind—p
+enum class MouseInputAnalog {
+
+	MoveX,
+	MoveY,
+
+	//—v‘f”
+	Count
+
+};
+
 //“ü—Í‚Ì—L–³(•Ï‰»‚ÆŒp‘±)
 enum class InputState {
 
