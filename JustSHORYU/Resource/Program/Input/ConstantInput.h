@@ -24,8 +24,6 @@ namespace KeyMouseConst{
 
 namespace PadConst {
 
-
-
 	//入力の最大値
 	constexpr float StickMax	= 32767.0f;
 	constexpr UINT TriggerMax	= 255;
@@ -120,7 +118,7 @@ enum class AnalogStrength {
 };
 
 //ゲームで使用するコマンド一覧
-enum class GameLogiDigital {
+enum class GameLogicDigital {
 
 	//GamePlayでのデジタル的コマンド
 	Jump,
@@ -142,7 +140,7 @@ enum class GameLogiDigital {
 	Cancel,
 
 	//例外
-	None
+	Count
 
 };
 
@@ -156,10 +154,11 @@ enum class GameLogicAnalog {
 	MenuCursor,
 
 	//例外
-	None
+	Count
 
 };
 
+//入力の解釈状態
 enum class InputContext {
 
 	GamePlay,

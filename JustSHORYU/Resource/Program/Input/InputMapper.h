@@ -1,15 +1,16 @@
 #pragma once
 
 /*
-
-InputContextã«å¿œã˜ã¦
-GameLogiã¨InputBindã‚’ç´ä»˜ã‘
-å…¥åŠ›çŠ¶æ³ã‚’InputStateãªã©ã§è¿”ã™
+ 
+InputContext‚É‰‚¶‚Ä
+GameLogi‚ÆInputBind‚ğ•R•t‚¯
+“ü—Íó‹µ‚ğInputState‚È‚Ç‚Å•Ô‚·
 
 */
 
 #include"ConstantInput.h"
 #include"InputBindDigital.h"
+#include"InputBindAnalog.h"
 #include"KeyMouseInput.h"
 #include"XInput.h"
 
@@ -19,33 +20,43 @@ GameLogiã¨InputBindã‚’ç´ä»˜ã‘
 class InputMapper {
 public:
 
+	/// <summary>
+	/// ƒRƒ“ƒeƒNƒXƒg
+	/// </summary>
+	/// <param name="keymouse"></param>
+	/// <param name="xInput"></param>
 	InputMapper(KeyMouseInput& keymouse,XInput& xInput);
 
-	//ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚»ãƒƒãƒˆ
+	//ƒRƒ“ƒeƒLƒXƒg‚ğƒZƒbƒg
 	void SetContext(InputContext context);
 
-	InputContext GetContext() const;
+	//Getter
+	InputContext GetContext() const { return contextCurrent; }
 
 private:
 
-	//åˆæœŸãƒãƒƒãƒ”ãƒ³ã‚°
+	//‰Šúƒ}ƒbƒsƒ“ƒO
 	void InitGamePlayMapping();
 	void InitMenuMapping();
 
-	//ãƒã‚¤ãƒ³ãƒ‰ã‹ã‚‰å…¥åŠ›çŠ¶æ…‹å–å¾—
+	//ƒoƒCƒ“ƒh‚©‚ç“ü—Íó‘Ôæ“¾
 	InputState GetStateFromBind(const InputBindDigital& bind) const;
+	float GetValueFromBind(const InputBindAnalog& bind) const;
 
-	//å…¥åŠ›çŠ¶æ…‹ã‚’çµåˆ
+	//“ü—Íó‘Ô‚ğŒ‹‡
 	InputState CombineState(InputState first, InputState second);
 
-	//å„å…¥åŠ›ç«¯æœ«
+	//Še“ü—Í’[––
 	KeyMouseInput& keyMouseInput;
 	XInput& xInput;
 
 	InputContext contextCurrent;
 
-	//å„ã‚²ãƒ¼ãƒ çŠ¶æ³ã®ãƒãƒƒãƒ”ãƒ³ã‚°
-	//std::array<InputBindDigital, static_cast<size_t>(GameLogic::GamePlayCommandCount)> gamePlayBinds;
-	//std::array<InputBindDigital, static_cast<size_t>(GameLogic::MenuCommandCount)> menuBinds;
+	//ŠeƒQ[ƒ€ó‹µ‚Ìƒ}ƒbƒsƒ“ƒO(ƒfƒWƒ^ƒ‹{ƒAƒiƒƒO)
+	std::array<InputBindDigital, static_cast<size_t>()>	gamePlayBindsDigital;
+	std::array<InputBindAnalog, static_cast<size_t>(GameLogicAnalog::Count)>	gamePlayBindsAnalog;
+
+	std::array<InputBindDigital, static_cast<size_t>(GameLogicAnalog::Count)> menuBindsDigital;
+	std::array<InputBindAnalog, static_cast<size_t>(GameLogicAnalog::Count)> menuBindsAnalog;
 
 };
