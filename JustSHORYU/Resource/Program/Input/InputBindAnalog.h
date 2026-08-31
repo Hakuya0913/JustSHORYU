@@ -7,6 +7,7 @@
 */
 
 #include"ConstantInput.h"
+#include<vector>
 
 class InputBindAnalog {
 public:
@@ -18,6 +19,6 @@ public:
 
 private:
 
-
+	std::vector<PadInputAnalog> inputs;
 
 };
