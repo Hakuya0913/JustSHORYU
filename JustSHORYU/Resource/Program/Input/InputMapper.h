@@ -20,11 +20,6 @@ GameLogiとInputBindを紐付け
 class InputMapper {
 public:
 
-	/// <summary>
-	/// コンテクスト
-	/// </summary>
-	/// <param name="keymouse"></param>
-	/// <param name="xInput"></param>
 	InputMapper(KeyMouseInput& keymouse,XInput& xInput);
 
 	//コンテキストをセット
@@ -53,10 +48,10 @@ private:
 	InputContext contextCurrent;
 
 	//各ゲーム状況のマッピング(デジタル＋アナログ)
-	std::array<InputBindDigital, static_cast<size_t>()>	gamePlayBindsDigital;
-	std::array<InputBindAnalog, static_cast<size_t>(GameLogicAnalog::Count)>	gamePlayBindsAnalog;
+	std::array<InputBindDigital, static_cast<size_t>(GamePlayCommandDigital::Count)>	gamePlayBindsDigital;
+	std::array<InputBindAnalog, static_cast<size_t>(GamePlayCommandAnalog::Count)>	gamePlayBindsAnalog;
 
-	std::array<InputBindDigital, static_cast<size_t>(GameLogicAnalog::Count)> menuBindsDigital;
-	std::array<InputBindAnalog, static_cast<size_t>(GameLogicAnalog::Count)> menuBindsAnalog;
+	std::array<InputBindDigital, static_cast<size_t>(MenuCommandDigital::Count)> menuBindsDigital;
+	std::array<InputBindAnalog, static_cast<size_t>(MenuCommandAnalog::Count)> menuBindsAnalog;
 
 };

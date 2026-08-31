@@ -10,6 +10,12 @@ InputMapper::InputMapper(KeyMouseInput& keyMouse, XInput& xInput)
 
 }
 
+void InputMapper::SetContext(InputContext context) {
+
+	contextCurrent = context;
+
+}
+
 void InputMapper::InitGamePlayMapping() {
 
 
