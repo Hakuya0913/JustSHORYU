@@ -17,8 +17,8 @@ public:
 	void AddMouseAnalog(MouseInputAnalog input);
 	void AddPadAnalog(PadInputAnalog input);
 
-	const std::vector<MouseInputAnalog>& GetMouseAnalog(MouseInputAnalog index) const { return mouseInputs; }
-	const std::vector<PadInputAnalog>& GetPadAnalog(PadInputAnalog index) const { return padInputs; }
+	const std::vector<MouseInputAnalog>& GetMouseAnalog() const { return mouseInputs; }
+	const std::vector<PadInputAnalog>& GetPadAnalog()	  const { return padInputs; }
 
 private:
 
