@@ -67,6 +67,12 @@
     <Filter Include="Program\Input\InputBinding\Analog">
       <UniqueIdentifier>{c26e4d01-a462-4630-ab01-7fe8ec67e43e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Input\InputBinding\Analog\1D">
+      <UniqueIdentifier>{6bea5ba4-5aee-47ae-b7de-9dd28ece2942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Input\InputBinding\Analog\2D">
+      <UniqueIdentifier>{ba7ce7b1-8d9f-4b5d-891d-38888023af06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -102,8 +108,11 @@
     <ClCompile Include="Resource\Program\Input\InputBindDigital.cpp">
       <Filter>Program\Input\InputBinding\Digital</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputBindAnalog.cpp">
-      <Filter>Program\Input\InputBinding\Analog</Filter>
+    <ClCompile Include="Resource\Program\Input\InputBindAnalog1D.cpp">
+      <Filter>Program\Input\InputBinding\Analog\1D</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Input\InputBindAnalog2D.cpp">
+      <Filter>Program\Input\InputBinding\Analog\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,8 +161,11 @@
     <ClInclude Include="Resource\Program\Input\InputBindDigital.h">
       <Filter>Program\Input\InputBinding\Digital</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputBindAnalog.h">
-      <Filter>Program\Input\InputBinding\Analog</Filter>
+    <ClInclude Include="Resource\Program\Input\InputBindAnalog1D.h">
+      <Filter>Program\Input\InputBinding\Analog\1D</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Input\InputBindAnalog2D.h">
+      <Filter>Program\Input\InputBinding\Analog\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

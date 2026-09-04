@@ -9,20 +9,24 @@
 #include"ConstantInput.h"
 #include<vector>
 
-class InputBindAnalog {
+class InputBindAnalog1D {
 public:
 
-	InputBindAnalog();
+	InputBindAnalog1D();
 
+	//“ü—Í‚Ì’Ç‰Á
 	void AddMouseAnalog(MouseInputAnalog input);
+
 	void AddPadAnalog(PadInputAnalog input);
 
-	const std::vector<MouseInputAnalog>& GetMouseAnalog() const { return mouseInputs; }
-	const std::vector<PadInputAnalog>& GetPadAnalog()	  const { return padInputs; }
+	const std::vector<MouseInputAnalog>& GetMouseAnalog()	const { return mouseInputs; }
+
+	const std::vector<PadInputAnalog>&	 GetPadAnalog()		const { return padInputs; }
 
 private:
 
 	std::vector<MouseInputAnalog>	mouseInputs;
+
 	std::vector<PadInputAnalog>		padInputs;
 
 };

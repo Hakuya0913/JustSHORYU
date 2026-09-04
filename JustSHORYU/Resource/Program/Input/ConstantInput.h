@@ -89,8 +89,9 @@ enum class PadInputAnalog {
 //InputBindóp
 enum class MouseInputAnalog {
 
-	MoveX,
-	MoveY,
+	Position,
+	Delta,
+	Wheel,
 
 	//óvëfêî
 	Count
@@ -136,6 +137,7 @@ enum class GamePlayCommandDigital {
 enum class GamePlayCommandAnalog {
 
 	Move,
+	Guard,
 	CameraMove,
 
 	//óvëfêî
