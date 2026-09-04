@@ -2,7 +2,8 @@
 
 /*
 
-物理的アナログ入力を、GameLogiAnalogと紐付ける
+1つの物理的アナログ入力に紐づく
+入力の設定クラス
 
 */
 
@@ -18,10 +19,12 @@ public:
 	void AddMouseAnalog(MouseInputAnalog input);
 
 	void AddPadAnalog(PadInputAnalog input);
+			
+			std::vector<MouseInputAnalog>& GetMouseAnalog()			{ return mouseInputs; }
+	const	std::vector<MouseInputAnalog>& GetMouseAnalog()	const	{ return mouseInputs; }
 
-	const std::vector<MouseInputAnalog>& GetMouseAnalog()	const { return mouseInputs; }
-
-	const std::vector<PadInputAnalog>&	 GetPadAnalog()		const { return padInputs; }
+			std::vector<PadInputAnalog>& GetPadAnalog()			{ padInputs; }
+	const	std::vector<PadInputAnalog>& GetPadAnalog()	const	{ return padInputs; }
 
 private:
 
