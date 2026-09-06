@@ -73,6 +73,21 @@
     <Filter Include="Program\Input\InputBinding\Analog\2D">
       <UniqueIdentifier>{ba7ce7b1-8d9f-4b5d-891d-38888023af06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Component">
+      <UniqueIdentifier>{79425926-c85a-4fb5-9835-791dd5576f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Component\Transform">
+      <UniqueIdentifier>{a4283578-9cb1-4b81-8fae-a59b07e082d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Component\Render">
+      <UniqueIdentifier>{56d34296-4fad-45d5-9b0a-58fb309f11d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Component\Model">
+      <UniqueIdentifier>{465a1d24-27af-4846-a0df-15c508a3e76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Component\Material">
+      <UniqueIdentifier>{30618391-0cbf-45f3-b813-e944f13b74cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -113,6 +128,15 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Input\InputBindAnalog2D.cpp">
       <Filter>Program\Input\InputBinding\Analog\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Component\RenderComponent.cpp">
+      <Filter>Program\Component\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Component\ModelComponent.cpp">
+      <Filter>Program\Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp">
+      <Filter>Program\Component\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +190,18 @@
     </ClInclude>
     <ClInclude Include="Resource\Program\Input\InputBindAnalog2D.h">
       <Filter>Program\Input\InputBinding\Analog\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Component\TransformComponent.h">
+      <Filter>Program\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Component\RenderComponent.h">
+      <Filter>Program\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Component\ModelComponent.h">
+      <Filter>Program\Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Component\MaterialComponent.h">
+      <Filter>Program\Component\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

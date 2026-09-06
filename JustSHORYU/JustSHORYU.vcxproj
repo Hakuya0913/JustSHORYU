@@ -140,6 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\App\App.cpp" />
+    <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp" />
+    <ClCompile Include="Resource\Program\Component\ModelComponent.cpp" />
+    <ClCompile Include="Resource\Program\Component\RenderComponent.cpp" />
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
     <ClCompile Include="Resource\Program\Input\InputBindAnalog1D.cpp" />
@@ -155,6 +158,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h" />
+    <ClInclude Include="Resource\Program\Component\MaterialComponent.h" />
+    <ClInclude Include="Resource\Program\Component\ModelComponent.h" />
+    <ClInclude Include="Resource\Program\Component\RenderComponent.h" />
+    <ClInclude Include="Resource\Program\Component\TransformComponent.h" />
     <ClInclude Include="Resource\Program\Core\ConstantCore.h" />
     <ClInclude Include="Resource\Program\Core\GraphicsDevice.h" />
     <ClInclude Include="Resource\Program\Core\Window.h" />
