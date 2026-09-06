@@ -343,12 +343,13 @@ DirectX::SimpleMath::Vector2 InputMapper::GetValueFromBind(const InputBindAnalog
 
 			break;
 		case MouseInputAnalog2D::Delta:
+		{
 
 			auto delta = keyMouseInput.GetMouseDelta();
 
 			value.x = static_cast<float>(delta.x);
 			value.y = static_cast<float>(delta.y);
-
+		}
 		default:
 			break;
 		}
