@@ -16,7 +16,8 @@
 
 #pragma comment(lib,"d3dcompiler.lib")
 
-class DebugRenderer {
+class DebugRenderer 
+{
 public:
 
 	bool Init();

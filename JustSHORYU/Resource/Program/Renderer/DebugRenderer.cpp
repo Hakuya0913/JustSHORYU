@@ -1,6 +1,7 @@
 #include"DebugRenderer.h"
 
-bool DebugRenderer::Init() {
+bool DebugRenderer::Init() 
+{
 
 	GraphicsDevice& graphicsDevice = GraphicsDevice::GetInstance();
 
@@ -23,13 +24,15 @@ bool DebugRenderer::Init() {
 
 }
 
-void DebugRenderer::Begin() {
+void DebugRenderer::Begin() 
+{
 
 	//現時点で処理なし
 
 }
 
-void DebugRenderer::End() {
+void DebugRenderer::End() 
+{
 
 	//現時点で処理なし
 
@@ -63,7 +66,8 @@ void DebugRenderer::DrawTriangle() {
 
 }
 
-bool DebugRenderer::CreateRootSig() {
+bool DebugRenderer::CreateRootSig() 
+{
 
 	HRESULT hr;
 
@@ -91,7 +95,8 @@ bool DebugRenderer::CreateRootSig() {
 		errorBlob.ReleaseAndGetAddressOf()
 	);
 
-	if (FAILED(hr)) {
+	if (FAILED(hr))
+	{
 
 		return false;
 
@@ -105,7 +110,8 @@ bool DebugRenderer::CreateRootSig() {
 		IID_PPV_ARGS(rootSig.ReleaseAndGetAddressOf())
 	);
 
-	if (FAILED(hr)) {
+	if (FAILED(hr)) 
+	{
 	
 		return false;
 
@@ -115,7 +121,8 @@ bool DebugRenderer::CreateRootSig() {
 
 }
 
-bool DebugRenderer::CreateInputLayout() {
+bool DebugRenderer::CreateInputLayout() 
+{
 	
 	//Shader側で定義した入力構造体と紐づける
 	//POSITIONと紐づける設定
@@ -143,7 +150,8 @@ bool DebugRenderer::CreateInputLayout() {
 
 }
 
-bool DebugRenderer::CreatePSO() {
+bool DebugRenderer::CreatePSO() 
+{
 
 	assert(device != nullptr);
 	assert(rootSig != nullptr);
@@ -255,7 +263,8 @@ bool DebugRenderer::CreatePSO() {
 		IID_PPV_ARGS(pso.ReleaseAndGetAddressOf())
 	);
 
-	if (FAILED(hr)) {
+	if (FAILED(hr)) 
+	{
 	
 		return false;
 

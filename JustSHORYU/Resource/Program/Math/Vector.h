@@ -16,19 +16,3 @@ private:
 
 
 };
-
-class Vector2_SHORT {
-public:
-
-	SHORT x;
-	SHORT y;
-
-	Vector2_SHORT(SHORT x = 0, SHORT y = 0);
-
-	static Vector2_SHORT Zero() { return Vector2_SHORT(0, 0); }
-
-private:
-
-
-
-};

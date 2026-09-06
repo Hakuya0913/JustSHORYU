@@ -70,13 +70,7 @@ enum class PadInputDigital {
 
 //使用するアナログ入力の名前
 //連番前提で動作する
-enum class PadInputAnalog {
-
-	LStickX, 
-	LStickY,
-
-	RStickX,
-	RStickY,
+enum class PadInputAnalog1D {
 
 	LT, 
 	RT,
@@ -86,13 +80,30 @@ enum class PadInputAnalog {
 
 };
 
-//InputBind用
-enum class MouseInputAnalog {
+enum class PadInputAnalog2D {
+	
+	LStick,
+	RStick,
+	
+	//要素数
+	Count
 
-	Position,
-	Delta,
+};
+
+enum class MouseInputAnalog1D {
+
 	Wheel,
 
+	//要素数
+	Count
+
+};
+
+enum class MouseInputAnalog2D {
+	
+	Position,
+	Delta,
+	
 	//要素数
 	Count
 

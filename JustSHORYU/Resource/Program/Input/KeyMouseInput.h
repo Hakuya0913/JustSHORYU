@@ -12,24 +12,24 @@ RawInputアダプタークラス
 #include<DirectXMath.h>
 #include<SimpleMath.h>
 #include<vector>
-#include"InterfaceInput.h"
 #include"ConstantInput.h"
 #include"../Math/StructureMath.h"
 
-class KeyMouseInput : public InterfaceInput {
+class KeyMouseInput
+{
 public:
 
 	KeyMouseInput();
 
-	void Update() override;
+	void Update();
 
 	//ゲッター
 	InputState GetKeyState(USHORT vk)			const { return keyStateCurrent[vk]; }
 	InputState GetMouseButtonState(UINT number) const { return mouseButtonStateCurrent[number]; }
 
 	DirectX::SimpleMath::Vector2 GetMousePos()	 const { return mousePosCurrent; }
-	Vector2_LONG GetMouseDelta() const { return mouseDeltaCurrent; }
-	Vector2_SHORT GetWheelDelta() const { return wheelDeltaCurrent; }
+	Vector2_LONG				 GetMouseDelta() const { return mouseDeltaCurrent; }
+	SHORT						 GetWheelDelta() const { return wheelDeltaCurrent; }
 
 
 	//キーマウ入力受け取り系
@@ -37,6 +37,16 @@ public:
 	void SetLParam(LPARAM lParam);
 
 private:
+
+	//生入力の状態更新
+	void SetKeyboard(USHORT vk, bool isPress);
+	void SetMouseButton(USHORT number, bool isPress);
+	void SetMouseMove(LONG dx, LONG dy);
+	void SetMouseWheel(SHORT delta);
+
+	//InputState更新
+	void UpdateKeyboard();
+	void UpdateMouseButton();
 
 	//キーボード入力
 	std::vector<bool>		isKeyPress;	//生値で押されているか
@@ -50,24 +60,13 @@ private:
 
 	//マウス移動
 	Vector2_LONG mouseDeltaCurrent;
-	Vector2_LONG mouseDeltaPrev;
 
 	//マウス位置
 	DirectX::SimpleMath::Vector2 mousePosCurrent;
 	DirectX::SimpleMath::Vector2 mousePosPrev;
 	
 	//マウスホイール
-	Vector2_SHORT wheelDeltaCurrent;
-	Vector2_SHORT wheelDeltaPrev;
+	SHORT wheelDeltaCurrent;
 
-	//生入力の状態更新
-	void SetKeyboard(USHORT vk, bool isPress);
-	void SetMouseButton(USHORT number, bool isPress);
-	void SetMouseMove(LONG dx, LONG dy);
-	void SetMouseWheel(bool isVertical, SHORT delta);
-
-	//InputState更新
-	void UpdateKeyboard();
-	void UpdateMouseButton();
 
 };

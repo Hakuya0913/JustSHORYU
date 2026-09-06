@@ -16,20 +16,19 @@ public:
 	InputBindAnalog1D();
 
 	//“ü—Í‚Ì’Ç‰Á
-	void AddMouseAnalog(MouseInputAnalog input);
-
-	void AddPadAnalog(PadInputAnalog input);
+	void AddMouseAnalog(MouseInputAnalog1D input);
+	void AddPadAnalog(	PadInputAnalog1D   input);
 			
-			std::vector<MouseInputAnalog>& GetMouseAnalog()			{ return mouseInputs; }
-	const	std::vector<MouseInputAnalog>& GetMouseAnalog()	const	{ return mouseInputs; }
+			std::vector<MouseInputAnalog1D>& GetMouseAnalog()			{ return mouseInputs; }
+	const	std::vector<MouseInputAnalog1D>& GetMouseAnalog()	const	{ return mouseInputs; }
 
-			std::vector<PadInputAnalog>& GetPadAnalog()			{ padInputs; }
-	const	std::vector<PadInputAnalog>& GetPadAnalog()	const	{ return padInputs; }
+			std::vector<PadInputAnalog1D>& GetPadAnalog()			{ return padInputs; }
+	const	std::vector<PadInputAnalog1D>& GetPadAnalog()	const	{ return padInputs; }
 
 private:
 
-	std::vector<MouseInputAnalog>	mouseInputs;
+	std::vector<MouseInputAnalog1D>	mouseInputs;
 
-	std::vector<PadInputAnalog>		padInputs;
+	std::vector<PadInputAnalog1D>	padInputs;
 
 };

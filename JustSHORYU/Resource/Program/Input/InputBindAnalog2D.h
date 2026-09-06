@@ -6,23 +6,28 @@ InputBindAnalog1D‚Ì2D”Å
 
 */
 
-#include"InputBindAnalog1D.h"
+#include"ConstantInput.h"
+#include<vector>
 
 class InputBindAnalog2D {
 public:
 
 	InputBindAnalog2D();
 
-	//ŠeŽ²‚ÌGetter
-			InputBindAnalog1D&	GetX()			{ return x; }
-	const	InputBindAnalog1D&	GetX() const	{ return x; }
+	//“ü—Í‚Ì’Ç‰Á
+	void AddMouseAnalog(MouseInputAnalog2D input);
+	void AddPadAnalog(	PadInputAnalog2D   input);
 
-			InputBindAnalog1D&	GetY()			{ return y; }
-	const	InputBindAnalog1D&	GetY() const	{ return y; }
+	//ŠeŽ²‚ÌGetter
+			std::vector<MouseInputAnalog2D>& GetMouseAnalog()		{ return mouseInputs; }
+	const	std::vector<MouseInputAnalog2D>& GetMouseAnalog() const { return mouseInputs; }
+
+			std::vector<PadInputAnalog2D>& GetPadAnalog()		{ return padInputs; }
+	const	std::vector<PadInputAnalog2D>& GetPadAnalog() const { return padInputs; }
 
 private:
 
-	InputBindAnalog1D x;
-	InputBindAnalog1D y;
+	std::vector<MouseInputAnalog2D> mouseInputs;
+	std::vector<PadInputAnalog2D>	padInputs;
 
 };
