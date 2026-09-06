@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\App\App.cpp" />
+    <ClCompile Include="Resource\Program\Camera\Camera.cpp" />
     <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp" />
     <ClCompile Include="Resource\Program\Component\ModelComponent.cpp" />
     <ClCompile Include="Resource\Program\Component\RenderComponent.cpp" />
@@ -155,9 +156,11 @@
     <ClCompile Include="Resource\Program\main.cpp" />
     <ClCompile Include="Resource\Program\Math\Vector.cpp" />
     <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp" />
+    <ClCompile Include="Resource\Program\Renderer\ModelRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h" />
+    <ClInclude Include="Resource\Program\Camera\Camera.h" />
     <ClInclude Include="Resource\Program\Component\MaterialComponent.h" />
     <ClInclude Include="Resource\Program\Component\ModelComponent.h" />
     <ClInclude Include="Resource\Program\Component\RenderComponent.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="Resource\Program\Math\StructureMath.h" />
     <ClInclude Include="Resource\Program\Math\Vector.h" />
     <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h" />
+    <ClInclude Include="Resource\Program\Renderer\ModelRenderer.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>
   <ItemGroup>

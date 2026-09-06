@@ -88,6 +88,15 @@
     <Filter Include="Program\Component\Material">
       <UniqueIdentifier>{30618391-0cbf-45f3-b813-e944f13b74cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderProgram\Debug">
+      <UniqueIdentifier>{321c335e-93af-4edb-9c15-9c044392d32e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\Model">
+      <UniqueIdentifier>{48a78d17-8402-40ba-a759-e87b717a915c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Camera">
+      <UniqueIdentifier>{21e986db-7fd0-4ad5-9ca5-9a4bac3d1320}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -137,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp">
       <Filter>Program\Component\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Renderer\ModelRenderer.cpp">
+      <Filter>Program\Render\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Camera\Camera.cpp">
+      <Filter>Program\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,16 +218,22 @@
     <ClInclude Include="Resource\Program\Component\MaterialComponent.h">
       <Filter>Program\Component\Material</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Program\Renderer\ModelRenderer.h">
+      <Filter>Program\Render\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Camera\Camera.h">
+      <Filter>Program\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resource\Program\Shader\DebugPS.hlsl">
-      <Filter>ShaderProgram</Filter>
+      <Filter>ShaderProgram\Debug</Filter>
     </FxCompile>
     <FxCompile Include="Resource\Program\Shader\DebugVS.hlsl">
-      <Filter>ShaderProgram</Filter>
+      <Filter>ShaderProgram\Debug</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
