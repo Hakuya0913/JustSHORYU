@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 /*
 
@@ -54,18 +54,16 @@ public:
 	const DirectX::SimpleMath::Matrix& GetrViewMatrix()		 const { return view; }
 	const DirectX::SimpleMath::Matrix& GetProjectionMatrix() const { return proj; }
 
-	//í«è]
+	//ÔøΩ«è]
 	void SetFollowTarget(TransformComponent* target)				 { followTarget = target; }
 	void SetFollowOffset(const DirectX::SimpleMath::Vector3& offset) { followOffset = offset; }
 	void SetFollowDistance(float distance)							 { followDistance = distance; }
 	void SetFollowEnabled(bool enabled)								 { followEnabled = enabled; }
 	void ClearFollowTarget();
 
-			TransformComponent& GetFollowTarget()		{ return followTarget; }
-	const	TransformComponent& GetFollowTarget() const { return followTarget; }
+	TransformComponent* GetFollowTarget() const { return followTarget; }
 
-		  DirectX::SimpleMath::Vector3& GetFollowOffset()		{ return followOffset; }
-	const DirectX::SimpleMath::Vector3& GetFollowOffse() const	{ return followOffset; }
+	DirectX::SimpleMath::Vector3& GetFollowOffset() const { return followOffset; }
 
 	float GetFollowDistance() { return followDistance; }
 
@@ -92,7 +90,7 @@ private:
 	DirectX::SimpleMath::Matrix view;
 	DirectX::SimpleMath::Matrix proj;
 
-	//í«è]óp
+	//ÔøΩ«è]ÔøΩp
 	TransformComponent*				followTarget;
 	DirectX::SimpleMath::Vector3	followOffset;
 	float							followDistance;
