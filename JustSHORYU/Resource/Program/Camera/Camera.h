@@ -54,7 +54,7 @@ public:
 	const DirectX::SimpleMath::Matrix& GetrViewMatrix()		 const { return view; }
 	const DirectX::SimpleMath::Matrix& GetProjectionMatrix() const { return proj; }
 
-	//�Ǐ]
+	//追従
 	void SetFollowTarget(TransformComponent* target)				 { followTarget = target; }
 	void SetFollowOffset(const DirectX::SimpleMath::Vector3& offset) { followOffset = offset; }
 	void SetFollowDistance(float distance)							 { followDistance = distance; }
@@ -63,11 +63,11 @@ public:
 
 	TransformComponent* GetFollowTarget() const { return followTarget; }
 
-	DirectX::SimpleMath::Vector3& GetFollowOffset() const { return followOffset; }
+	const DirectX::SimpleMath::Vector3& GetFollowOffset() const { return followOffset; }
 
-	float GetFollowDistance() { return followDistance; }
+	float GetFollowDistance() const { return followDistance; }
 
-	bool IsFollowEnabled() { return followEnabled; }
+	bool IsFollowEnabled() const { return followEnabled; }
 
 
 private:
@@ -90,7 +90,7 @@ private:
 	DirectX::SimpleMath::Matrix view;
 	DirectX::SimpleMath::Matrix proj;
 
-	//�Ǐ]�p
+	//追従
 	TransformComponent*				followTarget;
 	DirectX::SimpleMath::Vector3	followOffset;
 	float							followDistance;
