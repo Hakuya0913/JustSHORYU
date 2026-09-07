@@ -2,7 +2,7 @@
 
 /*
 
-ãƒ¢ãƒ‡ãƒ«ã®æç”»ã‚’è¡Œã†ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+ƒ‚ƒfƒ‹‚Ì•`‰æ‚ğs‚¤ƒRƒ“ƒ|[ƒlƒ“ƒg
 
 */
 
@@ -22,18 +22,16 @@ public:
 	~RenderComponent() = default;
 
 	//Getter
-			TransformComponent& GetTransform()			{ return transformComponent; }
-	const	TransformComponent& GetTransform() const	{ return transformComponent; }
+	TransformComponent& GetTransform() const	{ return transformComponent; }
 
-			ModelComponent& GetModel()			{ return modelComponent; }
-	const	ModelComponent& GetModel() const	{ return modelComponent; }
+	
+	ModelComponent& GetModel() const { return modelComponent; }
 
-			MaterialComponent& GetMaterial()		{ return materialComponent; }
-	const	MaterialComponent& GetMaterial() const	{ return materialComponent; }
+	MaterialComponent& GetMaterial() const	{ return materialComponent; }
 
 private:
 
-	//æç”»ã«ä½¿ç”¨ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®å‚ç…§
+	//•`‰æ‚Ég—p‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
 	TransformComponent& transformComponent;
 	ModelComponent& modelComponent;
 	MaterialComponent& materialComponent;
