@@ -153,6 +153,9 @@
     <ClCompile Include="Resource\Program\Camera\Camera.cpp">
       <Filter>Program\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Program\Component\TransformComponent.cpp">
+      <Filter>Program\Component\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h">

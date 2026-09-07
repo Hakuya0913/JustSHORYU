@@ -13,7 +13,8 @@ bool ModelComponent::Load(const std::string& filePath)
 		filePath,
 		aiProcess_Triangulate |
 		aiProcess_GenSmoothNormals |
-		aiProcess_FlipUVs
+		aiProcess_CalcTangentSpace |
+		aiProcess_ConvertToLeftHanded
 	);
 
 	if (!scene) return false;
@@ -58,7 +59,7 @@ bool ModelComponent::LoadNodes(
 	
 	nodes.emplace_back(currentNode);
 
-	//å°Nodeã‚’èª­ã¿è¾¼ã‚€
+	//¬Node‚ğ“Ç‚İ‚Ş
 	for (UINT i = 0; i < node->mNumChildren; ++i)
 	{
 
@@ -76,7 +77,7 @@ bool ModelComponent::LoadNodes(
 
 }
 
-//Meshèª­ã¿è¾¼ã¿
+//Mesh“Ç‚İ‚İ
 bool ModelComponent::LoadMeshes(const aiScene* scene)
 {
 
@@ -100,11 +101,11 @@ bool ModelComponent::LoadMeshes(const aiScene* scene)
 
 }
 
-//1ã¤ã®Meshèª­ã¿è¾¼ã¿
+//1‚Â‚ÌMesh“Ç‚İ‚İ
 bool ModelComponent::LoadMesh(const aiMesh* mesh)
 {
 
-	if (!mesh)
+	if (mesh == nullptr)
 	{
 
 		return false;
@@ -139,12 +140,22 @@ bool ModelComponent::LoadMesh(const aiMesh* mesh)
 
 		}
 
-		//UV
+		//TexCoord
 		if (mesh->HasTextureCoords(0))
 		{
 
 			vertex.texCoord.x = mesh->mTextureCoords[0][i].x;
 			vertex.texCoord.y = mesh->mTextureCoords[0][i].y;
+
+		}
+
+		//Tangent
+		if (mesh->HasTangentsAndBitangents())
+		{
+
+			vertex.tangent.x = mesh->mTangents[i].x;
+			vertex.tangent.y = mesh->mTangents[i].y;
+			vertex.tangent.z = mesh->mTangents[i].z;
 
 		}
 
@@ -158,6 +169,14 @@ bool ModelComponent::LoadMesh(const aiMesh* mesh)
 
 		const aiFace& face = mesh->mFaces[i];
 
+		//OŠpŒ`ˆÈŠO‚Í‘z’è‚µ‚È‚¢
+		if (face.mNumIndices != 3)
+		{
+
+			continue;
+
+		}
+
 		for (UINT j = 0; j < face.mNumIndices; ++j)
 		{
 
@@ -167,15 +186,28 @@ bool ModelComponent::LoadMesh(const aiMesh* mesh)
 
 	}
 
+	//Material
+	result.materialIndex = mesh->mMaterialIndex;
+
 	//Bone
-	if (!LoadBones(mesh,result))
+	if (mesh->HasBones())
 	{
 
-		return false;
+		if (LoadBones(mesh, result) == false)
+		{
+
+			return false;
+
+		}
 
 	}
+	else
+	{
 
-	result.materialIndex = mesh->mMaterialIndex;
+		//Bone‚ğ‚½‚È‚¢Mesh‚Å‚àVertex”‚É‰‚¶‚ÄŠm•Û
+		result.boneWeights.resize(result.vertices.size());
+
+	}
 
 	meshes.emplace_back(std::move(result));
 
@@ -193,14 +225,24 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 
 	}
 
+	//Assimp‚©‚çæ“¾‚µ‚½BoneWeight‚ğˆê“I‚É‚·‚×‚Ä•Û
+	std::vector<std::vector<BoneWeight>> temporaryWeights(result.vertices.size());
+
 	for (UINT i = 0; i < mesh->mNumBones; ++i)
 	{
 
 		const aiBone* aiBone = mesh->mBones[i];
 
+		if (aiBone == nullptr)
+		{
+
+			continue;
+
+		}
+
 		std::string boneName = aiBone->mName.C_Str();
 
-		//ã™ã§ã«ç™»éŒ²æ¸ˆã¿ã‹æ¤œç´¢
+		//‚·‚Å‚É“o˜^Ï‚İ‚©ŒŸõ
 		uint32_t boneIndex = 0;
 		bool isFound = false;
 
@@ -218,8 +260,8 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 
 		}
 
-		//æ–°ã—ã„Bone
-		if (!isFound)
+		//V‚µ‚¢Bone
+		if (isFound == false)
 		{
 
 			Bone bone;
@@ -255,7 +297,53 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 			boneWeight.boneIndex = boneIndex;
 			boneWeight.weight = weight.mWeight;
 
-			result.boneWeights[weight.mVertexId].emplace_back(boneWeight);
+			temporaryWeights[weight.mVertexId].emplace_back(boneWeight);
+
+		}
+
+		//ŠeVertex‚ÌNoneWeight‚ğÅ‘å4–{‚É§ŒÀ
+		result.boneWeights.resize(result.vertices.size());
+
+		for (size_t vertexIndex = 0; vertexIndex < temporaryWeights.size(); ++vertexIndex)
+		{
+
+			auto& sourceWeights = temporaryWeights[vertexIndex];
+			auto& destinationWeights = result.boneWeights[vertexIndex];
+
+			//Weight‚Ì‘å‚«‚³‡‚É•À‚×‚é
+			std::sort(sourceWeights.begin(), sourceWeights.end(),
+				[](const BoneWeight& a, const BoneWeight& b)
+				{
+					return a.weight > b.weight;
+				}
+			);
+
+			//ãˆÊ‚S‚Â‚Ìƒ{[ƒ“‚ğÌ—p
+			const size_t count = std::min(sourceWeights.size(), static_cast<size_t>(MaxBoneInfluences));
+
+			float totalWeight = 0.0f;
+
+			for (size_t i = 0; i < count; ++i)
+			{
+
+				destinationWeights[i] = sourceWeights[i];
+
+				totalWeight += sourceWeights[i].weight;
+
+			}
+
+			//weight‚ğ³‹K‰»
+			if (totalWeight > 0.0f)
+			{
+
+				for (size_t i = 0; i < count; ++i)
+				{
+
+					destinationWeights[i].weight /= totalWeight;
+
+				}
+
+			}
 
 		}
 

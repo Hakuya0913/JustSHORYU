@@ -144,6 +144,7 @@
     <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp" />
     <ClCompile Include="Resource\Program\Component\ModelComponent.cpp" />
     <ClCompile Include="Resource\Program\Component\RenderComponent.cpp" />
+    <ClCompile Include="Resource\Program\Component\TransformComponent.cpp" />
     <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
     <ClCompile Include="Resource\Program\Core\Window.cpp" />
     <ClCompile Include="Resource\Program\Input\InputBindAnalog1D.cpp" />

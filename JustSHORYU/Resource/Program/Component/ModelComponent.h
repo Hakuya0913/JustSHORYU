@@ -2,13 +2,14 @@
 
 /*
 
-ãƒ¢ãƒ‡ãƒ«ã®æƒ…å ±ã‚’æŒã¤ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+ƒ‚ƒfƒ‹‚Ìî•ñ‚ğ‚ÂƒRƒ“ƒ|[ƒlƒ“ƒg
 
 */
 
 #include<d3d12.h>
 #include<DirectXMath.h>
 #include<vector>
+#include<array>
 #include<cstdint>
 #include<string>
 #include<assimp/scene.h>
@@ -18,18 +19,21 @@ class ModelComponent
 {
 public:
 
+	static constexpr uint32_t MaxBoneInfluences = 4;
+
 	struct Vertex
 	{
-		DirectX::XMFLOAT3 position{};
-		DirectX::XMFLOAT3 normal{};
-		DirectX::XMFLOAT2 texCoord{};
+		DirectX::XMFLOAT3 position{};	//’¸“_
+		DirectX::XMFLOAT3 normal{};		//–@ü
+		DirectX::XMFLOAT2 texCoord{};	//ƒeƒNƒXƒ`ƒƒÀ•W
+		DirectX::XMFLOAT3 tangent{};	//Úü(normalMap—p)
 	};
 
 	struct BoneWeight
 	{
 
 		uint32_t boneIndex = 0;
-		float weight = 0.0f;
+		float weight = 0.0f;	//ƒ{[ƒ“‚Ì‰e‹¿“x
 
 	};
 
@@ -38,10 +42,10 @@ public:
 
 		std::string name;
 
-		//Nodeé…åˆ—ä¸Šã§ã®Boneã®ä½ç½®
+		//Node”z—ñã‚Å‚ÌBone‚ÌˆÊ’u
 		uint32_t nodeIndex = 0;
 
-		//Meshç©ºé–“ -> Boneç©ºé–“
+		//Mesh‹óŠÔ -> Bone‹óŠÔ
 		DirectX::XMFLOAT4X4 offsetMatrix{};
 
 	};
@@ -54,10 +58,10 @@ public:
 		std::vector<Vertex>		vertices;
 		std::vector<uint32_t>	indices;
 
-		//å„é ‚ç‚¹ãŒå½±éŸ¿ã‚’å—ã‘ã‚‹Bone
-		std::vector<std::vector<BoneWeight>> boneWeights;
+		//Še’¸“_‚ª‰e‹¿‚ğó‚¯‚éBone
+		std::vector<std::array<BoneWeight,MaxBoneInfluences>> boneWeights;
 
-		//ã“ã®Meshã§ä½¿ç”¨ã™ã‚‹Bone
+		//‚±‚ÌMesh‚Åg—p‚·‚éBone
 		std::vector<uint32_t> boneIndices;
 
 		uint32_t materialIndex = 0;
@@ -80,23 +84,23 @@ public:
 	ModelComponent() = default;
 	~ModelComponent() = default;
 
-	//ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
+	//ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	bool Load(const std::string& filePath);
 
 	//Getter
-	size_t		GetMeshCount() const { return meshes.size(); }
-	const Mesh& GetMesh(size_t index) const { return meshes.at(index); }
+	size_t		GetMeshCount()			const	{ return meshes.size(); }
+	const Mesh& GetMesh(size_t index)	const	{ return meshes.at(index); }
 
-	size_t		GetNodeCount() const { return nodes.size(); }
-	const Node& GetNode(size_t index) const { return nodes.at(index); }
+	size_t		GetNodeCount()			const	{ return nodes.size(); }
+	const Node& GetNode(size_t index)	const	{ return nodes.at(index); }
 
-	size_t		GetBoneCount() const { return bones.size(); }
-	const Bone& GetBone(size_t index) const { return bones.at(index); }
+	size_t		GetBoneCount()			const	{ return bones.size(); }
+	const Bone& GetBone(size_t index)	const	{ return bones.at(index); }
 	
 
 private:
 
-	//Assimpã‚’ä½¿ç”¨ã—ãŸå„ãƒ­ãƒ¼ãƒ‰å‡¦ç†
+	//Assimp‚ğg—p‚µ‚½Šeƒ[ƒhˆ—
 	bool LoadScene(	const aiScene* scene);
 	bool LoadNodes(	const aiNode*  node, int32_t parentIndex);
 	bool LoadMeshes(const aiScene* scene);

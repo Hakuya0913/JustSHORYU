@@ -2,7 +2,7 @@
 
 /*
 
-Position,Rotation,Scaleã‚’æŒã¤ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+Position,Rotation,Scale‚ğ‚ÂƒRƒ“ƒ|[ƒlƒ“ƒg
 
 */
 
@@ -25,6 +25,9 @@ public:
 	const DirectX::SimpleMath::Vector3& GetPosition()	const { return position; }
 	const DirectX::SimpleMath::Vector3& GetRotation()	const { return rotation; }
 	const DirectX::SimpleMath::Vector3& GetScale()		const { return scale; }
+
+	//Worlds—ñ‚ğì¬‚µA•Ô‚·
+	DirectX::XMMATRIX GetWorldMatrix() const;
 
 private:
 

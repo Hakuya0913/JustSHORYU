@@ -30,7 +30,7 @@ public:
 
 	//LookAt
 	void SetLookAt(const DirectX::SimpleMath::Vector3& target) { lookAt = target; }
-	
+
 	const DirectX::SimpleMath::Vector3 GetLookAt() const { return lookAt; }
 
 	//Projection
@@ -40,21 +40,21 @@ public:
 		float nearClip, float farClip
 	);
 
-	void SetFov(float fov)					{ this->fov = fov; }
-	void SetAspectRatio(float aspectRatio)	{ this->aspectRatio = aspectRatio; }
-	void SetNearClip(float nearClip)		{ this->nearClip = nearClip; }
-	void SetFarClip(float nearClip)			{ this->farClip = farClip; }
+	void SetFov(float fov);
+	void SetAspectRatio(float aspectRatio);
+	void SetNearClip(float nearClip);
+	void SetFarClip(float nearClip);
 
-	float GetFov() const { return fov; }
-	float GetAspectRatio() const { return aspectRatio; }
-	float GetNearClip() const { return nearClip; }
-	float GetFarClip() const { return farClip; }
+	float GetFov()			const { return fov; }
+	float GetAspectRatio()	const { return aspectRatio; }
+	float GetNearClip()		const { return nearClip; }
+	float GetFarClip()		const { return farClip; }
 
 	//Matrix
 	const DirectX::SimpleMath::Matrix& GetrViewMatrix()		 const { return view; }
 	const DirectX::SimpleMath::Matrix& GetProjectionMatrix() const { return proj; }
 
-	//追従
+	//�Ǐ]
 	void SetFollowTarget(TransformComponent* target)				 { followTarget = target; }
 	void SetFollowOffset(const DirectX::SimpleMath::Vector3& offset) { followOffset = offset; }
 	void SetFollowDistance(float distance)							 { followDistance = distance; }
@@ -92,7 +92,7 @@ private:
 	DirectX::SimpleMath::Matrix view;
 	DirectX::SimpleMath::Matrix proj;
 
-	//追従用
+	//�Ǐ]�p
 	TransformComponent*				followTarget;
 	DirectX::SimpleMath::Vector3	followOffset;
 	float							followDistance;
