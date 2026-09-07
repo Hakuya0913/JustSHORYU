@@ -25,7 +25,7 @@ void App::Update() {
 		}
 		else {
 
-			//各オブジェクトの更新処理など
+			//�e�I�u�W�F�N�g�̍X�V�����Ȃ�
 			GraphicsDevice::GetInstance().BeginFrame();
 
 
@@ -33,7 +33,7 @@ void App::Update() {
 			
 			input.Update();
 
-			if (input.GetXInput().GetDigitalState(PadInputDigital::A) == InputState::Hold) {
+			if (input.GetKeyMouseInput().GetKeyState(VK_SPACE) == InputState::Hold) {
 
 				debugRenderer.DrawTriangle();
 
