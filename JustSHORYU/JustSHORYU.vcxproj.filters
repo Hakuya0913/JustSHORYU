@@ -97,6 +97,15 @@
     <Filter Include="Program\Camera">
       <UniqueIdentifier>{21e986db-7fd0-4ad5-9ca5-9a4bac3d1320}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Program\Render\Object">
+      <UniqueIdentifier>{9941b8c1-bb61-40e3-8e30-7e59c7a9555e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\Object\RootSig">
+      <UniqueIdentifier>{ee792258-75b4-4ae1-a558-3ec94b816ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\Object\PipelineState">
+      <UniqueIdentifier>{5ecd10d5-2ea2-4078-8f79-17e6920af1ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Program\main.cpp">
@@ -155,6 +164,12 @@
     </ClCompile>
     <ClCompile Include="Resource\Program\Component\TransformComponent.cpp">
       <Filter>Program\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Renderer\RootSignature.cpp">
+      <Filter>Program\Render\Object\RootSig</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Program\Renderer\PipelineState.cpp">
+      <Filter>Program\Render\Object\PipelineState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +241,12 @@
     </ClInclude>
     <ClInclude Include="Resource\Program\Camera\Camera.h">
       <Filter>Program\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Renderer\RootSignature.h">
+      <Filter>Program\Render\Object\RootSig</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Program\Renderer\PipelineState.h">
+      <Filter>Program\Render\Object\PipelineState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

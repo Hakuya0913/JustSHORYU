@@ -158,6 +158,8 @@
     <ClCompile Include="Resource\Program\Math\Vector.cpp" />
     <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp" />
     <ClCompile Include="Resource\Program\Renderer\ModelRenderer.cpp" />
+    <ClCompile Include="Resource\Program\Renderer\PipelineState.cpp" />
+    <ClCompile Include="Resource\Program\Renderer\RootSignature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource\Program\App\App.h" />
@@ -182,6 +184,8 @@
     <ClInclude Include="Resource\Program\Math\Vector.h" />
     <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h" />
     <ClInclude Include="Resource\Program\Renderer\ModelRenderer.h" />
+    <ClInclude Include="Resource\Program\Renderer\PipelineState.h" />
+    <ClInclude Include="Resource\Program\Renderer\RootSignature.h" />
     <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
   </ItemGroup>
   <ItemGroup>

@@ -16,23 +16,36 @@ class MaterialComponent
 {
 public:
 
+	//PBR前提
 	struct Material
 	{
 
 		std::string name;
 
-		//基本色
-		DirectX::XMFLOAT4 diffuseColor{	 1.0f, 1.0f, 1.0f, 1.0f };
-		DirectX::XMFLOAT4 specularColor{ 1.0f, 1.0f, 1.0f, 1.0f };
+		//BaseColor
+		DirectX::XMFLOAT4 baseColor = { 1.0f,1.0f,1.0f,1.0f };
 
-		//光沢
-		float shininess = 0.0f;
+		//Metalic
+		float metalic = 0.0f;
+
+		//Roughness
+		float roughness = 1.0f;
+
+		//AmbientOcclusion
+		float ambientOcclusion = 1.0f;
+
+		//EmissiveColor
+		DirectX::XMFLOAT3 emissiveColor = { 0.0f,0.0f,0.0f };
+
+		//EmissiveStrength
+		float emissiveStrength = 1.0f;
 
 		//テクスチャ
-		std::string diffuseTexture;
-		std::string specularTexture;
-		std::string normalTexture;
-		std::string emissiveTexture;
+		std::string baseColorTexture;			//BaseColor
+		std::string metalicRoughnessTexture;	//Metalic and Roughness
+		std::string normalTexture;				//Normal
+		std::string ambientOcclusionTexture;	//AmbientOcculusion
+		std::string emissiveTexture;			//EmissiveTexture
 
 	};
 

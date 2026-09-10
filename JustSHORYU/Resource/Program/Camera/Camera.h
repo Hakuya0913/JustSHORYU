@@ -22,7 +22,6 @@ public:
 	void SetPosition(const DirectX::SimpleMath::Vector3& position) { transform.SetPosition(position); }
 	void SetRotation(const DirectX::SimpleMath::Vector3& rotation) { transform.SetRotation(rotation); }
 
-			TransformComponent& GetTransform()			{ return transform; }
 	const	TransformComponent& GetTransform() const	{ return transform; }
 
 	DirectX::SimpleMath::Vector3 GetPosition() const { return transform.GetPosition(); }
@@ -43,7 +42,7 @@ public:
 	void SetFov(float fov);
 	void SetAspectRatio(float aspectRatio);
 	void SetNearClip(float nearClip);
-	void SetFarClip(float nearClip);
+	void SetFarClip(float farClip);
 
 	float GetFov()			const { return fov; }
 	float GetAspectRatio()	const { return aspectRatio; }

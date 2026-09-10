@@ -23,7 +23,7 @@ public:
 
 	//Getter
 	TransformComponent& GetTransform() const	{ return transformComponent; }
-
+	
 	
 	ModelComponent& GetModel() const { return modelComponent; }
 
