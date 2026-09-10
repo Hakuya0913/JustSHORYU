@@ -108,144 +108,144 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Resource\Program\main.cpp">
+    <ClCompile Include="Program\main.cpp">
       <Filter>Program</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\App\App.cpp">
+    <ClCompile Include="Program\App\App.cpp">
       <Filter>Program\App</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Core\Window.cpp">
+    <ClCompile Include="Program\Core\Window.cpp">
       <Filter>Program\Core\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp">
+    <ClCompile Include="Program\Core\GraphicsDevice.cpp">
       <Filter>Program\Core\GraphicsDevice</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp">
+    <ClCompile Include="Program\Input\KeyMouseInput.cpp">
       <Filter>Program\Input\KeyMouseInput</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputManager.cpp">
+    <ClCompile Include="Program\Input\InputManager.cpp">
       <Filter>Program\Input\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\XInput.cpp">
+    <ClCompile Include="Program\Input\XInput.cpp">
       <Filter>Program\Input\XInput</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Math\Vector.cpp">
+    <ClCompile Include="Program\Math\Vector.cpp">
       <Filter>Program\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp">
+    <ClCompile Include="Program\Renderer\DebugRenderer.cpp">
       <Filter>Program\Render\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputMapper.cpp">
+    <ClCompile Include="Program\Input\InputMapper.cpp">
       <Filter>Program\Input\InputMapper</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputBindDigital.cpp">
+    <ClCompile Include="Program\Input\InputBindDigital.cpp">
       <Filter>Program\Input\InputBinding\Digital</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputBindAnalog1D.cpp">
+    <ClCompile Include="Program\Input\InputBindAnalog1D.cpp">
       <Filter>Program\Input\InputBinding\Analog\1D</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Input\InputBindAnalog2D.cpp">
+    <ClCompile Include="Program\Input\InputBindAnalog2D.cpp">
       <Filter>Program\Input\InputBinding\Analog\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Component\RenderComponent.cpp">
+    <ClCompile Include="Program\Component\RenderComponent.cpp">
       <Filter>Program\Component\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Component\ModelComponent.cpp">
+    <ClCompile Include="Program\Component\ModelComponent.cpp">
       <Filter>Program\Component\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp">
+    <ClCompile Include="Program\Component\MaterialComponent.cpp">
       <Filter>Program\Component\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Renderer\ModelRenderer.cpp">
+    <ClCompile Include="Program\Renderer\ModelRenderer.cpp">
       <Filter>Program\Render\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Camera\Camera.cpp">
+    <ClCompile Include="Program\Camera\Camera.cpp">
       <Filter>Program\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Component\TransformComponent.cpp">
+    <ClCompile Include="Program\Component\TransformComponent.cpp">
       <Filter>Program\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Renderer\RootSignature.cpp">
+    <ClCompile Include="Program\Renderer\RootSignature.cpp">
       <Filter>Program\Render\Object\RootSig</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Program\Renderer\PipelineState.cpp">
+    <ClCompile Include="Program\Renderer\PipelineState.cpp">
       <Filter>Program\Render\Object\PipelineState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource\Program\App\App.h">
+    <ClInclude Include="Program\App\App.h">
       <Filter>Program\App</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Core\Window.h">
+    <ClInclude Include="Program\Core\Window.h">
       <Filter>Program\Core\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Core\GraphicsDevice.h">
+    <ClInclude Include="Program\Core\GraphicsDevice.h">
       <Filter>Program\Core\GraphicsDevice</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Utility\ComPtr.h">
+    <ClInclude Include="Program\Utility\ComPtr.h">
       <Filter>Program\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InterfaceInput.h">
+    <ClInclude Include="Program\Input\InterfaceInput.h">
       <Filter>Program\Input\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\ConstantInput.h">
+    <ClInclude Include="Program\Input\ConstantInput.h">
       <Filter>Program\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Core\ConstantCore.h">
+    <ClInclude Include="Program\Core\ConstantCore.h">
       <Filter>Program\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\KeyMouseInput.h">
+    <ClInclude Include="Program\Input\KeyMouseInput.h">
       <Filter>Program\Input\KeyMouseInput</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputManager.h">
+    <ClInclude Include="Program\Input\InputManager.h">
       <Filter>Program\Input\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\XInput.h">
+    <ClInclude Include="Program\Input\XInput.h">
       <Filter>Program\Input\XInput</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Math\StructureMath.h">
+    <ClInclude Include="Program\Math\StructureMath.h">
       <Filter>Program\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Math\Vector.h">
+    <ClInclude Include="Program\Math\Vector.h">
       <Filter>Program\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h">
+    <ClInclude Include="Program\Renderer\DebugRenderer.h">
       <Filter>Program\Render\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputMapper.h">
+    <ClInclude Include="Program\Input\InputMapper.h">
       <Filter>Program\Input\InputMapper</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputBindDigital.h">
+    <ClInclude Include="Program\Input\InputBindDigital.h">
       <Filter>Program\Input\InputBinding\Digital</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputBindAnalog1D.h">
+    <ClInclude Include="Program\Input\InputBindAnalog1D.h">
       <Filter>Program\Input\InputBinding\Analog\1D</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Input\InputBindAnalog2D.h">
+    <ClInclude Include="Program\Input\InputBindAnalog2D.h">
       <Filter>Program\Input\InputBinding\Analog\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Component\TransformComponent.h">
+    <ClInclude Include="Program\Component\TransformComponent.h">
       <Filter>Program\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Component\RenderComponent.h">
+    <ClInclude Include="Program\Component\RenderComponent.h">
       <Filter>Program\Component\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Component\ModelComponent.h">
+    <ClInclude Include="Program\Component\ModelComponent.h">
       <Filter>Program\Component\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Component\MaterialComponent.h">
+    <ClInclude Include="Program\Component\MaterialComponent.h">
       <Filter>Program\Component\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Renderer\ModelRenderer.h">
+    <ClInclude Include="Program\Renderer\ModelRenderer.h">
       <Filter>Program\Render\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Camera\Camera.h">
+    <ClInclude Include="Program\Camera\Camera.h">
       <Filter>Program\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Renderer\RootSignature.h">
+    <ClInclude Include="Program\Renderer\RootSignature.h">
       <Filter>Program\Render\Object\RootSig</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Program\Renderer\PipelineState.h">
+    <ClInclude Include="Program\Renderer\PipelineState.h">
       <Filter>Program\Render\Object\PipelineState</Filter>
     </ClInclude>
   </ItemGroup>
@@ -253,10 +253,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resource\Program\Shader\DebugPS.hlsl">
+    <FxCompile Include="Program\Shader\DebugPS.hlsl">
       <Filter>ShaderProgram\Debug</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\Program\Shader\DebugVS.hlsl">
+    <FxCompile Include="Program\Shader\DebugVS.hlsl">
       <Filter>ShaderProgram\Debug</Filter>
     </FxCompile>
   </ItemGroup>

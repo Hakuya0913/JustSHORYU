@@ -84,3 +84,78 @@ void PipelineState::SetVS(const std::wstring& filePath)
     desc.VS.BytecodeLength = vsBlob->GetBufferSize();
 
 }
+
+void PipelineState::SetPS(const std::wstring& filePath)
+{
+
+    if (LoadShader(filePath, psBlob) == false)
+    {
+
+        return;
+
+    }
+
+    desc.PS.pShaderBytecode = psBlob->GetBufferPointer();
+    desc.PS.BytecodeLength = psBlob->GetBufferSize();
+
+}
+
+bool PipelineState::Create(ID3D12Device6* device)
+{
+
+    if (device == nullptr)
+    {
+
+        return false;
+
+    }
+
+    //必須設定の確認
+    if (desc.pRootSignature     == nullptr) return false;
+    if (desc.VS.pShaderBytecode == nullptr) return false;
+    if (desc.PS.pShaderBytecode == nullptr) return false;
+
+    isValid = false;
+
+    HRESULT hr;
+
+    hr = device->CreateGraphicsPipelineState(
+        &desc,
+        IID_PPV_ARGS(pso.GetAddressOf())
+    );
+
+    if (FAILED(hr))
+    {
+
+        return false;
+
+    }
+
+    isValid = true;
+
+    return true;
+
+}
+
+bool PipelineState::LoadShader(const std::wstring& filePath, ComPtr<ID3DBlob>& shaderBlob)
+{
+
+    shaderBlob.Reset();
+
+    HRESULT hr;
+
+    hr = D3DReadFileToBlob(
+        filePath.c_str(),
+        shaderBlob.GetAddressOf()
+    );
+
+    if (FAILED(hr))
+    {
+
+        return false;
+
+    }
+
+    return true;
+
+}
