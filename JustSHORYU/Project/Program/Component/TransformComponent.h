@@ -2,7 +2,7 @@
 
 /*
 
-Position,Rotation,Scaleã‚’æŒã¤ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+Position,Rotation,Scale‚ğ‚ÂƒRƒ“ƒ|[ƒlƒ“ƒg
 
 */
 
@@ -19,17 +19,20 @@ public:
 	//Setter
 	void SetPosition(const DirectX::SimpleMath::Vector3& pos) { position = pos; }
 	void SetRotation(const DirectX::SimpleMath::Vector3& rot) { rotation = rot; }
-	void SetScale(const DirectX::SimpleMath::Vector3&	 scl) { scale	 = scl; }
+	void SetScale(	 const DirectX::SimpleMath::Vector3& scl) { scale	 = scl; }
 
 	//Getter
 	const DirectX::SimpleMath::Vector3& GetPosition()	const { return position; }
 	const DirectX::SimpleMath::Vector3& GetRotation()	const { return rotation; }
 	const DirectX::SimpleMath::Vector3& GetScale()		const { return scale; }
 
+	//Worlds—ñ‚ğì¬‚µA•Ô‚·
+	DirectX::XMMATRIX GetWorldMatrix() const;
+
 private:
 
 	DirectX::SimpleMath::Vector3 position	= DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3 rotation	= DirectX::SimpleMath::Vector3::Zero;
-	DirectX::SimpleMath::Vector3 scale		= DirectX::SimpleMath::Vector3::One;	
+	DirectX::SimpleMath::Vector3 scale		= DirectX::SimpleMath::Vector3::One;
 
 };

@@ -100,71 +100,36 @@ bool MaterialComponent::LoadMaterial(const aiMaterial* material)
 	}
 
 	//DiffuseColor
-	aiColor4D diffuseColor;
+	aiColor4D baseColor;
 
 	isFuncSuccess 
 		= aiGetMaterialColor(
 			material,
 			AI_MATKEY_COLOR_DIFFUSE,
-			&diffuseColor
+			&baseColor
 	);
 
 	if (isFuncSuccess == AI_SUCCESS)
 	{
 
-		result.diffuseColor.x = diffuseColor.r;
-		result.diffuseColor.y = diffuseColor.g;
-		result.diffuseColor.z = diffuseColor.b;
-		result.diffuseColor.w = diffuseColor.a;
+		result.baseColor.x = baseColor.r;
+		result.baseColor.y = baseColor.g;
+		result.baseColor.z = baseColor.b;
+		result.baseColor.w = baseColor.a;
 
 	}
 
-	//SpecularColor
+	//BaseColorTexture
+	result.baseColorTexture = GetTexturePath(material, aiTextureType_BASE_COLOR);
 
-	aiColor4D specularColor;
-
-	isFuncSuccess
-		= aiGetMaterialColor(
-			material,
-			AI_MATKEY_COLOR_SPECULAR,
-			&specularColor
-		);
-
-	if (isFuncSuccess == AI_SUCCESS)
-	{
-
-		result.specularColor.x = specularColor.r;
-		result.specularColor.y = specularColor.g;
-		result.specularColor.z = specularColor.b;
-		result.specularColor.w = specularColor.a;
-
-	}
-
-	//Shininess
-	float shininess = 0.0f;
-
-	isFuncSuccess
-		= aiGetMaterialFloat(
-			material,
-			AI_MATKEY_SHININESS,
-			&shininess
-		);
-
-	if (isFuncSuccess == AI_SUCCESS)
-	{
-
-		result.shininess = shininess;
-
-	}
-
-	//DiffuseTexture
-	result.diffuseTexture = GetTexturePath(material, aiTextureType_DIFFUSE);
-
-	//SpecularTexture
-	result.specularTexture = GetTexturePath(material, aiTextureType_SPECULAR);
+	//Metalic and Roughness Texture
+	result.metalicRoughnessTexture = GetTexturePath(material, aiTextureType_UNKNOWN);
 
 	//NormalTexture
 	result.normalTexture = GetTexturePath(material, aiTextureType_NORMALS);
+
+	//AmbientOcclusionTexture
+	result.ambientOcclusionTexture = GetTexturePath(material, aiTextureType_AMBIENT_OCCLUSION);
 
 	//EmissiveTexture
 	result.emissiveTexture = GetTexturePath(material, aiTextureType_EMISSIVE);

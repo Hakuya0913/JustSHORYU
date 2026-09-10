@@ -139,58 +139,67 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Resource\Program\App\App.cpp" />
-    <ClCompile Include="Resource\Program\Component\MaterialComponent.cpp" />
-    <ClCompile Include="Resource\Program\Component\ModelComponent.cpp" />
-    <ClCompile Include="Resource\Program\Component\RenderComponent.cpp" />
-    <ClCompile Include="Resource\Program\Core\GraphicsDevice.cpp" />
-    <ClCompile Include="Resource\Program\Core\Window.cpp" />
-    <ClCompile Include="Resource\Program\Input\InputBindAnalog1D.cpp" />
-    <ClCompile Include="Resource\Program\Input\InputBindAnalog2D.cpp" />
-    <ClCompile Include="Resource\Program\Input\InputBindDigital.cpp" />
-    <ClCompile Include="Resource\Program\Input\InputManager.cpp" />
-    <ClCompile Include="Resource\Program\Input\InputMapper.cpp" />
-    <ClCompile Include="Resource\Program\Input\KeyMouseInput.cpp" />
-    <ClCompile Include="Resource\Program\Input\XInput.cpp" />
-    <ClCompile Include="Resource\Program\main.cpp" />
-    <ClCompile Include="Resource\Program\Math\Vector.cpp" />
-    <ClCompile Include="Resource\Program\Renderer\DebugRenderer.cpp" />
+    <ClCompile Include="Program\App\App.cpp" />
+    <ClCompile Include="Program\Camera\Camera.cpp" />
+    <ClCompile Include="Program\Component\MaterialComponent.cpp" />
+    <ClCompile Include="Program\Component\ModelComponent.cpp" />
+    <ClCompile Include="Program\Component\RenderComponent.cpp" />
+    <ClCompile Include="Program\Component\TransformComponent.cpp" />
+    <ClCompile Include="Program\Core\GraphicsDevice.cpp" />
+    <ClCompile Include="Program\Core\Window.cpp" />
+    <ClCompile Include="Program\Input\InputBindAnalog1D.cpp" />
+    <ClCompile Include="Program\Input\InputBindAnalog2D.cpp" />
+    <ClCompile Include="Program\Input\InputBindDigital.cpp" />
+    <ClCompile Include="Program\Input\InputManager.cpp" />
+    <ClCompile Include="Program\Input\InputMapper.cpp" />
+    <ClCompile Include="Program\Input\KeyMouseInput.cpp" />
+    <ClCompile Include="Program\Input\XInput.cpp" />
+    <ClCompile Include="Program\main.cpp" />
+    <ClCompile Include="Program\Math\Vector.cpp" />
+    <ClCompile Include="Program\Renderer\DebugRenderer.cpp" />
+    <ClCompile Include="Program\Renderer\ModelRenderer.cpp" />
+    <ClCompile Include="Program\Renderer\PipelineState.cpp" />
+    <ClCompile Include="Program\Renderer\RootSignature.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource\Program\App\App.h" />
-    <ClInclude Include="Resource\Program\Component\MaterialComponent.h" />
-    <ClInclude Include="Resource\Program\Component\ModelComponent.h" />
-    <ClInclude Include="Resource\Program\Component\RenderComponent.h" />
-    <ClInclude Include="Resource\Program\Component\TransformComponent.h" />
-    <ClInclude Include="Resource\Program\Core\ConstantCore.h" />
-    <ClInclude Include="Resource\Program\Core\GraphicsDevice.h" />
-    <ClInclude Include="Resource\Program\Core\Window.h" />
-    <ClInclude Include="Resource\Program\Input\ConstantInput.h" />
-    <ClInclude Include="Resource\Program\Input\InputBindAnalog1D.h" />
-    <ClInclude Include="Resource\Program\Input\InputBindAnalog2D.h" />
-    <ClInclude Include="Resource\Program\Input\InputBindDigital.h" />
-    <ClInclude Include="Resource\Program\Input\InputManager.h" />
-    <ClInclude Include="Resource\Program\Input\InputMapper.h" />
-    <ClInclude Include="Resource\Program\Input\InterfaceInput.h" />
-    <ClInclude Include="Resource\Program\Input\KeyMouseInput.h" />
-    <ClInclude Include="Resource\Program\Input\XInput.h" />
-    <ClInclude Include="Resource\Program\Math\StructureMath.h" />
-    <ClInclude Include="Resource\Program\Math\Vector.h" />
-    <ClInclude Include="Resource\Program\Renderer\DebugRenderer.h" />
-    <ClInclude Include="Resource\Program\Utility\ComPtr.h" />
+    <ClInclude Include="Program\App\App.h" />
+    <ClInclude Include="Program\Camera\Camera.h" />
+    <ClInclude Include="Program\Component\MaterialComponent.h" />
+    <ClInclude Include="Program\Component\ModelComponent.h" />
+    <ClInclude Include="Program\Component\RenderComponent.h" />
+    <ClInclude Include="Program\Component\TransformComponent.h" />
+    <ClInclude Include="Program\Core\ConstantCore.h" />
+    <ClInclude Include="Program\Core\GraphicsDevice.h" />
+    <ClInclude Include="Program\Core\Window.h" />
+    <ClInclude Include="Program\Input\ConstantInput.h" />
+    <ClInclude Include="Program\Input\InputBindAnalog1D.h" />
+    <ClInclude Include="Program\Input\InputBindAnalog2D.h" />
+    <ClInclude Include="Program\Input\InputBindDigital.h" />
+    <ClInclude Include="Program\Input\InputManager.h" />
+    <ClInclude Include="Program\Input\InputMapper.h" />
+    <ClInclude Include="Program\Input\InterfaceInput.h" />
+    <ClInclude Include="Program\Input\KeyMouseInput.h" />
+    <ClInclude Include="Program\Input\XInput.h" />
+    <ClInclude Include="Program\Math\StructureMath.h" />
+    <ClInclude Include="Program\Math\Vector.h" />
+    <ClInclude Include="Program\Renderer\DebugRenderer.h" />
+    <ClInclude Include="Program\Renderer\ModelRenderer.h" />
+    <ClInclude Include="Program\Renderer\PipelineState.h" />
+    <ClInclude Include="Program\Renderer\RootSignature.h" />
+    <ClInclude Include="Program\Utility\ComPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resource\Program\Shader\DebugPS.hlsl">
+    <FxCompile Include="Program\Shader\DebugPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resource\Program\Shader\DebugVS.hlsl">
+    <FxCompile Include="Program\Shader\DebugVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
