@@ -23,8 +23,8 @@ public:
 	void SetInputLayout(const D3D12_INPUT_LAYOUT_DESC& layout);
 	void SetRootSignature(ID3D12RootSignature* rootSig);
 
-	void SetVS(const std::wstring& filePath);
-	void SetPS(const std::wstring& filePath);
+	bool SetVS(const std::wstring& filePath);
+	bool SetPS(const std::wstring& filePath);
 
 	//PSO生成
 	bool Create(ID3D12Device6* device);

@@ -22,19 +22,19 @@ bool RootSignature::Create(ID3D12Device6* device)
 	//RootParameter
 	D3D12_ROOT_PARAMETER rootParameters[3]{};
 
-	//Param0 : Object
+	//Param0 : TransformBuffer : b0
 	rootParameters[0].ParameterType				= D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].Descriptor.ShaderRegister = 0;
 	rootParameters[0].Descriptor.RegisterSpace	= 0;
 	rootParameters[0].ShaderVisibility			= D3D12_SHADER_VISIBILITY_VERTEX;
 
-	//Pram1 : Camera
+	//Pram1 : View / Proj MatrixBuffer : b1
 	rootParameters[1].ParameterType				= D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[1].Descriptor.ShaderRegister = 1;
 	rootParameters[1].Descriptor.RegisterSpace	= 0;
 	rootParameters[1].ShaderVisibility			= D3D12_SHADER_VISIBILITY_VERTEX;
 
-	//Pram2 : Material
+	//Pram2 : MaterialBuffer : b2
 	rootParameters[2].ParameterType				= D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[2].Descriptor.ShaderRegister = 2;
 	rootParameters[2].Descriptor.RegisterSpace	= 0;

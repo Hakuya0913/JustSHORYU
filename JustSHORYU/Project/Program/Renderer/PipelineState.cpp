@@ -70,33 +70,37 @@ void PipelineState::SetRootSignature(ID3D12RootSignature* rootSignature)
 
 }
 
-void PipelineState::SetVS(const std::wstring& filePath)
+bool PipelineState::SetVS(const std::wstring& filePath)
 {
 
     if (LoadShader(filePath, vsBlob) == false)
     {
 
-        return;
+        return false;
 
     }
 
     desc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
     desc.VS.BytecodeLength = vsBlob->GetBufferSize();
 
+    return true;
+
 }
 
-void PipelineState::SetPS(const std::wstring& filePath)
+bool PipelineState::SetPS(const std::wstring& filePath)
 {
 
     if (LoadShader(filePath, psBlob) == false)
     {
 
-        return;
+        return false;
 
     }
 
     desc.PS.pShaderBytecode = psBlob->GetBufferPointer();
     desc.PS.BytecodeLength = psBlob->GetBufferSize();
+
+    return true;
 
 }
 
