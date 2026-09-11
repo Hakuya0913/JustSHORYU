@@ -42,11 +42,11 @@ bool RootSignature::Create(ID3D12Device6* device)
 
 	//RootSignatureDesc設定
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
-	rootSigDesc.NumParameters = 3;
-	rootSigDesc.pParameters = rootParameters;
+	rootSigDesc.NumParameters	= 3;
+	rootSigDesc.pParameters		= rootParameters;
 
-	rootSigDesc.NumStaticSamplers = 0;
-	rootSigDesc.pStaticSamplers = nullptr;
+	rootSigDesc.NumStaticSamplers	= 0;
+	rootSigDesc.pStaticSamplers		= nullptr;
 
 	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
