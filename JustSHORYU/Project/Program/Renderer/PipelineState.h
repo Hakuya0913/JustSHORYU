@@ -19,12 +19,15 @@ public:
 
 	PipelineState();
 
-	//PSO設定
+	//Create()呼ぶ前に設定
 	void SetInputLayout(const D3D12_INPUT_LAYOUT_DESC& layout);
 	void SetRootSignature(ID3D12RootSignature* rootSig);
-
 	bool SetVS(const std::wstring& filePath);
 	bool SetPS(const std::wstring& filePath);
+
+	//Getter
+	ID3D12PipelineState* GetPSO() const { return pso.Get(); }
+
 
 	//PSO生成
 	bool Create(ID3D12Device6* device);

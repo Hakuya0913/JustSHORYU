@@ -1,6 +1,35 @@
 #include"GraphicsDevice.h"
 
+#if _DEBUG
+
+void EnableD3D12DebugLayer()
+{
+
+	ComPtr<ID3D12Debug> debugController;
+
+	HRESULT hr;
+	hr = D3D12GetDebugInterface(
+		IID_PPV_ARGS(debugController.GetAddressOf())
+	);
+
+	if (SUCCEEDED(hr))
+	{
+
+		debugController->EnableDebugLayer();
+
+	}
+
+}
+
+#endif
+
 bool GraphicsDevice::Init(HWND hwnd, UINT resolutionW, UINT resolutionH) {
+
+#if _DEBUG
+
+	EnableD3D12DebugLayer();
+
+#endif
 
 	this->hwnd = hwnd;
 	this->resolutionW = resolutionW;
@@ -19,6 +48,8 @@ bool GraphicsDevice::Init(HWND hwnd, UINT resolutionW, UINT resolutionH) {
 
 	if (!CreateRenderTarget()) return false;
 	if (!CreateDepthStencil()) return false;
+
+	return true;
 
 }
 
@@ -333,11 +364,16 @@ bool GraphicsDevice::CreateDepthStencil() {
 		dsvHandle
 	);
 
+	return true;
+
 }
 
 void GraphicsDevice::BeginFrame() {
 
-	//レンダーターゲットの更新
+	//バックバッファインデックス更新
+	currentBackBufferIndex = swapChain->GetCurrentBackBufferIndex();
+
+	//レンダーターゲット更新
 	currentRenderTarget = renderTargets[currentBackBufferIndex].Get();
 
 	//コマンド初期化
@@ -422,9 +458,6 @@ void GraphicsDevice::EndFrame() {
 	//描画完了を待つ
 	WaitRender();
 
-	//バックバッファ番号更新
-	currentBackBufferIndex = swapChain->GetCurrentBackBufferIndex();
-
 }
 
 void GraphicsDevice::WaitRender() {
@@ -446,7 +479,7 @@ void GraphicsDevice::WaitRender() {
 
 		}
 
-		if (WAIT_OBJECT_0 != WaitForSingleObjectEx(fenceEvent, INFINITE, FALSE)); {
+		if (WAIT_OBJECT_0 != WaitForSingleObjectEx(fenceEvent, INFINITE, FALSE)) {
 
 			return;
 

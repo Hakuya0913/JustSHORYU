@@ -12,9 +12,19 @@ D3Dクラスやゲームシーン管理クラスの
 //デバッグ用
 #include"../Renderer/DebugRenderer.h"
 #include"../Input/InputManager.h"
+#include"..\Camera\Camera.h"
+#include"..\Renderer\/ModelRenderer.h"
+#include"../Component/MaterialComponent.h"
+#include"../Component/ModelComponent.h"
+#include"../Component/RenderComponent.h"
+#include"../Component/TransformComponent.h"
+
 
 class App {
 public:
+
+	App();
+	~App() = default;
 
 	void Init();
 
@@ -26,5 +36,11 @@ private:
 
 	//デバッグ用
 	DebugRenderer debugRenderer;
+	Camera camera;
+	TransformComponent transform;
+	ModelComponent model;
+	MaterialComponent material;
+	RenderComponent renderComponent;
+	ModelRenderer modelRenderer;
 
 };

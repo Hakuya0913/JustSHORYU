@@ -9,26 +9,26 @@ FBXモデルの表示
 #include<d3d12.h>
 #include<vector>
 #include<cstdint>
+#include<array>
+#include<dxgi1_6.h>
+#include<DirectXMath.h>
 #include"../Utility/ComPtr.h"
 #include"../Component/RenderComponent.h"
 #include"RootSignature.h"
 #include"PipelineState.h"
-
-class Camera;
-class LightManager;
+#include"../Camera/Camera.h"
 
 class ModelRenderer
 {
 public:
 
-	ModelRenderer(
-		ID3D12Device6* device,
-		Camera& camera
-	);
+	ModelRenderer() = default;
 	~ModelRenderer() = default;
 
 	//初期化
-	bool Init();
+	bool Init(ID3D12Device6* device, Camera& camera);
+
+	bool CreateModelResource(const ModelComponent& model);
 
 	//描画
 	void Render(
@@ -61,6 +61,8 @@ private:
 		DirectX::XMFLOAT4X4 view{};
 		DirectX::XMFLOAT4X4 proj{};
 
+		float padding[16] = {};	//padding
+
 	};
 
 	struct alignas(256) MaterialBuffer
@@ -76,19 +78,23 @@ private:
 		DirectX::XMFLOAT3 emissiveColor{};
 		float			  emissiveStrength = 1.0f;
 
+		float padding2[44] = {};	//padding
+
 	};
 
 	//初期化に使用する
-	bool CreateModelResource(const ModelComponent& model);
 	bool CreateMeshResource( const ModelComponent::Mesh& mesh, MeshResource& resource);
 	bool CreateVertexBuffer( const ModelComponent::Mesh& mesh, MeshResource& resource);
-	bool CreateIndexBUffer(	 const ModelComponent::Mesh& mesh, MeshResource& resource);
+	bool CreateIndexBuffer(	 const ModelComponent::Mesh& mesh, MeshResource& resource);
 
 	bool CreateConstantBuffers();
 
 	//更新
 	void UpdateTransformBuffer(const RenderComponent& renderComponent);
 	void UpdateMaterialBuffer( const MaterialComponent::Material& material);
+
+	//定数バッファサイズを256byte境界に合わせる
+	constexpr UINT AlignConstantBufferSize(UINT size);
 
 	//DX12
 	ComPtr<ID3D12Device6> device;
@@ -97,7 +103,7 @@ private:
 	PipelineState pso;
 
 	//外部の参照
-	Camera& camera;
+	Camera* camera;
 
 	//モデルリソース
 	std::vector<MeshResource> meshResources;

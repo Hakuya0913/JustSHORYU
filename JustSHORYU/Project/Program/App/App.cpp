@@ -1,12 +1,62 @@
 #include"App.h"
 #include"../Core/GraphicsDevice.h"
 
+App::App()
+{
+
+	//特に処理なし
+
+}
+
 void App::Init() {
 
 	window.Init();
 	GraphicsDevice::GetInstance().Init(window.GetHWND());
 
-	debugRenderer.Init();
+	//デバッグ用の要素初期化呼び出し等
+	{
+
+		bool isCorrect;
+
+		using namespace DirectX;
+		using namespace DirectX::SimpleMath;
+
+		debugRenderer.Init();
+		isCorrect = modelRenderer.Init(GraphicsDevice::GetInstance().GetDevice(), camera);
+
+		if (isCorrect == false)
+		{
+
+			return;
+
+		}
+
+		//カメラの要素セット
+		camera.SetPosition(Vector3(0.0f, -500.0f, -50.0f));
+		camera.SetLookAt(Vector3(0.0f, 50.0f, 0.0f));
+		camera.SetPerspective(
+			XMConvertToRadians(60.0f),
+			static_cast<float>(ConstVal::Window::ScreenW) / static_cast<float>(ConstVal::Window::ScreenH),
+			0.1f,
+			1000.0f
+		);
+
+		//モデルロード
+		model.Load("Model/Alicia/FBX/Alicia_solid_Unity.FBX");//ファイルパスを要設定
+
+		//modelの読み込みチェック
+
+
+		//モデルは原点に配置するのでTransfromいじらない
+
+		//RenderComponentに紐付け
+		renderComponent.SetTransform(transform);
+		renderComponent.SetMaterial(material);
+		renderComponent.SetModel(model);
+
+		modelRenderer.CreateModelResource(model);
+
+	}
 
 }
 
@@ -17,7 +67,7 @@ void App::Update() {
 
 	while (message.message != WM_QUIT) {
 
-		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE == TRUE)) {
+		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE)) {
 
 			TranslateMessage(&message);
 			DispatchMessage(&message);
@@ -25,21 +75,32 @@ void App::Update() {
 		}
 		else {
 
+			auto gfxDevice = GraphicsDevice::GetInstance();
+
 			//各オブジェクトの更新処理など
-			GraphicsDevice::GetInstance().BeginFrame();
+			gfxDevice.BeginFrame();
 
 
 			auto& input = InputManager::GetInstance();
-			
 			input.Update();
 
-			if (input.GetXInput().GetDigitalState(PadInputDigital::A) == InputState::Hold) {
+			//デバッグ用コード
+			{
 
-				debugRenderer.DrawTriangle();
+				if (input.GetXInput().GetDigitalState(PadInputDigital::A) == InputState::Hold) {
+
+					debugRenderer.DrawTriangle();
+
+				}
+
+				//Camera
+				camera.Update();
+
+				modelRenderer.Render(gfxDevice.GetCmdList(), renderComponent);
 
 			}
 
-			GraphicsDevice::GetInstance().EndFrame();
+			gfxDevice.EndFrame();
 
 		}
 

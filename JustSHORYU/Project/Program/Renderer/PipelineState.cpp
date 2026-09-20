@@ -1,5 +1,11 @@
 #include"PipelineState.h"
 
+#if _DEBUG
+
+#include<vector>
+
+#endif
+
 PipelineState::PipelineState()
 {
 
@@ -121,6 +127,90 @@ bool PipelineState::Create(ID3D12Device6* device)
 
     isValid = false;
 
+#if _DEBUG
+
+    ComPtr<ID3D12InfoQueue> infoQueue;
+
+    if (SUCCEEDED(device->QueryInterface(
+        IID_PPV_ARGS(infoQueue.GetAddressOf()))))
+    {
+        // CreateGraphicsPipelineState()実行前のメッセージ数を記録
+        const UINT64 messageCountBefore =
+            infoQueue->GetNumStoredMessages();
+
+        HRESULT hr;
+
+        hr = device->CreateGraphicsPipelineState(
+            &desc,
+            IID_PPV_ARGS(pso.GetAddressOf())
+        );
+
+        if (FAILED(hr))
+        {
+            // CreateGraphicsPipelineState()実行後のメッセージ数
+            const UINT64 messageCountAfter =
+                infoQueue->GetNumStoredMessages();
+
+            // 今回のPSO作成によって追加されたメッセージだけ取得
+            for (UINT64 i = messageCountBefore;
+                i < messageCountAfter;
+                ++i)
+            {
+                SIZE_T messageLength = 0;
+
+                if (FAILED(infoQueue->GetMessage(
+                    i,
+                    nullptr,
+                    &messageLength)))
+                {
+                    continue;
+                }
+
+                std::vector<char> messageBuffer(messageLength);
+
+                D3D12_MESSAGE* message =
+                    reinterpret_cast<D3D12_MESSAGE*>(
+                        messageBuffer.data());
+
+                if (SUCCEEDED(infoQueue->GetMessage(
+                    i,
+                    message,
+                    &messageLength)))
+                {
+                    OutputDebugStringA(
+                        message->pDescription
+                    );
+
+                    OutputDebugStringA("\n");
+                }
+
+                auto mes = message->pDescription;
+
+            }
+
+            return false;
+        }
+    }
+    else
+    {
+        // InfoQueueを取得できなかった場合
+        HRESULT hr;
+
+        hr = device->CreateGraphicsPipelineState(
+            &desc,
+            IID_PPV_ARGS(pso.GetAddressOf())
+        );
+
+        if (FAILED(hr))
+        {
+
+            return false;
+
+        }
+    }
+
+#else
+
     HRESULT hr;
 
     hr = device->CreateGraphicsPipelineState(
@@ -134,6 +224,8 @@ bool PipelineState::Create(ID3D12Device6* device)
         return false;
 
     }
+
+#endif
 
     isValid = true;
 

@@ -14,26 +14,24 @@ class RenderComponent
 {
 public:
 
-	RenderComponent(
-		TransformComponent& transform,
-		ModelComponent& model,
-		MaterialComponent& material
-	);
+	RenderComponent() = default;
 	~RenderComponent() = default;
 
-	//Getter
-	TransformComponent& GetTransform() const	{ return transformComponent; }
-	
-	
-	ModelComponent& GetModel() const { return modelComponent; }
+	//Setter
+	void SetTransform(TransformComponent& transform);
+	void SetModel(ModelComponent& model);
+	void SetMaterial(MaterialComponent& material);
 
-	MaterialComponent& GetMaterial() const	{ return materialComponent; }
+	//Getter
+	TransformComponent& GetTransform() const	{ return *transformComponent; }
+	ModelComponent& GetModel() const { return *modelComponent; }
+	MaterialComponent& GetMaterial() const	{ return *materialComponent; }
 
 private:
 
 	//描画に使用するコンポーネントへの参照
-	TransformComponent& transformComponent;
-	ModelComponent& modelComponent;
-	MaterialComponent& materialComponent;
+	TransformComponent* transformComponent;
+	ModelComponent* modelComponent;
+	MaterialComponent* materialComponent;
 
 };
