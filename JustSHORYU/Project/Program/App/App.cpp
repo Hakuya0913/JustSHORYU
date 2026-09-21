@@ -4,7 +4,7 @@
 App::App()
 {
 
-	//ç‰¹ã«å‡¦ç†ãªã—
+	//“Á‚Éˆ—‚È‚µ
 
 }
 
@@ -13,7 +13,7 @@ void App::Init() {
 	window.Init();
 	GraphicsDevice::GetInstance().Init(window.GetHWND());
 
-	//ãƒ‡ãƒãƒƒã‚°ç”¨ã®è¦ç´ åˆæœŸåŒ–å‘¼ã³å‡ºã—ç­‰
+	//ƒfƒoƒbƒO—p‚Ì—v‘f‰Šú‰»ŒÄ‚Ño‚µ“™
 	{
 
 		bool isCorrect;
@@ -31,7 +31,7 @@ void App::Init() {
 
 		}
 
-		//ã‚«ãƒ¡ãƒ©ã®è¦ç´ ã‚»ãƒƒãƒˆ
+		//ƒJƒƒ‰‚Ì—v‘fƒZƒbƒg
 		camera.SetPosition(Vector3(0.0f, -500.0f, -50.0f));
 		camera.SetLookAt(Vector3(0.0f, 50.0f, 0.0f));
 		camera.SetPerspective(
@@ -41,15 +41,15 @@ void App::Init() {
 			1000.0f
 		);
 
-		//ãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰
-		model.Load("Model/Alicia/FBX/Alicia_solid_Unity.FBX");//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¦è¨­å®š
+		//ƒ‚ƒfƒ‹ƒ[ƒh
+		model.Load("Model/Alicia/FBX/Alicia_solid_Unity.FBX");//ƒtƒ@ƒCƒ‹ƒpƒX‚ğ—vİ’è
 
-		//modelã®èª­ã¿è¾¼ã¿ãƒã‚§ãƒƒã‚¯
+		//model‚Ì“Ç‚İ‚İƒ`ƒFƒbƒN
 
 
-		//ãƒ¢ãƒ‡ãƒ«ã¯åŸç‚¹ã«é…ç½®ã™ã‚‹ã®ã§Transfromã„ã˜ã‚‰ãªã„
+		//ƒ‚ƒfƒ‹‚ÍŒ´“_‚É”z’u‚·‚é‚Ì‚ÅTransfrom‚¢‚¶‚ç‚È‚¢
 
-		//RenderComponentã«ç´ä»˜ã‘
+		//RenderComponent‚É•R•t‚¯
 		renderComponent.SetTransform(transform);
 		renderComponent.SetMaterial(material);
 		renderComponent.SetModel(model);
@@ -77,14 +77,14 @@ void App::Update() {
 
 			auto gfxDevice = GraphicsDevice::GetInstance();
 
-			//å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°å‡¦ç†ãªã©
+			//ŠeƒIƒuƒWƒFƒNƒg‚ÌXVˆ—‚È‚Ç
 			gfxDevice.BeginFrame();
 
 
 			auto& input = InputManager::GetInstance();
 			input.Update();
 
-			//ãƒ‡ãƒãƒƒã‚°ç”¨ã‚³ãƒ¼ãƒ‰
+			//ƒfƒoƒbƒO—pƒR[ƒh
 			{
 
 				if (input.GetXInput().GetDigitalState(PadInputDigital::A) == InputState::Hold) {
