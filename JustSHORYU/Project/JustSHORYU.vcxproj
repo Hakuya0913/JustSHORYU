@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Program\App\App.cpp" />
     <ClCompile Include="Program\Camera\Camera.cpp" />
-    <ClCompile Include="Program\Component\MaterialComponent.cpp" />
     <ClCompile Include="Program\Component\ModelComponent.cpp" />
     <ClCompile Include="Program\Component\RenderComponent.cpp" />
     <ClCompile Include="Program\Component\TransformComponent.cpp" />
@@ -164,8 +163,8 @@
   <ItemGroup>
     <ClInclude Include="Program\App\App.h" />
     <ClInclude Include="Program\Camera\Camera.h" />
-    <ClInclude Include="Program\Component\MaterialComponent.h" />
     <ClInclude Include="Program\Component\ModelComponent.h" />
+    <ClInclude Include="Program\Component\ModelStructure.h" />
     <ClInclude Include="Program\Component\RenderComponent.h" />
     <ClInclude Include="Program\Component\TransformComponent.h" />
     <ClInclude Include="Program\Core\ConstantCore.h" />

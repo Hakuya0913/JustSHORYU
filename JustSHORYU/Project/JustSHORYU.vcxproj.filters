@@ -85,9 +85,6 @@
     <Filter Include="Program\Component\Model">
       <UniqueIdentifier>{465a1d24-27af-4846-a0df-15c508a3e76a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Program\Component\Material">
-      <UniqueIdentifier>{30618391-0cbf-45f3-b813-e944f13b74cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderProgram\Debug">
       <UniqueIdentifier>{321c335e-93af-4edb-9c15-9c044392d32e}</UniqueIdentifier>
     </Filter>
@@ -155,9 +152,6 @@
     </ClCompile>
     <ClCompile Include="Program\Component\ModelComponent.cpp">
       <Filter>Program\Component\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Program\Component\MaterialComponent.cpp">
-      <Filter>Program\Component\Material</Filter>
     </ClCompile>
     <ClCompile Include="Program\Renderer\ModelRenderer.cpp">
       <Filter>Program\Render\Model</Filter>
@@ -236,9 +230,6 @@
     <ClInclude Include="Program\Component\ModelComponent.h">
       <Filter>Program\Component\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Program\Component\MaterialComponent.h">
-      <Filter>Program\Component\Material</Filter>
-    </ClInclude>
     <ClInclude Include="Program\Renderer\ModelRenderer.h">
       <Filter>Program\Render\Model</Filter>
     </ClInclude>
@@ -250,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Program\Renderer\PipelineState.h">
       <Filter>Program\Render\Object\PipelineState</Filter>
+    </ClInclude>
+    <ClInclude Include="Program\Component\ModelStructure.h">
+      <Filter>Program\Component\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

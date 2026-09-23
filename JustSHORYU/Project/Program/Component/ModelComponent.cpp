@@ -3,6 +3,7 @@
 #include<assimp/postprocess.h>
 #include<algorithm>
 #include<stdexcept>
+#include<cstring>
 
 bool ModelComponent::Load(const std::string& filePath)
 {
@@ -30,22 +31,43 @@ bool ModelComponent::Load(const std::string& filePath)
 bool ModelComponent::LoadScene(const aiScene* scene)
 {
 
+	if (scene == nullptr)
+	{
+		return false;
+	}
+
 	meshes.clear();
 	nodes.clear();
 	bones.clear();
+	materials.clear();
+	embeddedTextures.clear();
 
-	if (!LoadNodes(scene->mRootNode, -1)) return false;
+	if (LoadNodes(scene->mRootNode, -1) == false)
+	{
+		return false;
+	}
 
-	if (!LoadMeshes(scene)) return false;
+	if (LoadEmbeddedTextures(scene) == false)
+	{
+		return false;
+	}
+
+	if (LoadMaterials(scene) == false)
+	{
+		return false;
+	}
+
+	if (LoadMeshes(scene) == false)
+	{
+		return false;
+	}
 
 	return true;
 
 }
 
-bool ModelComponent::LoadNodes(
-	const aiNode* node,
-	int32_t parentIndex
-)
+bool ModelComponent::LoadNodes(const aiNode* node, int32_t parentIndex)
+
 {
 
 	if (!node) return false;
@@ -107,9 +129,7 @@ bool ModelComponent::LoadMesh(const aiMesh* mesh)
 
 	if (mesh == nullptr)
 	{
-
 		return false;
-
 	}
 
 	Mesh result;
@@ -195,9 +215,7 @@ bool ModelComponent::LoadMesh(const aiMesh* mesh)
 
 		if (LoadBones(mesh, result) == false)
 		{
-
 			return false;
-
 		}
 
 	}
@@ -220,9 +238,7 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 
 	if (!mesh)
 	{
-
 		return false;
-
 	}
 
 	//Assimpから取得したBoneWeightを一時的にすべて保持
@@ -235,16 +251,13 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 
 		if (aiBone == nullptr)
 		{
-
 			continue;
-
 		}
 
 		std::string boneName = aiBone->mName.C_Str();
 
 		//すでに登録済みか検索
-		uint32_t boneIndex = 0;
-		bool isFound = false;
+		uint32_t boneIndex = UINT32_MAX;
 
 		for (uint32_t j = 0; j < bones.size(); ++j)
 		{
@@ -253,7 +266,6 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 			{
 
 				boneIndex = j;
-				isFound = true;
 				break;
 
 			}
@@ -261,41 +273,44 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 		}
 
 		//新しいBone
-		if (isFound == false)
+		if (boneIndex == UINT32_MAX)
 		{
 
 			Bone bone;
 
-			bone.name			= boneName;
-			bone.nodeIndex		= FindNodeIndex(boneName);
-			bone.offsetMatrix	= ConvertMatrix(aiBone->mOffsetMatrix);
+			bone.name		= boneName;
+			bone.nodeIndex  = FindNodeIndex(boneName);
 
+			if (bone.nodeIndex == UINT32_MAX)
+			{
+				return false;
+			}
+
+			bone.offsetMatrix = ConvertMatrix(aiBone->mOffsetMatrix);
 			boneIndex = static_cast<uint32_t>(bones.size());
 
 			bones.emplace_back(bone);
 
 		}
 
+		//このMeshで使用するBoneとして登録
 		result.boneIndices.emplace_back(boneIndex);
 
-		//VertexWeight
-
+		//VertexWeightを一時保存
 		for (UINT j = 0; j < aiBone->mNumWeights; ++j)
 		{
 
 			const aiVertexWeight& weight = aiBone->mWeights[j];
 
-			if (weight.mVertexId >= result.boneWeights.size())
+			if (weight.mVertexId >= result.vertices.size())
 			{
-
 				continue;
-
 			}
 
 			BoneWeight boneWeight;
 
 			boneWeight.boneIndex = boneIndex;
-			boneWeight.weight = weight.mWeight;
+			boneWeight.weight	 = weight.mWeight;
 
 			temporaryWeights[weight.mVertexId].emplace_back(boneWeight);
 
@@ -319,7 +334,7 @@ bool ModelComponent::LoadBones(const aiMesh* mesh, Mesh& result)
 			);
 
 			//上位４つのボーンを採用
-			const size_t count = std::min(sourceWeights.size(), static_cast<size_t>(MaxBoneInfluences));
+			const size_t count = std::min(sourceWeights.size(), static_cast<size_t>(Mesh::MaxBoneInfluences));
 
 			float totalWeight = 0.0f;
 
@@ -369,6 +384,308 @@ uint32_t ModelComponent::FindNodeIndex(const std::string& name) const
 	}
 
 	return UINT32_MAX;
+
+}
+
+bool ModelComponent::LoadEmbeddedTextures(const aiScene* scene)
+{
+
+	if (scene == nullptr)
+	{
+		return false;
+	}
+
+	embeddedTextures.reserve(scene->mNumTextures);
+
+	for (UINT i = 0; i < scene->mNumTextures; ++i)
+	{
+
+		const aiTexture* aiTexture = scene->mTextures[i];
+
+		if (aiTexture == nullptr)
+		{
+			continue;
+		}
+
+		EmbeddedTexture texture;
+
+		texture.name = aiTexture->mFilename.C_Str();
+		texture.width = aiTexture->mWidth;
+		texture.height = aiTexture->mHeight;
+		texture.formatHint = aiTexture->achFormatHint;
+
+		//mHeightが0なら圧縮画像
+		if (aiTexture->mHeight == 0)
+		{
+
+			texture.isConpressed = true;
+
+			texture.data.resize(aiTexture->mWidth);
+
+			if (texture.data.empty() == false)
+			{
+				
+				std::memcpy(
+					texture.data.data(),
+					aiTexture->pcData,
+					texture.data.size()
+				);
+
+			}
+
+		}
+		else
+		{
+
+			//非圧縮のaiTexel
+			texture.isConpressed = false;
+
+			const size_t dataSize = aiTexture->mWidth * aiTexture->mHeight * sizeof(aiTexel);
+
+			texture.data.resize(dataSize);
+
+			if (texture.data.empty() == false)
+			{
+
+				std::memcpy(
+					texture.data.data(),
+					aiTexture->pcData,
+					dataSize
+				);
+
+			}
+
+		}
+
+		embeddedTextures.emplace_back(std::move(texture));
+
+	}
+
+	return true;
+
+}
+
+bool ModelComponent::LoadMaterials(const aiScene* scene)
+{
+
+	if (scene == nullptr)
+	{
+		return false;
+	}
+
+	materials.reserve(scene->mNumMaterials);
+
+	for (UINT i = 0; i < scene->mNumMaterials; ++i)
+	{
+
+		//個々のマテリアル読み込み
+		if (LoadMaterial(scene->mMaterials[i]) == false)
+		{
+			return false;
+		}
+
+	}
+
+	return true;
+
+}
+
+bool ModelComponent::LoadMaterial(const aiMaterial* material)
+{
+
+	if (material == nullptr)
+	{
+		return false;
+	}
+
+	Material result;
+	aiString materialName;
+	aiReturn isSuccess = AI_FAILURE;	//各関数の成功判定保持
+
+	isSuccess = material->Get(AI_MATKEY_NAME, materialName);
+	if (isSuccess == AI_SUCCESS)
+	{
+
+		result.name = materialName.C_Str();
+
+	}
+
+	//BaseColor取得
+	{
+
+		aiColor4D baseColor;
+		isSuccess = material->Get(AI_MATKEY_BASE_COLOR, baseColor);
+
+		if (isSuccess == AI_SUCCESS)
+		{
+
+			result.baseColor.x = baseColor.r;
+			result.baseColor.y = baseColor.g;
+			result.baseColor.z = baseColor.b;
+			result.baseColor.w = baseColor.a;
+
+		}
+		else
+		{
+
+			//PBRのBaseColorが取得できない場合
+			//DiffuseColorを使用する
+			aiColor4D diffuseColor;
+			isSuccess = material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
+
+			if (isSuccess == AI_SUCCESS)
+			{
+
+
+				result.baseColor.x = diffuseColor.r;
+				result.baseColor.y = diffuseColor.g;
+				result.baseColor.z = diffuseColor.b;
+				result.baseColor.w = diffuseColor.a;
+
+			}
+
+		}
+
+	}
+
+	//Metallic取得
+	{
+
+		float metallic = 0.0f;
+		isSuccess = material->Get(AI_MATKEY_METALLIC_FACTOR, metallic);
+
+		if (isSuccess == AI_SUCCESS)
+		{
+
+			result.metallic = metallic;
+
+		}
+
+	}
+
+	//Roughness
+	{
+
+		float roughness = 1.0f;
+		isSuccess = material->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness);
+
+		if (isSuccess == AI_SUCCESS)
+		{
+
+			result.roughness = roughness;
+
+		}
+
+	}
+
+	//EmissiveColor取得
+	{
+
+		aiColor3D emissiveColor;
+		isSuccess = material->Get(AI_MATKEY_COLOR_EMISSIVE, emissiveColor);
+
+		if (isSuccess == AI_SUCCESS)
+		{
+
+			result.emissiveColor.x = emissiveColor.r;
+			result.emissiveColor.y = emissiveColor.g;
+			result.emissiveColor.z = emissiveColor.b;
+
+		}
+
+	}
+
+	//EmissiveStrength取得
+	{
+
+		float emissiveStrength = 1.0f;
+		isSuccess = material->Get(AI_MATKEY_EMISSIVE_INTENSITY, emissiveStrength);
+
+		if (isSuccess == AI_SUCCESS)
+		{
+
+			result.emissiveStrength = emissiveStrength;
+
+		}
+
+	}
+
+	//各テクスチャリファレンス構造体の取得
+
+	//BaseColorが取得出来ない場合DiffuseColorを使用する
+	result.baseColorTexture = GetTextureReference(material, aiTextureType_BASE_COLOR);
+	if (result.baseColorTexture.IsValid() == false)
+	{
+
+		result.baseColorTexture = GetTextureReference(material, aiTextureType_DIFFUSE);
+
+	}
+
+	result.normalTexture = GetTextureReference(material, aiTextureType_NORMALS);
+	result.ambientOcclusionTexture = GetTextureReference(material, aiTextureType_AMBIENT_OCCLUSION);
+	result.emissiveTexture = GetTextureReference(material, aiTextureType_EMISSIVE);
+	result.metallicTexture = GetTextureReference(material, aiTextureType_METALNESS);
+	result.roughnessTexture = GetTextureReference(material, aiTextureType_DIFFUSE_ROUGHNESS);
+
+	materials.emplace_back(std::move(result));
+
+	return true;
+
+}
+
+TextureReference ModelComponent::GetTextureReference(const aiMaterial* material, aiTextureType type)
+{
+
+	TextureReference reference;
+
+	if (material->GetTextureCount(type) == 0)
+	{
+		return reference;
+	}
+
+	aiString path;
+	aiReturn isSuccess = AI_FAILURE;
+
+	isSuccess = material->GetTexture(type, 0, &path);
+
+	if (isSuccess != AI_SUCCESS)
+	{
+		return reference;
+	}
+
+	std::string texturePath = path.C_Str();
+
+	if (texturePath.empty() == true)
+	{
+		return reference;
+	}
+
+	//EmbeddedTexture
+	//Assimpでは *0 や *1 のように表現される
+	if (texturePath[0] == '*')
+	{
+
+		try
+		{
+
+			reference.embeddedTextureIndex = static_cast<int32_t>(std::stoul(texturePath.substr(1)));
+
+		}
+		catch (const std::exception&)
+		{
+			return TextureReference{};
+		}
+
+	}
+	else
+	{
+
+		//外部ファイルの場合
+		reference.path = texturePath;
+
+	}
+
+	return reference;
 
 }
 

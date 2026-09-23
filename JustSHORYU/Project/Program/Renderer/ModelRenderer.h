@@ -17,6 +17,8 @@ FBXモデルの表示
 #include"RootSignature.h"
 #include"PipelineState.h"
 #include"../Camera/Camera.h"
+#include"../Component/ModelComponent.h"
+#include"../Component/ModelStructure.h"
 
 class ModelRenderer
 {
@@ -83,15 +85,15 @@ private:
 	};
 
 	//初期化に使用する
-	bool CreateMeshResource( const ModelComponent::Mesh& mesh, MeshResource& resource);
-	bool CreateVertexBuffer( const ModelComponent::Mesh& mesh, MeshResource& resource);
-	bool CreateIndexBuffer(	 const ModelComponent::Mesh& mesh, MeshResource& resource);
+	bool CreateMeshResource( const Mesh& mesh, MeshResource& resource);
+	bool CreateVertexBuffer( const Mesh& mesh, MeshResource& resource);
+	bool CreateIndexBuffer(	 const Mesh& mesh, MeshResource& resource);
 
 	bool CreateConstantBuffers();
 
 	//更新
 	void UpdateTransformBuffer(const RenderComponent& renderComponent);
-	void UpdateMaterialBuffer( const MaterialComponent::Material& material);
+	void UpdateMaterialBuffer( const Material& material);
 
 	//定数バッファサイズを256byte境界に合わせる
 	constexpr UINT AlignConstantBufferSize(UINT size);
