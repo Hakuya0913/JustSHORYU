@@ -247,10 +247,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Program\Shader\CBufferList.hlsli">
       <Filter>ShaderProgram</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Program\Shader\DebugPS.hlsl">

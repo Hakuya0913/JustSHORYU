@@ -8,12 +8,12 @@ bool DebugRenderer::Init()
 	device = graphicsDevice.GetDevice();
 	cmdList = graphicsDevice.GetCmdList();
 
-	//å–å¾—ã®ç¢ºèª
+	//æ“¾‚ÌŠm”F
 	if (device == nullptr || cmdList == nullptr) {
 		return false;
 	}
 
-	//å„ç”Ÿæˆé–¢æ•°ã®å‘¼ã³å‡ºã—ã¨ãƒã‚§ãƒƒã‚¯
+	//Še¶¬ŠÖ”‚ÌŒÄ‚Ño‚µ‚Æƒ`ƒFƒbƒN
 	if (!CompileShaders()) return false;
 	if (!CreateRootSig()) return false;
 	if (!CreateInputLayout()) return false;
@@ -27,36 +27,36 @@ bool DebugRenderer::Init()
 void DebugRenderer::Begin() 
 {
 
-	//ç¾æ™‚ç‚¹ã§å‡¦ç†ãªã—
+	//Œ»“_‚Åˆ—‚È‚µ
 
 }
 
 void DebugRenderer::End() 
 {
 
-	//ç¾æ™‚ç‚¹ã§å‡¦ç†ãªã—
+	//Œ»“_‚Åˆ—‚È‚µ
 
 }
 
 void DebugRenderer::DrawTriangle() {
 
-	//PSOè¨­å®š
+	//PSOİ’è
 	cmdList->SetPipelineState(pso.Get());
 
-	//RootSigè¨­å®š
+	//RootSigİ’è
 	cmdList->SetGraphicsRootSignature(rootSig.Get());
 
 	//PrimitiveTopology
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	//VertexBufferè¨­å®š
+	//VertexBufferİ’è
 	cmdList->IASetVertexBuffers(
 		0,
 		1,
 		&vertexBufferView
 	);
 
-	//æç”»
+	//•`‰æ
 	cmdList->DrawInstanced(
 		vertexCount,
 		1,
@@ -71,20 +71,20 @@ bool DebugRenderer::CreateRootSig()
 
 	HRESULT hr;
 
-	//RootSigè¨­å®š
+	//RootSigİ’è
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 
 	rootSigDesc.NumParameters = 0;
 	rootSigDesc.pParameters = nullptr;
 
-	//StaticSmaplerãªã—
+	//StaticSmapler‚È‚µ
 	rootSigDesc.NumStaticSamplers = 0;
 	rootSigDesc.pStaticSamplers = nullptr;
 
-	//InputAssemblerã‚’ä½¿ç”¨å¯èƒ½ã«ã™ã‚‹
+	//InputAssembler‚ğg—p‰Â”\‚É‚·‚é
 	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
-	//RootSigã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã™ã‚‹ãŸã‚ã®ãƒ‡ãƒ¼ã‚¿
+	//RootSig‚ğƒVƒŠƒAƒ‰ƒCƒY‚·‚é‚½‚ß‚Ìƒf[ƒ^
 	ComPtr<ID3DBlob> rootSigBlob = nullptr;
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 
@@ -102,7 +102,7 @@ bool DebugRenderer::CreateRootSig()
 
 	}
 
-	//RootSigã‚’ç”Ÿæˆ
+	//RootSig‚ğ¶¬
 	hr = device->CreateRootSignature(
 		0,
 		rootSigBlob->GetBufferPointer(),
@@ -124,8 +124,8 @@ bool DebugRenderer::CreateRootSig()
 bool DebugRenderer::CreateInputLayout() 
 {
 	
-	//Shaderå´ã§å®šç¾©ã—ãŸå…¥åŠ›æ§‹é€ ä½“ã¨ç´ã¥ã‘ã‚‹
-	//POSITIONã¨ç´ã¥ã‘ã‚‹è¨­å®š
+	//Shader‘¤‚Å’è‹`‚µ‚½“ü—Í\‘¢‘Ì‚Æ•R‚Ã‚¯‚é
+	//POSITION‚Æ•R‚Ã‚¯‚éİ’è
 	inputLayout[0].SemanticName = "POSITION";
 	inputLayout[0].SemanticIndex = 0;
 	inputLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -134,7 +134,7 @@ bool DebugRenderer::CreateInputLayout()
 	inputLayout[0].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputLayout[0].InstanceDataStepRate = 0;
 
-	//COLORã¨ç´ã¥ã‘ã‚‹è¨­å®š
+	//COLOR‚Æ•R‚Ã‚¯‚éİ’è
 	inputLayout[1].SemanticName = "COLOR";
 	inputLayout[1].SemanticIndex = 0;
 	inputLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -143,7 +143,7 @@ bool DebugRenderer::CreateInputLayout()
 	inputLayout[1].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputLayout[1].InstanceDataStepRate = 0;
 
-	//InputLayoutã®æ•°ã‚’è¨­å®š
+	//InputLayout‚Ì”‚ğİ’è
 	inputLayoutCount = _countof(inputLayout);
 
 	return true;
@@ -166,28 +166,28 @@ bool DebugRenderer::CreatePSO()
 
 	HRESULT hr;
 	
-	//PSOè¨­å®š
+	//PSOİ’è
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 
-	//RootSigè¨­å®š
+	//RootSigİ’è
 	psoDesc.pRootSignature = rootSig.Get();
 
-	//VSè¨­å®š
+	//VSİ’è
 	psoDesc.VS.pShaderBytecode = vs->GetBufferPointer();
 	psoDesc.VS.BytecodeLength = vs->GetBufferSize();
 
-	//PSè¨­å®š
+	//PSİ’è
 	psoDesc.PS.pShaderBytecode = ps->GetBufferPointer();
 	psoDesc.PS.BytecodeLength = ps->GetBufferSize();
 
-	//InputLayoutè¨­å®š
+	//InputLayoutİ’è
 	psoDesc.InputLayout.pInputElementDescs = inputLayout;
 	psoDesc.InputLayout.NumElements = inputLayoutCount;
 
-	//primitiveTopologyTypeè¨­å®š
+	//primitiveTopologyTypeİ’è
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	//RasterizerStateè¨­å®š
+	//RasterizerStateİ’è
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -202,7 +202,7 @@ bool DebugRenderer::CreatePSO()
 
 	psoDesc.RasterizerState = rasterizerDesc;
 
-	//BlendStateè¨­å®š
+	//BlendStateİ’è
 	D3D12_BLEND_DESC blendDesc{};
 	blendDesc.AlphaToCoverageEnable = FALSE;
 	blendDesc.IndependentBlendEnable = FALSE;
@@ -219,7 +219,7 @@ bool DebugRenderer::CreatePSO()
 
 	psoDesc.BlendState = blendDesc;
 
-	//DepthStencilStateè¨­å®š
+	//DepthStencilStateİ’è
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	depthStencilDesc.DepthEnable = TRUE;
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
@@ -238,14 +238,14 @@ bool DebugRenderer::CreatePSO()
 
 	psoDesc.DepthStencilState = depthStencilDesc;
 
-	//RenderTargetè¨­å®š
+	//RenderTargetİ’è
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	//DepthStencilFormatè¨­å®š
+	//DepthStencilFormatİ’è
 	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//SampleDescè¨­å®š
+	//SampleDescİ’è
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleDesc.Quality = 0;
 
@@ -257,7 +257,7 @@ bool DebugRenderer::CreatePSO()
 	psoDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
 	psoDesc.CachedPSO = {};
 
-	//PSOç”Ÿæˆ
+	//PSO¶¬
 	hr = device->CreateGraphicsPipelineState(
 		&psoDesc, 
 		IID_PPV_ARGS(pso.ReleaseAndGetAddressOf())
@@ -278,8 +278,8 @@ bool DebugRenderer::CreateVertexBuffer() {
 
 	HRESULT hr;
 
-	//ä¸‰è§’å½¢ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
-	Vertex vertices[] =
+	//OŠpŒ`‚Ì’¸“_ƒf[ƒ^
+	DebugVertex vertices[] =
 	{
 		{
 
@@ -306,10 +306,10 @@ bool DebugRenderer::CreateVertexBuffer() {
 
 	vertexCount = 3;
 
-	//VertexBufferã®ã‚µã‚¤ã‚º
+	//VertexBuffer‚ÌƒTƒCƒY
 	const UINT vertexBufferSize = sizeof(vertices);
 
-	//Heapè¨­å®š
+	//Heapİ’è
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -317,7 +317,7 @@ bool DebugRenderer::CreateVertexBuffer() {
 	heapProp.CreationNodeMask = 1;
 	heapProp.VisibleNodeMask = 1;
 
-	//Resourceè¨­å®š
+	//Resourceİ’è
 	D3D12_RESOURCE_DESC resourceDesc{};
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resourceDesc.Alignment = 0;
@@ -331,7 +331,7 @@ bool DebugRenderer::CreateVertexBuffer() {
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	//VertexBufferä½œæˆ
+	//VertexBufferì¬
 	hr = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -347,7 +347,7 @@ bool DebugRenderer::CreateVertexBuffer() {
 
 	}
 
-	//CPUã‹ã‚‰VertexBufferã¸ã‚³ãƒ”ãƒ¼
+	//CPU‚©‚çVertexBuffer‚ÖƒRƒs[
 	void* mappedData = nullptr;
 
 	D3D12_RANGE readRange{};
@@ -370,10 +370,10 @@ bool DebugRenderer::CreateVertexBuffer() {
 
 	vertexBuffer->Unmap(0, nullptr);
 
-	//VertexBufferViewè¨­å®š
+	//VertexBufferViewİ’è
 	vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
 	vertexBufferView.SizeInBytes = vertexBufferSize;
-	vertexBufferView.StrideInBytes = sizeof(Vertex);
+	vertexBufferView.StrideInBytes = sizeof(DebugVertex);
 
 	return true;
 
@@ -383,7 +383,7 @@ bool DebugRenderer::CompileShaders() {
 
 	HRESULT hr;
 
-	//VSèª­ã¿è¾¼ã¿
+	//VS“Ç‚İ‚İ
 	hr = D3DCompileFromFile(
 		L"Resource/Program/Shader/DebugVS.hlsl",
 		nullptr,
@@ -402,7 +402,7 @@ bool DebugRenderer::CompileShaders() {
 
 	}
 
-	//PSèª­ã¿è¾¼ã¿
+	//PS“Ç‚İ‚İ
 	hr = D3DCompileFromFile(
 		L"Resource/Program/Shader/DebugPS.hlsl",
 		nullptr,

@@ -32,7 +32,7 @@ void App::Init() {
 		}
 
 		//カメラの要素セット
-		camera.SetPosition(Vector3(0.0f, 25.0f, -200.0f));
+		camera.SetPosition(Vector3(0.0f, 25.0f, -150.0f));
 		camera.SetLookAt(Vector3(0.0f, 50.0f, 0.0f));
 		camera.SetPerspective(
 			XMConvertToRadians(60.0f),
@@ -51,7 +51,6 @@ void App::Init() {
 
 		//RenderComponentに紐付け
 		renderComponent.SetTransform(transform);
-		renderComponent.SetMaterial(material);
 		renderComponent.SetModel(model);
 
 		modelRenderer.CreateModelResource(model);

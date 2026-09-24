@@ -7,13 +7,6 @@ void RenderComponent::SetTransform(TransformComponent& transform)
 
 }
 
-void RenderComponent::SetMaterial(MaterialComponent& material)
-{
-
-	materialComponent = &material;
-
-}
-
 void RenderComponent::SetModel(ModelComponent& model)
 {
 

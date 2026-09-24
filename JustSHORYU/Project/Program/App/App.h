@@ -2,19 +2,18 @@
 
 /*
 
-D3Dã‚¯ãƒ©ã‚¹ã‚„ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ã®
-åˆæœŸåŒ–ï½žã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆãªã©ã‚’è¡Œã†
+D3DƒNƒ‰ƒX‚âƒQ[ƒ€ƒV[ƒ“ŠÇ—ƒNƒ‰ƒX‚Ì
+‰Šú‰»`ƒAƒbƒvƒf[ƒg‚È‚Ç‚ðs‚¤
 
 */
 
 #include"../Core/Window.h"
 
-//ãƒ‡ãƒãƒƒã‚°ç”¨
+//ƒfƒoƒbƒO—p
 #include"../Renderer/DebugRenderer.h"
 #include"../Input/InputManager.h"
 #include"..\Camera\Camera.h"
 #include"..\Renderer\/ModelRenderer.h"
-#include"../Component/MaterialComponent.h"
 #include"../Component/ModelComponent.h"
 #include"../Component/RenderComponent.h"
 #include"../Component/TransformComponent.h"
@@ -34,12 +33,11 @@ private:
 
 	Window window;
 
-	//ãƒ‡ãƒãƒƒã‚°ç”¨
+	//ƒfƒoƒbƒO—p
 	DebugRenderer debugRenderer;
 	Camera camera;
 	TransformComponent transform;
 	ModelComponent model;
-	MaterialComponent material;
 	RenderComponent renderComponent;
 	ModelRenderer modelRenderer;
 

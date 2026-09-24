@@ -8,17 +8,20 @@ bool ModelRenderer::Init(ID3D12Device6* device, Camera& camera)
 	this->device = device;
 	this->camera = &camera;
 
-	if (device == nullptr) return false;
+	if (device == nullptr)
+	{
+		return false;
+	}
 
-	//RootSigä½œæˆ
+	//RootSigì¬
 	if (rootSig.Create(device) == false)
 	{
 		return false;
 	}
 
-	//PSOä½œæˆ
+	//PSOì¬
 
-	//PSOã«æ¸¡ã™InputLayoutä½œæˆ
+	//PSO‚É“n‚·InputLayoutì¬
 	D3D12_INPUT_ELEMENT_DESC inputElement[4];
 
 	inputElement[0].SemanticName = "POSITION";
@@ -53,7 +56,7 @@ bool ModelRenderer::Init(ID3D12Device6* device, Camera& camera)
 	inputElement[3].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputElement[3].InstanceDataStepRate = 0;
 
-	//InputElementã‚’InputLayoutã«ã¾ã¨ã‚ã‚‹
+	//InputElement‚ğInputLayout‚É‚Ü‚Æ‚ß‚é
 	D3D12_INPUT_LAYOUT_DESC inputLayout{};
 	
 	inputLayout.pInputElementDescs = inputElement;
@@ -87,7 +90,7 @@ bool ModelRenderer::CreateModelResource(const ModelComponent& model)
 	for (size_t i = 0; i < model.GetMeshCount(); ++i)
 	{
 
-		const ModelComponent::Mesh& mesh = model.GetMesh(i);
+		const Mesh& mesh = model.GetMesh(i);
 
 		MeshResource resource{};
 
@@ -107,7 +110,7 @@ bool ModelRenderer::CreateModelResource(const ModelComponent& model)
 
 }
 
-bool ModelRenderer::CreateMeshResource(const ModelComponent::Mesh& mesh, MeshResource& resource)
+bool ModelRenderer::CreateMeshResource(const Mesh& mesh, MeshResource& resource)
 {
 
 	if (mesh.vertices.empty()) return false;
@@ -123,22 +126,22 @@ bool ModelRenderer::CreateMeshResource(const ModelComponent::Mesh& mesh, MeshRes
 
 }
 
-bool ModelRenderer::CreateVertexBuffer(const ModelComponent::Mesh& mesh, MeshResource& resource)
+bool ModelRenderer::CreateVertexBuffer(const Mesh& mesh, MeshResource& resource)
 {
 
-	const UINT bufferSize = sizeof(ModelComponent::Vertex) * mesh.vertices.size();
+	const UINT bufferSize = sizeof(Vertex) * mesh.vertices.size();
 
 	D3D12_HEAP_PROPERTIES heapProps{};
 	heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;
 
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resourceDesc.Width = bufferSize;
-	resourceDesc.Height = 1;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.SampleDesc.Count = 1;
-	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resourceDesc.Dimension			= D3D12_RESOURCE_DIMENSION_BUFFER;
+	resourceDesc.Width				= bufferSize;
+	resourceDesc.Height				= 1;
+	resourceDesc.DepthOrArraySize	= 1;
+	resourceDesc.MipLevels			= 1;
+	resourceDesc.SampleDesc.Count	= 1;
+	resourceDesc.Layout				= D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	HRESULT hr;
 
@@ -151,7 +154,10 @@ bool ModelRenderer::CreateVertexBuffer(const ModelComponent::Mesh& mesh, MeshRes
 		IID_PPV_ARGS(resource.vertexBuffer.GetAddressOf())
 	);
 
-	if (FAILED(hr)) return false;
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	void* mappedData = nullptr;
 
@@ -170,13 +176,13 @@ bool ModelRenderer::CreateVertexBuffer(const ModelComponent::Mesh& mesh, MeshRes
 	//VertexBufferView
 	resource.vertexBufferView.BufferLocation = resource.vertexBuffer->GetGPUVirtualAddress();
 	resource.vertexBufferView.SizeInBytes = bufferSize;
-	resource.vertexBufferView.StrideInBytes = sizeof(ModelComponent::Vertex);
+	resource.vertexBufferView.StrideInBytes = sizeof(Vertex);
 
 	return true;
 
 }
 
-bool ModelRenderer::CreateIndexBuffer(const ModelComponent::Mesh& mesh, MeshResource& resource)
+bool ModelRenderer::CreateIndexBuffer(const Mesh& mesh, MeshResource& resource)
 {
 
 	const UINT bufferSize = sizeof(uint32_t) * mesh.indices.size();
@@ -204,7 +210,10 @@ bool ModelRenderer::CreateIndexBuffer(const ModelComponent::Mesh& mesh, MeshReso
 		IID_PPV_ARGS(resource.indexBuffer.GetAddressOf())
 	);
 
-	if (FAILED(hr)) return false;
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	void* mappedData = nullptr;
 
@@ -214,7 +223,10 @@ bool ModelRenderer::CreateIndexBuffer(const ModelComponent::Mesh& mesh, MeshReso
 
 	hr = resource.indexBuffer->Map(0, &readRange, &mappedData);
 
-	if (FAILED(hr)) return false;
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	memcpy(mappedData, mesh.indices.data(), bufferSize);
 
@@ -265,7 +277,7 @@ bool ModelRenderer::CreateConstantBuffers()
 
 		void* mappedData = nullptr;
 
-		//readRangeéƒ¨åˆ†(ç¬¬äºŒå¼•æ•°)ãŒnullptr = èª­ã¿å–ã‚Šã—ãªã„
+		//readRange•”•ª(‘æ“ñˆø”)‚ªnullptr = “Ç‚İæ‚è‚µ‚È‚¢
 		hr = transformBuffer->Map(0, nullptr, &mappedData);
 
 		if (FAILED(hr)) return false;
@@ -283,17 +295,17 @@ bool ModelRenderer::CreateConstantBuffers()
 		heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;
 
 		D3D12_RESOURCE_DESC resourceDesc;
-		resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		resourceDesc.Alignment = 0;
-		resourceDesc.Width = bufferSize;
-		resourceDesc.Height = 1;
-		resourceDesc.DepthOrArraySize = 1;
-		resourceDesc.MipLevels = 1;
-		resourceDesc.Format = DXGI_FORMAT_UNKNOWN;
-		resourceDesc.SampleDesc.Count = 1;
+		resourceDesc.Dimension			= D3D12_RESOURCE_DIMENSION_BUFFER;
+		resourceDesc.Alignment			= 0;
+		resourceDesc.Width				= bufferSize;
+		resourceDesc.Height				= 1;
+		resourceDesc.DepthOrArraySize	= 1;
+		resourceDesc.MipLevels			= 1;
+		resourceDesc.Format				= DXGI_FORMAT_UNKNOWN;
+		resourceDesc.SampleDesc.Count	= 1;
 		resourceDesc.SampleDesc.Quality = 0;
-		resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-		resourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+		resourceDesc.Layout				= D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		resourceDesc.Flags				= D3D12_RESOURCE_FLAG_NONE;
 
 		HRESULT hr;
 
@@ -337,11 +349,11 @@ void ModelRenderer::UpdateTransformBuffer(const RenderComponent& renderComponent
 
 }
 
-void ModelRenderer::UpdateMaterialBuffer(const MaterialComponent::Material& material)
+void ModelRenderer::UpdateMaterialBuffer(const Material& material)
 {
 
 	mappedMaterialBuffer->baseColor			= material.baseColor;
-	mappedMaterialBuffer->metalic			= material.metalic;
+	mappedMaterialBuffer->metalic			= material.metallic;
 	mappedMaterialBuffer->roughness			= material.roughness;
 	mappedMaterialBuffer->ambientOcclusion	= material.ambientOcclusion;
 	mappedMaterialBuffer->emissiveColor		= material.emissiveColor;
@@ -352,23 +364,28 @@ void ModelRenderer::UpdateMaterialBuffer(const MaterialComponent::Material& mate
 void ModelRenderer::Render(ID3D12GraphicsCommandList* cmdList, RenderComponent& renderComponent)
 {
 
-	if (cmdList == nullptr) return;
+	if (cmdList == nullptr)
+	{
+		return;
+	}
 
 	const ModelComponent& model = renderComponent.GetModel();
-	const MaterialComponent& material = renderComponent.GetMaterial();
 
-	//GPUãƒªã‚½ãƒ¼ã‚¹ãŒã¾ã ä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
+	//GPUƒŠƒ\[ƒX‚ª‚Ü‚¾ì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡
 	if (meshResources.size() != model.GetMeshCount())
 	{
 
-		if (CreateModelResource(model) == false) return;
+		if (CreateModelResource(model) == false)
+		{
+			return;
+		}
 
 	}
 
-	//Transformæ›´æ–°
+	//TransformXV
 	UpdateTransformBuffer(renderComponent);
 
-	//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã«è¦ç´ ã‚’ã‚»ãƒƒãƒˆ
+	//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚É—v‘f‚ğƒZƒbƒg
 	cmdList->SetGraphicsRootSignature(rootSig.GetRootSignature());
 	cmdList->SetPipelineState(pso.GetPSO());
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -382,11 +399,11 @@ void ModelRenderer::Render(ID3D12GraphicsCommandList* cmdList, RenderComponent& 
 		cmdList->DrawIndexedInstanced(mesh.indexCount, 1, 0, 0, 0);
 
 		/*
-		* å½¢çŠ¶ã ã‘æç”»ã™ã‚‹ãŸã‚ä¸€æ—¦ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+		* Œ`ó‚¾‚¯•`‰æ‚·‚é‚½‚ßˆê’UƒRƒƒ“ƒgƒAƒEƒg
 		
 		if (mesh.materialIndex >= material.GetMaterialCount()) continue;
 
-		//Materialæ›´æ–°
+		//MaterialXV
 		UpdateMaterialBuffer(material.GetMaterial(mesh.materialIndex));
 
 		cmdList->SetGraphicsRootConstantBufferView(1, materialBuffer->GetGPUVirtualAddress());

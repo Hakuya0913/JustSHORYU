@@ -2,8 +2,8 @@
 
 /*
 
-蜿ｯ隕門喧繧偵☆繧九◆繧√�ｮ繝ｬ繝ｳ繝繝ｩ繝ｼ(蜈･蜉帶､懃衍縺ｪ縺ｩ)
-荳芽ｧ貞ｽ｢繧呈緒逕ｻ縺吶ｋ
+可視化をするためのレンダラー(入力検知など)
+三角形を描画する
 
 */
 
@@ -66,7 +66,7 @@ private:
 
 };
 
-struct Vertex {
+struct DebugVertex {
 
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Color color;
