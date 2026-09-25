@@ -2,7 +2,7 @@
 
 /*
 
-FBXãƒ¢ãƒ‡ãƒ«ã®è¡¨ç¤º
+FBXƒ‚ƒfƒ‹‚Ì•\¦
 
 */
 
@@ -11,12 +11,14 @@ FBXãƒ¢ãƒ‡ãƒ«ã®è¡¨ç¤º
 #include<cstdint>
 #include<array>
 #include<dxgi1_6.h>
+#include<unordered_map>
+#include<wincodec.h>
 #include<DirectXMath.h>
 #include"../Utility/ComPtr.h"
-#include"../Component/RenderComponent.h"
 #include"RootSignature.h"
 #include"PipelineState.h"
 #include"../Camera/Camera.h"
+#include"../Component/RenderComponent.h"
 #include"../Component/ModelComponent.h"
 #include"../Component/ModelStructure.h"
 
@@ -27,12 +29,12 @@ public:
 	ModelRenderer() = default;
 	~ModelRenderer() = default;
 
-	//åˆæœŸåŒ–
+	//‰Šú‰»
 	bool Init(ID3D12Device6* device, Camera& camera);
 
 	bool CreateModelResource(const ModelComponent& model);
 
-	//æç”»
+	//•`‰æ
 	void Render(
 		ID3D12GraphicsCommandList* cmdList,
 		RenderComponent& renderComponent
@@ -40,7 +42,7 @@ public:
 
 private:
 
-	//GPUã§ã®ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+	//GPU‚Å‚ÌƒƒbƒVƒ…ƒŠƒ\[ƒX
 	struct MeshResource
 	{
 
@@ -55,7 +57,7 @@ private:
 
 	};
 
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	//’è”ƒoƒbƒtƒ@
 	struct alignas(256) TransformBuffer
 	{
 
@@ -75,7 +77,7 @@ private:
 		float metalic			= 0.0f;
 		float roughness			= 1.0f;
 		float ambientOcclusion	= 1.0f;
-		float padding			= 0.0f;	//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ç”¨(16byteã‚¢ãƒ©ã‚¤ãƒ³)
+		float padding			= 0.0f;	//ƒpƒfƒBƒ“ƒO—p(16byteƒAƒ‰ƒCƒ“)
 
 		DirectX::XMFLOAT3 emissiveColor{};
 		float			  emissiveStrength = 1.0f;
@@ -84,18 +86,32 @@ private:
 
 	};
 
-	//åˆæœŸåŒ–ã«ä½¿ç”¨ã™ã‚‹
+	struct TextureResource
+	{
+
+		ComPtr<ID3D12Resource> texture;
+		
+		D3D12_GPU_DESCRIPTOR_HANDLE srvHandle{};
+
+		uint32_t embeddedTextureIndex = 0;
+
+	};
+
+	//‰Šú‰»‚Ég—p‚·‚é
 	bool CreateMeshResource( const Mesh& mesh, MeshResource& resource);
 	bool CreateVertexBuffer( const Mesh& mesh, MeshResource& resource);
 	bool CreateIndexBuffer(	 const Mesh& mesh, MeshResource& resource);
 
+	bool CreateTextureResources(const ModelComponent& model);
+	bool CreateTexture
+
 	bool CreateConstantBuffers();
 
-	//æ›´æ–°
+	//XV
 	void UpdateTransformBuffer(const RenderComponent& renderComponent);
 	void UpdateMaterialBuffer( const Material& material);
 
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’256byteå¢ƒç•Œã«åˆã‚ã›ã‚‹
+	//’è”ƒoƒbƒtƒ@ƒTƒCƒY‚ğ256byte‹«ŠE‚É‡‚í‚¹‚é
 	constexpr UINT AlignConstantBufferSize(UINT size);
 
 	//DX12
@@ -104,17 +120,16 @@ private:
 	RootSignature rootSig;
 	PipelineState pso;
 
-	//å¤–éƒ¨ã®å‚ç…§
+	//ŠO•”‚ÌQÆ
 	Camera* camera;
 
-	//ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹
+	//ƒ‚ƒfƒ‹ƒŠƒ\[ƒX
 	std::vector<MeshResource> meshResources;
 
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	//’è”ƒoƒbƒtƒ@
 	ComPtr<ID3D12Resource> transformBuffer;
 	ComPtr<ID3D12Resource> materialBuffer;
 
 	TransformBuffer* mappedTransformBuffer = nullptr;
-	MaterialBuffer*  mappedMaterialBuffer  = nullptr;
 
 };

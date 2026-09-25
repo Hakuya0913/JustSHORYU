@@ -94,17 +94,17 @@
     <Filter Include="Program\Camera">
       <UniqueIdentifier>{21e986db-7fd0-4ad5-9ca5-9a4bac3d1320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Program\Render\Object">
-      <UniqueIdentifier>{9941b8c1-bb61-40e3-8e30-7e59c7a9555e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Program\Render\Object\RootSig">
-      <UniqueIdentifier>{ee792258-75b4-4ae1-a558-3ec94b816ef9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Program\Render\Object\PipelineState">
-      <UniqueIdentifier>{5ecd10d5-2ea2-4078-8f79-17e6920af1ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderProgram\Model">
       <UniqueIdentifier>{dedcc316-e01e-49d5-aa23-4f3940cb3144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\PSO and RootSig">
+      <UniqueIdentifier>{9941b8c1-bb61-40e3-8e30-7e59c7a9555e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\PSO and RootSig\RootSig">
+      <UniqueIdentifier>{ee792258-75b4-4ae1-a558-3ec94b816ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program\Render\PSO and RootSig\PipelineState">
+      <UniqueIdentifier>{5ecd10d5-2ea2-4078-8f79-17e6920af1ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,10 +163,10 @@
       <Filter>Program\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Program\Renderer\RootSignature.cpp">
-      <Filter>Program\Render\Object\RootSig</Filter>
+      <Filter>Program\Render\PSO and RootSig\RootSig</Filter>
     </ClCompile>
     <ClCompile Include="Program\Renderer\PipelineState.cpp">
-      <Filter>Program\Render\Object\PipelineState</Filter>
+      <Filter>Program\Render\PSO and RootSig\PipelineState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -237,10 +237,10 @@
       <Filter>Program\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Program\Renderer\RootSignature.h">
-      <Filter>Program\Render\Object\RootSig</Filter>
+      <Filter>Program\Render\PSO and RootSig\RootSig</Filter>
     </ClInclude>
     <ClInclude Include="Program\Renderer\PipelineState.h">
-      <Filter>Program\Render\Object\PipelineState</Filter>
+      <Filter>Program\Render\PSO and RootSig\PipelineState</Filter>
     </ClInclude>
     <ClInclude Include="Program\Component\ModelStructure.h">
       <Filter>Program\Component\Model</Filter>

@@ -394,24 +394,19 @@ void ModelRenderer::Render(ID3D12GraphicsCommandList* cmdList, RenderComponent& 
 	for (const MeshResource& mesh : meshResources)
 	{
 
-		cmdList->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
-		cmdList->IASetIndexBuffer(&mesh.indexBufferView);
-		cmdList->DrawIndexedInstanced(mesh.indexCount, 1, 0, 0, 0);
-
 		/*
-		* 形状だけ描画するため一旦コメントアウト
-		
-		if (mesh.materialIndex >= material.GetMaterialCount()) continue;
+		形状の描画のみ
 
-		//Material更新
-		UpdateMaterialBuffer(material.GetMaterial(mesh.materialIndex));
+		//Materialのインデックスが範囲外ならスキップ
+		if (mesh.materialIndex >= model.GetMaterialCount())
+		{
+			continue;
+		}
 
-		cmdList->SetGraphicsRootConstantBufferView(1, materialBuffer->GetGPUVirtualAddress());
 		cmdList->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
 		cmdList->IASetIndexBuffer(&mesh.indexBufferView);
-
 		cmdList->DrawIndexedInstanced(mesh.indexCount, 1, 0, 0, 0);
-
+		
 		*/
 
 	}

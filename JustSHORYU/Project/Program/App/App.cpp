@@ -32,13 +32,13 @@ void App::Init() {
 		}
 
 		//カメラの要素セット
-		camera.SetPosition(Vector3(0.0f, 25.0f, -150.0f));
+		camera.SetPosition(Vector3(0.0f, 25.0f, -200.0f));
 		camera.SetLookAt(Vector3(0.0f, 50.0f, 0.0f));
 		camera.SetPerspective(
 			XMConvertToRadians(60.0f),
 			static_cast<float>(ConstVal::Window::ScreenW) / static_cast<float>(ConstVal::Window::ScreenH),
 			0.1f,
-			1000.0f
+			10000.0f
 		);
 
 		//モデルロード
