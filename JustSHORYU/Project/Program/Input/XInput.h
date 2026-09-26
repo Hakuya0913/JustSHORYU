@@ -42,7 +42,7 @@ private:
 
 	//PadInputを意味を持つ数字で返す
 	WORD						 ConvertWORD(		PadInputDigital padInput)	const;	//XINPUT_GAMEPAD系のビットフラグに変換
-	float						 ConvertAnalogValue(	PadInputAnalog1D	padInput)	const;	//アナログ入力の正規化値を返す
+	float						 ConvertAnalogValue(PadInputAnalog1D	padInput)	const;	//アナログ入力の正規化値を返す
 	DirectX::SimpleMath::Vector2 ConvertAnalogValue(PadInputAnalog2D	padInput)	const;	//アナログ入力の正規化値を返す
 
 	//全状態初期化

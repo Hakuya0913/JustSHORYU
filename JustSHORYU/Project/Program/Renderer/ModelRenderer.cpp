@@ -2,10 +2,11 @@
 
 using namespace DirectX;
 
-bool ModelRenderer::Init(ID3D12Device6* device, Camera& camera)
+bool ModelRenderer::Init(ID3D12Device6* device, ID3D12GraphicsCommandList* cmdList, Camera& camera)
 {
 
 	this->device = device;
+	this->cmdList = cmdList;
 	this->camera = &camera;
 
 	if (device == nullptr)
@@ -24,36 +25,36 @@ bool ModelRenderer::Init(ID3D12Device6* device, Camera& camera)
 	//PSOÇ…ìnÇ∑InputLayoutçÏê¨
 	D3D12_INPUT_ELEMENT_DESC inputElement[4];
 
-	inputElement[0].SemanticName = "POSITION";
-	inputElement[0].SemanticIndex = 0;
-	inputElement[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElement[0].InputSlot = 0;
-	inputElement[0].AlignedByteOffset = 0;
-	inputElement[0].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+	inputElement[0].SemanticName		 = "POSITION";
+	inputElement[0].SemanticIndex		 = 0;
+	inputElement[0].Format				 = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElement[0].InputSlot			 = 0;
+	inputElement[0].AlignedByteOffset	 = 0;
+	inputElement[0].InputSlotClass		 = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputElement[0].InstanceDataStepRate = 0;
 
-	inputElement[1].SemanticName = "NORMAL";
-	inputElement[1].SemanticIndex = 0;
-	inputElement[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElement[1].InputSlot = 0;
-	inputElement[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElement[1].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+	inputElement[1].SemanticName		 = "NORMAL";
+	inputElement[1].SemanticIndex		 = 0;
+	inputElement[1].Format				 = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElement[1].InputSlot			 = 0;
+	inputElement[1].AlignedByteOffset	 = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElement[1].InputSlotClass		 = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputElement[1].InstanceDataStepRate = 0;
 
-	inputElement[2].SemanticName = "TEXCOORD";
-	inputElement[2].SemanticIndex = 0;
-	inputElement[2].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElement[2].InputSlot = 0;
-	inputElement[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElement[2].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-	inputElement[2].InstanceDataStepRate = 0;
+	inputElement[2].SemanticName			= "TEXCOORD";
+	inputElement[2].SemanticIndex			= 0;
+	inputElement[2].Format					= DXGI_FORMAT_R32G32_FLOAT;
+	inputElement[2].InputSlot				= 0;
+	inputElement[2].AlignedByteOffset		= D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElement[2].InputSlotClass			= D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+	inputElement[2].InstanceDataStepRate	= 0;
 
-	inputElement[3].SemanticName = "TANGENT";
-	inputElement[3].SemanticIndex = 0;
-	inputElement[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElement[3].InputSlot = 0;
-	inputElement[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElement[3].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+	inputElement[3].SemanticName		 = "TANGENT";
+	inputElement[3].SemanticIndex		 = 0;
+	inputElement[3].Format				 = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElement[3].InputSlot			 = 0;
+	inputElement[3].AlignedByteOffset	 = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElement[3].InputSlotClass		 = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 	inputElement[3].InstanceDataStepRate = 0;
 
 	//InputElementÇInputLayoutÇ…Ç‹Ç∆ÇﬂÇÈ
@@ -329,6 +330,817 @@ bool ModelRenderer::CreateConstantBuffers()
 		mappedMaterialBuffer = static_cast<MaterialBuffer*>(mappedData);
 
 	}
+
+	return true;
+
+}
+
+bool ModelRenderer::CreateTextureResources(const ModelComponent& model)
+{
+
+	textureResources.clear();
+
+	textureResources.reserve(
+		model.GetEmbeddedTextureCount());
+
+	for (uint32_t i = 0; i < model.GetEmbeddedTextureCount(); ++i)
+	{
+		if (!CreateTextureResource(model.GetEmbeddedTexture(i), i))
+		{
+			textureResources.clear();
+			return false;
+		}
+	}
+
+	return true;
+
+}
+
+bool ModelRenderer::CreateTextureResource(const EmbeddedTexture& embeddedTexture, uint32_t embeddedTextureIndex)
+{
+
+	std::vector<uint8_t> pixelData;
+
+	UINT width = 0;
+	UINT height = 0;
+	UINT rowPitch = 0;
+
+	if (!DecodeEmbeddedTexture(
+		embeddedTexture,
+		pixelData,
+		width,
+		height,
+		rowPitch))
+	{
+		return false;
+	}
+
+	TextureResource resource{};
+
+	if (CreateTextureUploadResource(
+		pixelData,
+		width,
+		height,
+		rowPitch,
+		resource) == false)
+	{
+		return false;
+	}
+
+	resource.embeddedTextureIndex =
+		embeddedTextureIndex;
+
+	textureResources.emplace_back(
+		std::move(resource));
+
+	return true;
+
+}
+
+bool ModelRenderer::DecodeEmbeddedTexture(
+	const EmbeddedTexture& embeddedTexture,
+	std::vector<uint8_t>& pixelData,
+	UINT& width, UINT& height, UINT& rowPitch
+)
+{
+
+	if (embeddedTexture.data.empty())
+	{
+		return false;
+	}
+
+	HRESULT hr = CoInitializeEx(
+		nullptr,
+		COINIT_MULTITHREADED);
+
+	bool needUninitialize =
+		SUCCEEDED(hr);
+
+	if (FAILED(hr) &&
+		hr != RPC_E_CHANGED_MODE)
+	{
+		return false;
+	}
+
+	ComPtr<IWICImagingFactory> factory;
+
+	hr = CoCreateInstance(
+		CLSID_WICImagingFactory,
+		nullptr,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(factory.GetAddressOf()));
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICStream> stream;
+
+	hr = factory->CreateStream(
+		stream.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = stream->InitializeFromMemory(
+		embeddedTexture.data.data(),
+		static_cast<DWORD>(
+			embeddedTexture.data.size()));
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICBitmapDecoder> decoder;
+
+	hr = factory->CreateDecoderFromStream(
+		stream.Get(),
+		nullptr,
+		WICDecodeMetadataCacheOnLoad,
+		decoder.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICBitmapFrameDecode> frame;
+
+	hr = decoder->GetFrame(
+		0,
+		frame.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICFormatConverter> converter;
+
+	hr = factory->CreateFormatConverter(
+		converter.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = converter->Initialize(
+		frame.Get(),
+		GUID_WICPixelFormat32bppRGBA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0.0,
+		WICBitmapPaletteTypeCustom);
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = converter->GetSize(
+		&width,
+		&height);
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	rowPitch = width * 4;
+
+	pixelData.resize(
+		static_cast<size_t>(rowPitch) * height);
+
+	hr = converter->CopyPixels(
+		nullptr,
+		rowPitch,
+		static_cast<UINT>(pixelData.size()),
+		pixelData.data());
+
+	if (needUninitialize)
+	{
+		CoUninitialize();
+	}
+
+	return SUCCEEDED(hr);
+
+}
+
+bool ModelRenderer::CreateTextureUploadResource(
+	const std::vector<uint8_t>& pixelData,
+	UINT width, UINT height, UINT rowPitch,
+	TextureResource& resource
+)
+{
+
+	if (device == nullptr || cmdList == nullptr)
+	{
+		return false;
+	}
+
+	D3D12_RESOURCE_DESC textureDesc{};
+
+	textureDesc.Dimension =
+		D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+
+	textureDesc.Width = width;
+	textureDesc.Height = height;
+	textureDesc.DepthOrArraySize = 1;
+	textureDesc.MipLevels = 1;
+
+	textureDesc.Format =
+		DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	textureDesc.SampleDesc.Count = 1;
+
+	textureDesc.Layout =
+		D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+	D3D12_HEAP_PROPERTIES defaultHeap{};
+
+	defaultHeap.Type =
+		D3D12_HEAP_TYPE_DEFAULT;
+
+	HRESULT hr;
+
+	hr = device->CreateCommittedResource(
+		&defaultHeap,
+		D3D12_HEAP_FLAG_NONE,
+		&textureDesc,
+		D3D12_RESOURCE_STATE_COPY_DEST,
+		nullptr,
+		IID_PPV_ARGS(resource.texture.GetAddressOf())
+		);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	UINT64 uploadSize = 0;
+
+	D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint{};
+
+	device->GetCopyableFootprints(
+		&textureDesc,
+		0,
+		1,
+		0,
+		&footprint,
+		nullptr,
+		nullptr,
+		&uploadSize);
+
+	D3D12_RESOURCE_DESC uploadDesc{};
+
+	uploadDesc.Dimension =
+		D3D12_RESOURCE_DIMENSION_BUFFER;
+
+	uploadDesc.Width = uploadSize;
+	uploadDesc.Height = 1;
+	uploadDesc.DepthOrArraySize = 1;
+	uploadDesc.MipLevels = 1;
+
+	uploadDesc.Format =
+		DXGI_FORMAT_UNKNOWN;
+
+	uploadDesc.SampleDesc.Count = 1;
+
+	uploadDesc.Layout =
+		D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	D3D12_HEAP_PROPERTIES uploadHeap{};
+
+	uploadHeap.Type =
+		D3D12_HEAP_TYPE_UPLOAD;
+
+	ComPtr<ID3D12Resource> uploadBuffer;
+
+	if (FAILED(
+		device->CreateCommittedResource(
+			&uploadHeap,
+			D3D12_HEAP_FLAG_NONE,
+			&uploadDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(
+				uploadBuffer.GetAddressOf()))))
+	{
+		return false;
+	}
+
+	void* mappedData = nullptr;
+
+	if (FAILED(
+		uploadBuffer->Map(
+			0,
+			nullptr,
+			&mappedData)))
+	{
+		return false;
+	}
+
+	uint8_t* destination =
+		static_cast<uint8_t*>(mappedData);
+
+	for (UINT y = 0; y < height; ++y)
+	{
+		std::memcpy(
+			destination +
+			footprint.Offset +
+			static_cast<size_t>(
+				y * footprint.Footprint.RowPitch),
+
+			pixelData.data() +
+			static_cast<size_t>(
+				y * rowPitch),
+
+			rowPitch);
+	}
+
+	uploadBuffer->Unmap(0, nullptr);
+
+	D3D12_TEXTURE_COPY_LOCATION dst{};
+
+	dst.pResource =
+		resource.texture.Get();
+
+	dst.Type =
+		D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+
+	dst.SubresourceIndex = 0;
+
+	D3D12_TEXTURE_COPY_LOCATION src{};
+
+	src.pResource =
+		uploadBuffer.Get();
+
+	src.Type =
+		D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+
+	src.PlacedFootprint =
+		footprint;
+
+	cmdList->CopyTextureRegion(
+		&dst,
+		0,
+		0,
+		0,
+		&src,
+		nullptr);
+
+	D3D12_RESOURCE_BARRIER barrier{};
+
+	barrier.Type =
+		D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+
+	barrier.Transition.pResource =
+		resource.texture.Get();
+
+	barrier.Transition.Subresource =
+		D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+
+	barrier.Transition.StateBefore =
+		D3D12_RESOURCE_STATE_COPY_DEST;
+
+	barrier.Transition.StateAfter =
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+
+	cmdList->ResourceBarrier(
+		1,
+		&barrier);
+
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle =
+		srvHeap->GetCPUDescriptorHandleForHeapStart();
+
+	cpuHandle.ptr +=
+		static_cast<SIZE_T>(
+			textureResources.size() *
+			srvDescriptorSize);
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+
+	srvDesc.Format =
+		DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	srvDesc.ViewDimension =
+		D3D12_SRV_DIMENSION_TEXTURE2D;
+
+	srvDesc.Shader4ComponentMapping =
+		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+
+	srvDesc.Texture2D.MipLevels = 1;
+
+	device->CreateShaderResourceView(
+		resource.texture.Get(),
+		&srvDesc,
+		cpuHandle);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle =
+		srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+	gpuHandle.ptr +=
+		static_cast<UINT64>(
+			textureResources.size() *
+			srvDescriptorSize);
+
+	resource.srvHandle = gpuHandle;
+
+	return true;
+
+}
+
+bool ModelRenderer::DecodeEmbeddedTexture(
+	const EmbeddedTexture& embeddedTexture,
+	std::vector<uint8_t>& pixelData,
+	UINT& width, UINT& height, UINT& rowPitch
+)
+{
+
+	if (embeddedTexture.data.empty())
+	{
+		return false;
+	}
+
+	HRESULT hr = CoInitializeEx(
+		nullptr,
+		COINIT_MULTITHREADED);
+
+	bool needUninitialize =
+		SUCCEEDED(hr);
+
+	if (FAILED(hr) &&
+		hr != RPC_E_CHANGED_MODE)
+	{
+		return false;
+	}
+
+	ComPtr<IWICImagingFactory> factory;
+
+	hr = CoCreateInstance(
+		CLSID_WICImagingFactory,
+		nullptr,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(factory.GetAddressOf()));
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICStream> stream;
+
+	hr = factory->CreateStream(
+		stream.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = stream->InitializeFromMemory(
+		embeddedTexture.data.data(),
+		static_cast<DWORD>(embeddedTexture.data.size())
+	);
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICBitmapDecoder> decoder;
+
+	hr = factory->CreateDecoderFromStream(
+		stream.Get(),
+		nullptr,
+		WICDecodeMetadataCacheOnLoad,
+		decoder.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICBitmapFrameDecode> frame;
+
+	hr = decoder->GetFrame(
+		0,
+		frame.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	ComPtr<IWICFormatConverter> converter;
+
+	hr = factory->CreateFormatConverter(
+		converter.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = converter->Initialize(
+		frame.Get(),
+		GUID_WICPixelFormat32bppRGBA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0.0,
+		WICBitmapPaletteTypeCustom);
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	hr = converter->GetSize(
+		&width,
+		&height);
+
+	if (FAILED(hr))
+	{
+		if (needUninitialize)
+		{
+			CoUninitialize();
+		}
+
+		return false;
+	}
+
+	rowPitch = width * 4;
+
+	pixelData.resize(
+		static_cast<size_t>(rowPitch) * height);
+
+	hr = converter->CopyPixels(
+		nullptr,
+		rowPitch,
+		static_cast<UINT>(pixelData.size()),
+		pixelData.data());
+
+	if (needUninitialize)
+	{
+		CoUninitialize();
+	}
+
+	return SUCCEEDED(hr);
+
+}
+
+bool ModelRenderer::CreateTextureUploadResource(
+	const std::vector<uint8_t>& pixelData,
+	UINT width, UINT height, UINT rowPitch,
+	TextureResource& resource
+)
+{
+
+	if (device == nullptr || cmdList == nullptr)
+	{
+		return false;
+	}
+
+	D3D12_RESOURCE_DESC textureDesc{};
+
+	textureDesc.Dimension =
+		D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+
+	textureDesc.Width = width;
+	textureDesc.Height = height;
+	textureDesc.DepthOrArraySize = 1;
+	textureDesc.MipLevels = 1;
+	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+	D3D12_HEAP_PROPERTIES defaultHeap{};
+	defaultHeap.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+	HRESULT hr;
+
+	hr = device->CreateCommittedResource(
+		&defaultHeap,
+		D3D12_HEAP_FLAG_NONE,
+		&textureDesc,
+		D3D12_RESOURCE_STATE_COPY_DEST,
+		nullptr,
+		IID_PPV_ARGS(resource.texture.GetAddressOf())
+	);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	UINT64 uploadSize = 0;
+
+	D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint{};
+
+	device->GetCopyableFootprints(
+		&textureDesc,
+		0,
+		1,
+		0,
+		&footprint,
+		nullptr,
+		nullptr,
+		&uploadSize);
+
+	D3D12_RESOURCE_DESC uploadDesc{};
+
+	uploadDesc.Dimension =
+		D3D12_RESOURCE_DIMENSION_BUFFER;
+
+	uploadDesc.Width = uploadSize;
+	uploadDesc.Height = 1;
+	uploadDesc.DepthOrArraySize = 1;
+	uploadDesc.MipLevels = 1;
+
+	uploadDesc.Format =
+		DXGI_FORMAT_UNKNOWN;
+
+	uploadDesc.SampleDesc.Count = 1;
+
+	uploadDesc.Layout =
+		D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	D3D12_HEAP_PROPERTIES uploadHeap{};
+
+	uploadHeap.Type =
+		D3D12_HEAP_TYPE_UPLOAD;
+
+	ComPtr<ID3D12Resource> uploadBuffer;
+
+	hr = device->CreateCommittedResource(
+		&uploadHeap,
+		D3D12_HEAP_FLAG_NONE,
+		&uploadDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(uploadBuffer.GetAddressOf())
+	);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	void* mappedData = nullptr;
+
+	hr = uploadBuffer->Map(
+		0,
+		nullptr,
+		&mappedData
+	);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	uint8_t* destination = static_cast<uint8_t*>(mappedData);
+
+	for (UINT y = 0; y < height; ++y)
+	{
+		std::memcpy(
+			destination + footprint.Offset + static_cast<size_t>(y * footprint.Footprint.RowPitch),
+			pixelData.data() + static_cast<size_t>(y * rowPitch),
+			rowPitch
+		);
+	}
+
+	uploadBuffer->Unmap(0, nullptr);
+
+	D3D12_TEXTURE_COPY_LOCATION dst{};
+	dst.pResource = resource.texture.Get();
+	dst.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+	dst.SubresourceIndex = 0;
+
+	D3D12_TEXTURE_COPY_LOCATION src{};
+	src.pResource = uploadBuffer.Get();
+	src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+	src.PlacedFootprint = footprint;
+
+	cmdList->CopyTextureRegion(
+		&dst,
+		0,
+		0,
+		0,
+		&src,
+		nullptr
+	);
+
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = resource.texture.Get();
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+
+	cmdList->ResourceBarrier(1, &barrier);
+
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle =	srvHeap->GetCPUDescriptorHandleForHeapStart();
+
+	cpuHandle.ptr += static_cast<SIZE_T>(textureResources.size() * srvDescriptorSize);
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	device->CreateShaderResourceView(
+		resource.texture.Get(),
+		&srvDesc,
+		cpuHandle
+	);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+	gpuHandle.ptr += static_cast<UINT64>(textureResources.size() * srvDescriptorSize);
+
+	resource.srvHandle = gpuHandle;
 
 	return true;
 

@@ -30,7 +30,7 @@ public:
 	~ModelRenderer() = default;
 
 	//初期化
-	bool Init(ID3D12Device6* device, Camera& camera);
+	bool Init(ID3D12Device6* device, ID3D12GraphicsCommandList* cmdList, Camera& camera);
 
 	bool CreateModelResource(const ModelComponent& model);
 
@@ -52,8 +52,8 @@ private:
 		D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 		D3D12_INDEX_BUFFER_VIEW  indexBufferView{};
 
-		uint32_t indexCount		= 0;
-		uint32_t materialIndex	= 0;
+		uint32_t indexCount = 0;
+		uint32_t materialIndex = 0;
 
 	};
 
@@ -74,10 +74,10 @@ private:
 
 		DirectX::XMFLOAT4 baseColor{};
 
-		float metalic			= 0.0f;
-		float roughness			= 1.0f;
-		float ambientOcclusion	= 1.0f;
-		float padding			= 0.0f;	//パディング用(16byteアライン)
+		float metalic = 0.0f;
+		float roughness = 1.0f;
+		float ambientOcclusion = 1.0f;
+		float padding = 0.0f;	//パディング用(16byteアライン)
 
 		DirectX::XMFLOAT3 emissiveColor{};
 		float			  emissiveStrength = 1.0f;
@@ -90,7 +90,7 @@ private:
 	{
 
 		ComPtr<ID3D12Resource> texture;
-		
+
 		D3D12_GPU_DESCRIPTOR_HANDLE srvHandle{};
 
 		uint32_t embeddedTextureIndex = 0;
@@ -98,24 +98,37 @@ private:
 	};
 
 	//初期化に使用する
-	bool CreateMeshResource( const Mesh& mesh, MeshResource& resource);
-	bool CreateVertexBuffer( const Mesh& mesh, MeshResource& resource);
-	bool CreateIndexBuffer(	 const Mesh& mesh, MeshResource& resource);
+	bool CreateMeshResource(const Mesh& mesh, MeshResource& resource);
+	bool CreateVertexBuffer(const Mesh& mesh, MeshResource& resource);
+	bool CreateIndexBuffer(const Mesh& mesh, MeshResource& resource);
 
 	bool CreateTextureResources(const ModelComponent& model);
-	bool CreateTexture
+	bool CreateTextureResource(const EmbeddedTexture& embeddedTexture, uint32_t embeddedTextureIndex);
+
+	bool DecodeEmbeddedTexture(
+		const EmbeddedTexture& embeddedTexture,
+		std::vector<uint8_t>& pixelData,
+		UINT& width, UINT& height, UINT& rowPitch
+	);
+
+	bool CreateTextureUploadResource(
+		const std::vector<uint8_t>& pixelData,
+		UINT width, UINT height, UINT rowPitch,
+		TextureResource& resource
+	);
 
 	bool CreateConstantBuffers();
 
 	//更新
 	void UpdateTransformBuffer(const RenderComponent& renderComponent);
-	void UpdateMaterialBuffer( const Material& material);
+	void UpdateMaterialBuffer(const Material& material);
 
 	//定数バッファサイズを256byte境界に合わせる
 	constexpr UINT AlignConstantBufferSize(UINT size);
 
 	//DX12
 	ComPtr<ID3D12Device6> device;
+	ComPtr<ID3D12GraphicsCommandList> cmdList;
 
 	RootSignature rootSig;
 	PipelineState pso;
@@ -131,5 +144,10 @@ private:
 	ComPtr<ID3D12Resource> materialBuffer;
 
 	TransformBuffer* mappedTransformBuffer = nullptr;
+	MaterialBuffer* mappedMaterialBuffer = nullptr;
+
+	std::vector<TextureResource> textureResources;
+	ComPtr<ID3D12DescriptorHeap> srvHeap;
+	UINT srvDescriptorSize = 0;
 
 };
